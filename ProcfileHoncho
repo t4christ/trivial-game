@@ -1,0 +1,5 @@
+web: waitress-serve --port=$PORT quiz.wsgi:application 
+worker: celery -A quiz worker -l info 
+
+
+

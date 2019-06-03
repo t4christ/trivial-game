@@ -1,0 +1,67 @@
+
+ 
+<div class="row" style="display:block;">
+
+    <div class="col-md-12">
+           {% for easy in easy %}
+   
+       <p>{{forloop.counter}}).  {{easy.questions}}</p>
+          
+
+       <div class="form-check">
+          <input type="hidden" value="answer{{easy.id}}" class="getans">
+          <label class="container">{{easy.choice1}}
+              <input type="radio" onchange="getName(event)"  name="answer{{easy.id}}" id="answer{{easy.id}}" value="{{easy.choice1}}">
+              <span class="checkmark"></span>
+          </label>
+         </div>
+   
+         <div class="form-check">
+            <input type="hidden" value="answer{{easy.id}}" class="getans">
+            <label class="container">{{easy.choice2}}
+                <input  onchange="getName(event)" type="radio" name="answer{{easy.id}}" id="answer{{easy.id}}" value="{{easy.choice2}}">
+                <span class="checkmark"></span>
+            </label>
+           </div>
+
+
+
+           <div class="form-check">
+              <input type="hidden" value="answer{{easy.id}}" class="getans">
+              <label class="container">{{easy.choice3}}
+                  <input  onchange="getName(event)" type="radio" name="answer{{easy.id}}" id="answer{{easy.id}}" value="{{easy.choice3}}">
+                  <span class="checkmark"></span>
+              </label>
+             </div>
+
+
+
+
+             <div class="form-check">
+                <input type="hidden" value="answer{{easy.id}}" class="getans">
+                <label class="container">{{easy.choice4}}
+                    <input  onchange="getName(event)" type="radio" name="answer{{easy.id}}" id="answer{{easy.id}}" value="{{easy.choice4}}">
+                    <span class="checkmark"></span>
+                </label>
+               </div>
+
+
+               {% if easy.choice5 %}
+
+               <div class="form-check">
+                  <input type="hidden" value="answer{{easy.id}}" class="getans">
+                  <label class="container">{{easy.choice5}}
+                      <input onchange="getName(event)" type="radio" name="answer{{easy.id}}" id="answer{{easy.id}}" value="{{easy.choice5}}">
+                      <span class="checkmark"></span>
+                  </label>
+                 </div>
+
+               {% endif %}
+
+               
+   
+         {% endfor %}      
+       </div> 
+   
+   </div>
+   <!-- End of row -->

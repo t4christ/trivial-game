@@ -1,0 +1,39 @@
+{% extends "rechargebase.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container login-wrap" style="display:flex;background:white;margin-top:86px;">
+<div style="margin:auto;margin-top:5%;" class='col-sm-6 col-sm-offset-3'>
+<h1 class="text-center">{{ title }}</h1>
+<hr/>
+
+<form method='POST' class="login-form" style="margin-bottom:5%;" action='' enctype='multipart/form-data'>
+    {% csrf_token %}
+{{ form|crispy }}
+<input type='submit' class='btn btn-primary' style="width:100%;" value='{{ title }}' />
+<div style="display:flex;flex-direction: column;">
+<a class="text-primary" href="http://gist.wstreams.com/password_reset/">Forgot Password?</a>
+<a class="text-primary" href="{% url 'register' %}">New User, Register</a>
+</div>
+</form>
+</div>
+</div>
+
+
+<style>
+@media screen and (max-width:750px){
+    .login-wrap{
+        margin-bottom:-30%;
+        margin-top:56px!important;
+    }
+}
+
+
+        .login-form .form-group{
+            display:block!important;
+            padding:15px!important;
+        }
+    </style>
+
+{% endblock content %}

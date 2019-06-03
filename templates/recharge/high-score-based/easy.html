@@ -1,0 +1,388 @@
+{% extends "rechargebase.html" %}
+{% load staticfiles %}
+{% block head_extra %} 
+<title>Easy Game Home</title>
+{% endblock head_extra %}
+
+
+
+
+
+
+{% block content %}
+
+<div class="container-fluid question-wrap" >
+     
+    <div class="container-fluid advert" style="padding:0;margin-top:50px;">
+    {% include 'headadvert.html' %} 
+</div>
+
+  <div  class="row countbar" style="display:block;z-index:0;position:fixed;top:0;right:11px;left:0;padding:4px;">
+
+    
+    <!-- Invite Button -->
+    <h5 class="valid-bonus text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+    <h5 class="invalid-bonus text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+
+
+    <h5 class="valid-loyalty text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+    <h5 class="invalid-loyalty text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+
+    <input value="{% url 'recharge:invite' %}" type="hidden" class="invite-url">
+    <input value="{% url 'recharge:bonus' %}" type="hidden" class="bonus-url">
+    <input value="{{bonus_point.bonus_points}}" type="hidden" class="bonus">
+    <input value="{{loyalty.loyalty_point}}" type="hidden" class="loyalty">
+
+    {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+    <a></a>
+   {% else %}
+<div class="col-md-3 col-sm-4 pop-up" style="margin-bottom:2%;display:none;height:50px;"><p style="color:#e80068;font-weight:bold;margin:4%;border:0.5px solid #e80068;" class="text-center">5 TapTAP Points per invited friend </p> 
+</div>
+
+<input value="{{bonus_point.bonus_points}}" type="hidden" class="bonus">
+<button class="inv col-md-3 col-sm-6" style="padding:0;margin-bottom:5%;align-self:flex-start;background:#e80068;color:white;font-weight:bold;">Invite Friends By SMS (FREE) <br> <i style="color:white;" class="bonus_status" >Boost Points {{bonus_point.bonus_points}}</i>
+
+  <i style="color:white;" class="loyalty_status" >Loyalty Points {{loyalty.loyalty_point}}</i>
+
+</button>
+{% endif %}
+<!-- End Invite Button -->
+
+<input type="hidden" class="ran_score" value="{{ran_score}}">
+    <input type="hidden" class="user" value="{{request.user}}">
+    <input type="hidden" class="link" value="/recharge/easy_submit/{{request.user}}/">
+    <input type="hidden" class="start_link" value="/recharge/level1/{{request.user}}/">
+    
+        <div class="col-md-2 btn-warning timer text-center" id="recharge-time" style="right:0;float:right;width:50%;border:none;z-index:5;background-color:#2d3243;color:white;"><strong>Count Down</strong></div>
+        {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+        <div class="col-md-2 btn-warning score" id="score" style="right:0;width:50%;border:none;z-index:5;background-color:#2d3243;color:white;float:right;">Score:
+            {% for score in all_score %}
+          {{score.score}}
+        {% endfor %}
+        </div>
+       {% else %}
+        <div class="col-md-2 btn-warning score" id="score" style="right:0;width:50%;border:none;z-index:5;background-color:#2d3243;color:white;float:right;">
+          
+          Highest Score:
+          {% if request.path == '/recharge/easy/'|add:request.user.username|add:'/' %}
+          {% for score in all_score %}
+          {% if score.score > ran_score %}
+          {{score.score}}
+
+          {% else %}
+
+          {{ran_score}}
+
+          {% endif %}
+          {%empty%}
+          {{ran_score}}
+          {% endfor %}
+          {% elif request.path == '/recharge/medium/'|add:request.user.username|add:'/' %}
+          {% for score in all_score %}
+          {% if score.score > ran_score %}
+          {{score.score}}
+          {% else %}
+          {{ran_score}}
+          {% endif %}
+          {%empty%}
+          {{ran_score}}
+          {% endfor %}
+
+          {% elif request.path == '/recharge/hard/'|add:request.user.username|add:'/' %}
+
+          {% for score in all_score %}
+          {% if score.score > ran_score %}
+          {{score.score}}
+          {% else %}
+          {{ran_score}}
+          {% endif %}
+          {%empty%}
+          {{ran_score}}
+          {% endfor %}
+
+
+
+          {% endif %}
+
+        </div>
+        {% endif %}
+        <div class="col-md-12 social" style="padding:0;margin-top:0px;margin-bottom:15px;float:right;">
+          <style>
+          .social button{
+            height:30px;
+            float:right;
+            width:30px;
+            padding:initial;
+          }
+
+          
+          </style>
+            {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+            <a></a>
+           {% else %}
+          <button   type="button" class="fb-share btn-floating btn-lg btn-tw" style="background:#3b5998!important;"><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}&quote= My score is {% for score in user_score %}{{score.score}} {% endfor %} can you beat that. Join me on {{request.build_absolute_uri}} to play" data-one=" "><i style="color:white!important;" class="fa fa-facebook"></i></a></button>
+          <!--Twitter-->
+          <button  type="button" style="background:#55acee!important;" class="twi-share btn-floating btn-lg btn-tw"><a data-one="" data-two="" href="https://twitter.com/home?status=My score is {% for score in user_score %}{{score.score}} {% endfor %} can you beat that. Join me on {{request.build_absolute_uri}} to play"><i class="fa fa-twitter" style="color:white!important;"></i></a></button>
+          <button  type="button" style="background:#25d366!important;" class="what-share btn-floating btn-lg btn-tw"><a data-one="" data-two="" href="https://api.whatsapp.com/send?&text=My score is {% for score in user_score %}{{score.score}} {% endfor %} can you beat that. Join me on {{request.build_absolute_uri}} to play"><i style="color:white!important;" class="fa fa-whatsapp" aria-hidden="true"></i></a></button>
+          {% endif %}
+      </div>
+      </div>
+
+      
+      {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+      <a></a>
+      {% else %}
+      <marquee style="font-weight:bold;background:#e80068;color:#fff;margin-top:1%;"> Our Top Ten Winners Are {% for winner in winner%} {{winner.target}} {% endfor %}</marquee>
+    {% endif %}
+
+    {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+       <a></a>
+      {% else %}
+    <h2 class="text-center wel-quest" style="margin-top:52px;"> PLEASE READ INSTRUCTIONS</h2>
+      
+        <ul >
+        <li class="center">1. REGISTRATION is required so your line can be automatically recharged with airtime!!</li>
+        <li class="center">2. If you are SHARP enough, answer some questions & EARN airtime!!!</li>
+        <!-- <li class="center">3. Airtime is won when there are 20 or more players playing within the 3hour slot.</li> -->
+        <li class="center">3. High Scored Based: 50 questions, 2 minutes....Highest Score at the end of 3 hourS earns airtime!!!! </li>
+        <li class="center">4.  High Scored Based: Only 10 attempts for each 3 hour slot.At the end of each time slot one winner is credited per the categorizations-Easy,Medium & Hard. Where there are more than 10 winners with the same high score, the earliest time(s) will be the basis for selection from the Top 10.</li>
+        <li class="center">5. Level Based: Move from 1 level to the other... EARN more airtime as you get on higher levels!!! Only 10 attempts for each 3 hour slot.</li>
+        <li class="center">6. Your total score is calculated automatically & highest score for the round is clearly displayed</li>
+        <li class="center">7. Rounds last from 12 a.m. Nigerian time to 12 midnight, Mondays to Saturdays; Time slots are as follows:6am-8:59am,9am-11:59pm,12pm-2:59pm,3pm-5:59pm,6pm-8:59pm,9pm-11:59pm</li>
+
+        <li class="center">8. Boost Points are earned when you invite your fiends by inputting their numbers (Please click Invite Friends above to continue). You receive FIVE boost points each time you invite a friend. Boost Points can be activated at anytime in the course of play</li>
+
+        <li class="center">9. Loyalty Points are earned basis your frequency of play. You earn 100 Loyalty Points daily i.e each time you log in. These points can only be earned once a day after your first log in every 30 calendar day cycle. They can be activated at anytime in the course of play and can be activated only once daily. </li>
+    </ul>
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+<p>{{level_progess}}</p>
+
+{% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+<a></a>
+{% else %}
+<audio id="audio"   src="{% static '/audio/tapsound.mp3' %}" autoplay="autoplay" >
+            
+  </audio>
+  {% endif %}
+<div onClick="javascript:playSound()">
+{% if request.path == '/recharge/easy/'|add:request.user.username|add:'/' or request.path == '/recharge/medium/'|add:request.user.username|add:'/' or request.path == '/recharge/hard/'|add:request.user.username|add:'/'%}
+<div onclick="add_bonus('bonus')" class="col-md-3 col-sm-4 activate" style="cursor:pointer;padding:4px;background:#e80068;margin-left:auto;margin-right:15px;"><p class="text-center" style="margin:5%;color:white;font-weight:bold;">Activate Boost Point</p></div>
+
+<div onclick="add_bonus('loyalty')" class="col-md-3 col-sm-4 activate" style="cursor:pointer;padding:4px;background:#e80068;margin-left:auto;margin-right:15px;"><p class="text-center" style="margin:5%;color:white;font-weight:bold;">Activate Loyalty Point</p></div>
+
+<button  id="start" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+
+
+
+{% elif request.path == '/recharge/xmas/'|add:request.user.username|add:'/' %}
+<button  id="start_xmas" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+
+{% elif request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
+<button  id="start_jamb" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+{% elif request.path == '/recharge/level1/'|add:request.user.username|add:'/' %}
+<button  id="start_level_one" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+
+{% elif request.path == '/recharge/level2/'|add:request.user.username|add:'/' and level_progress == 'leveltwo' %}
+<button  id="start_level_two" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+
+
+{% elif request.path == '/recharge/level3/'|add:request.user.username|add:'/' and level_progress == 'levelthree' %}
+<button  id="start_level_three" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+
+
+
+{% elif request.path == '/recharge/level4/'|add:request.user.username|add:'/' and level_progress == 'levelfour' %}
+<button id="start_level_four" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+
+
+
+{% elif request.path == '/recharge/level5/'|add:request.user.username|add:'/' %}
+<button  id="start_level_five" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
+{% else %}
+
+<h2 class="text-center text-danger">You Have To Complete The Previous Level To Proceed</h2>
+
+{% endif %}
+
+</div>
+
+<!-- Start Invite -->
+<div class="container invite" style="display:none;">
+  <div class="row main">
+    <div class="main-login main-center">
+                    <button  class="close" id="close" style="color:white;">X</button>
+            <h5 style="color:white;text-align:center;align-self:flex-end;">Invite Friends To Play</h5>
+            <h5 class="valid-result" style="color:white;"></h5>
+            <h5 class="invalid-result text-center" style="color:white;"></h5>
+            
+      <form class="">
+        
+        <div class="form-group">
+          <label for="name" class="cols-sm-2 control-label text-center">Friend's Numbers</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control number" name="number" id="name"  placeholder="Enter Numbers in this format 2347063445670,2348097654321"/>
+                                
+                            </div>
+                            <p style="font-size:10px;line-height:22px;">Enter Numbers in this format 2347063445670,2348097654321</p>
+          </div>
+        </div>
+
+        
+        <div class="form-group " style="background:#e80068;" type="button" >
+          <a style="background:#e80068;color:white;"onclick="send_invite()" id="button" class="btn btn-primary btn-lg btn-block login-button">Invite by SMS (FREE)</a>
+        </div>
+        <div><p class="text-center" style="color:white;">5 BOOST Points Per Invited Friend</p></div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- End Invite -->
+
+    <div class="col-md-6 col-md-offset-3 result-wrap" style="margin-top:16%;">
+         
+    <a style="display:none;" class="btn btn-success play text-center" href="{{request.path}}"><h4 class="text-center" style="color:white;">Play Again</h4></a>
+    <h4 class="text-center notify" style="display:none;">Nice Try</h4>
+
+    <h4 class="user_score text-center questionwrap"></h4>
+    
+    <h4 class="result text-center">
+      <i class="fa fa-spinner fa-4x respin" style="display:none;"></i>
+    </h4>
+
+    <h4 style="display:none;" class="comp text-center">Highest Score, didn't get credited? Send an SMS to 08099988057 with text "Not Credited"</h4>
+
+    <h4 class="text-center"><a id="level_based" class=""></a></h4>
+    
+  </div>
+
+<div class="col-md-10 col-md-offset-1 easy-question" id="easy-question" style="display:block;">
+    
+     
+</div>
+<!-- End of col-md-10 -->
+{% block javascript %}
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/5c2f63f482491369baa07ca5/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+{% endblock javascript%}
+
+{% include 'footadvert.html' %}
+
+<style>
+
+@media screen and (max-width:570px){
+  #start_jamb{
+    margin-top:5%;
+  }
+}
+
+
+
+/* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+</style>
+
+
+
+</div>
+<!-- End of container fluid -->
+
+
+
+
+{% endblock content %}

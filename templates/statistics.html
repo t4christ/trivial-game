@@ -1,0 +1,364 @@
+{% extends "rechargebase.html" %}
+
+
+
+{% block content %}
+
+
+<div class="container advert statistics" style="margin-top:61px;background:white;">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="section-headline text-center" style="margin-top:50px;">
+            <h2>Free Airtime Statistics</h2>
+            <h4>{{count_play}}</h4>
+            
+          </div>
+        </div>
+      </div>
+      {% if request.user.is_admin %}
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="pri_table_list">
+            <h3>High Score Based</h3>
+            <ol>
+
+                <li class="check" style="font-size:1.5em;">Number of Players(Easy)<button style="text-transform:lowercase;" class="btn-success">{{easy_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+                <li class="check" style="font-size:1.5em;">Number of Players(Easy)<button style="text-transform:lowercase;" class="btn-success">{{easy_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+
+
+
+                <li class="check" style="font-size:1.5em;">Number of Players(Easy)<button style="text-transform:lowercase;" class="btn-success">{{easy_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+
+
+
+
+                <li class="check" style="font-size:1.5em;">Number of Players(Easy)<button style="text-transform:lowercase;" class="btn-success">{{easy_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+<!-- End of Easy Stats -->
+
+<li class="check" style="font-size:1.5em;">Number of Players(Medium)<button style="text-transform:lowercase;" class="btn-success">{{med_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Medium)<button style="text-transform:lowercase;" class="btn-success">{{med_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Medium)<button style="text-transform:lowercase;" class="btn-success">{{med_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+
+
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Medium)<button style="text-transform:lowercase;" class="btn-success">{{med_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+
+<!-- End of Medium Stats -->
+
+
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hard_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hard_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hard_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+
+
+
+
+<li class="check" style="font-size:1.5em;">Number of Players(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hard_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+
+<!-- End of Hard Stats -->
+
+
+<li class="check" style="font-size:1.5em;">Highest Scorers(Easy)<button style="text-transform:lowercase;" class="btn-success">{{hehr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Easy)<button style="text-transform:lowercase;" class="btn-success">{{hedy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Easy)<button style="text-transform:lowercase;" class="btn-success">{{hemn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Easy)<button style="text-transform:lowercase;" class="btn-success">{{heyr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For Easy -->
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Medium)<button style="text-transform:lowercase;" class="btn-success">{{hmhr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Medium)<button style="text-transform:lowercase;" class="btn-success">{{hmdy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Medium)<button style="text-transform:lowercase;" class="btn-success">{{hmmn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Medium)<button style="text-transform:lowercase;" class="btn-success">{{hmyr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For Medium -->
+
+
+
+
+
+
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hhhr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hhdy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hhmn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(Hard)<button style="text-transform:lowercase;" class="btn-success">{{hhyr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For Hard -->
+
+
+
+
+            </ol>
+            <!-- <button>sign up now</button> -->
+          </div>
+        </div>
+   
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="pri_table_list">
+            <h3>Level Based</h3>
+            <ol>
+
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{levelone_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{levelone_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{levelone_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+              
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{levelone_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+              
+              <!-- End of LevelOne Stats -->
+
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{leveltwo_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{leveltwo_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{leveltwo_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+              
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{leveltwo_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+              
+              <!-- End of LevelTwo Stats -->
+
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{levelthree_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{levelthree_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{levelthree_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+              
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{levelthree_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+              
+              <!-- End of LevelThree Stats -->
+
+
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{levelfour_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{levelfour_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{levelfour_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+              
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{levelfour_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+              
+              <!-- End of LevelFour Stats -->
+
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{levelfive_hr}} <span style="margin-left:20px;"></span> This Hour</button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{levelfive_dy}} <span style="margin-left:20px;"></span> Today({% now 'D' %})</button></li>
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{levelfive_mn}} <span style="margin-left:20px;"></span> Month to Date ({% now 'M' %})</button></li>
+              
+              
+              
+              
+              <li class="check" style="font-size:1.5em;">Number of Players(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{levelfive_yr}} <span style="margin-left:20px;"></span> Year to Date ({% now 'Y' %}) </button></li>
+              
+              <!-- End of LevelFive Stats -->
+
+
+
+
+
+
+
+
+<!-- Highest Score For Level Based -->
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{hl1hr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{hl1dy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{hl1mn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelOne)<button style="text-transform:lowercase;" class="btn-success">{{hl1yr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For LevelOne -->
+
+              
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{hl2hr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{hl2dy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{hl2mn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelTwo)<button style="text-transform:lowercase;" class="btn-success">{{hl2yr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For LevelTwo -->
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{hl3hr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{hl3dy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{hl3mn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelThree)<button style="text-transform:lowercase;" class="btn-success">{{hl3yr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For LevelThree -->
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{hl4hr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{hl4dy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{hl4mn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFour)<button style="text-transform:lowercase;" class="btn-success">{{hl4yr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For LevelFour -->
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{hl5hr}} <span style="margin-left:20px;"></span> This Hour </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{hl5dy}} <span style="margin-left:20px;"></span> Today {% now 'D' %} </button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{hl5mn}} <span style="margin-left:20px;"></span> This Month {% now 'M' %}</button></li>
+
+
+
+              <li class="check" style="font-size:1.5em;">Highest Scorers(LevelFive)<button style="text-transform:lowercase;" class="btn-success">{{hl5yr}} <span style="margin-left:20px;"></span> This Year {% now 'Y' %} </button></li>
+
+              <!-- High Score For LevelFive -->
+
+
+
+
+              <!-- <li class="check" style="font-size:1.5em;">Players For This Hour <button style="text-transform:lowercase;" class="btn-success">
+                
+                {{play_hour}} 
+                
+            </button></li>
+
+
+            <li class="check" style="font-size:1.5em;">Highest Score <button style="text-transform:lowercase;" class="btn-success">
+                    {% for highest_score in highest_score %} 
+                   {{highest_score.score}}
+                   {% endfor %} 
+                   <span style="margin-left:20px;"></span> {{dat|date:'d-m-Y'}}
+               </button></li>
+
+
+              <li class="check" style="font-size:1.5em;">Highest Score For This Hour <button style="text-transform:lowercase;" class="btn-success">
+                 
+                {% for high_hour in high_hour %}
+                  
+                {{high_hour.score}}
+                {% empty %}
+                0
+                {% endfor %} 
+            </button></li> -->
+
+
+
+
+
+       
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endblock content%}

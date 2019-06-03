@@ -1,0 +1,103 @@
+{% extends "rechargebase.html" %}
+{% load staticfiles %}
+{% block head_extra %} 
+<title>Game Home</title>
+{% endblock head_extra %}
+
+
+{% block content %}
+
+
+<div class="container-fluid recharge-wrap" style="min-height:100%;display:flex;align-items:center;background:white;flex-direction:column;">
+
+    <input type="hidden" class="ran_score" value="{{ran_score}}">
+    
+<div class="container-fluid advert" style="padding:0;margin-top:150px;">
+    {% include 'headadvert.html' %}    
+</div>
+
+    <!-- <div class="container rec-wrap"> -->
+    <input type="hidden" id="start">
+    <input type="hidden" class="link" value="/recharge/easy_submit/{{request.user}}/">
+        <!-- <h2 class="text-center">Welcome to Free Airtime Questions and Answers Game</h2> -->
+<div class="col-md-6  resub-wrp" style="margin-top:40px;">
+        
+<div class="row">
+        
+    <h3 class="text-center" style="width:100%;">Select A Category</h3>
+
+    <div class="container high-div" style="padding:0;padding-left:15px;padding-right:15px;margin-bottom:2%;">
+    <div style="display:none;" class="btn btn-alert high-score col-md-12 wow bounceInDown">High Score</div>
+    <a href="{% url 'recharge:easy' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Easy</button></a>
+    <a href="{% url 'recharge:medium' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Medium</button></a>
+    <a href="{% url 'recharge:hard' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Hard</button></a>
+        </div>
+
+
+
+<div class="container cat-div" >    
+    <div style="display:none;" class="btn btn-alert level-up col-md-12 wow bounceInUp">Five Levels Up</div>
+
+    <a href="{% url 'recharge:level1' request.user %}" style="color:white;"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Level 1</button></a>
+    <a style="color:white;" href="{% url 'recharge:level2' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">
+            Level 2</button></a>
+            <a style="color:white;"href="{% url 'recharge:level3' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">
+            Level 3</button></a>
+            <a style="color:white;"href="{% url 'recharge:level4' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">
+            Level 4</button></a>
+
+            <a style="color:white;"href="{% url 'recharge:level5' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">
+                Level 5</button></a>
+
+
+</div>
+
+
+
+<div class="container xmas-div" style="margin-top:2%;">
+        <div style="display:none;" class="btn btn-alert xmas-score col-md-12 wow bounceInDown">10-Seconds Offer</div>
+        <a href="{% url 'recharge:xmas' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">10-Seconds Offer</button></a>
+        
+            </div>
+
+
+<!-- JAMB Section -->
+<div class="container jamb-div" style="margin-top:2%;">
+    <div style="display:none;" class="btn btn-alert jamb-score col-md-12 wow bounceInDown">SSCE/NECO Practice Questions</div>
+    <a href="{% url 'recharge:jacct' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Account</button></a>
+    <a href="{% url 'recharge:jgeo' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Geography</button></a>
+    <a href="{% url 'recharge:jbio' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Biology</button></a>
+    <a href="{% url 'recharge:jeng' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">English</button></a>
+    <a href="{% url 'recharge:jmath' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Mathematics</button></a>
+    <!-- <a href="{% url 'recharge:jphy' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Physics</button></a> -->
+    <!-- <a href="{% url 'recharge:jchem' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Chemistry</button></a> -->
+    <!-- <a href="{% url 'recharge:jcomm' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Commerce</button></a> -->
+    <a href="{% url 'recharge:jict' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">I.C.T</button></a>
+    <!-- <a href="{% url 'recharge:jcrk' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">C.R.K</button></a> -->
+    <!-- <a href="{% url 'recharge:jlit' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Literature</button></a> -->
+    <!-- <a href="{% url 'recharge:jeco' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Economics</button></a> -->
+    <!-- <a href="{% url 'recharge:jgov' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Government</button></a> -->
+    
+        </div>
+<!-- End JAMB Section -->
+
+
+
+</div>
+<!-- End of row -->
+
+
+</div>
+<!-- End of col-md-6 -->
+
+<div class="container-fluid advert" style="padding:0;"></div>
+{% include 'footadvert.html' %}
+</div>
+<!-- </div> -->
+</div>
+<!-- End of container fluid -->
+
+
+
+
+{% endblock content %}

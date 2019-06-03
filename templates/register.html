@@ -1,0 +1,53 @@
+{% extends "rechargebase.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container register-wrap" style="display:flex;margin-top:88px;">
+        <div class="col-md-6" style="margin:auto;">
+        <h1 class="text-center">{{ title }}</h1>
+        <hr/>
+        {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger text-center" style="background:red;">
+                    <strong style="color:white;">{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger text-center" style="background:red;">
+                <strong style="color:white;">{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+        
+        <form method='POST' class="register-form" action='' style="margin-bottom:5%;" enctype='multipart/form-data'>
+            {% csrf_token %}
+        {{ form|crispy }}
+        <input type='submit' style="width:100%;" class='btn btn-primary' value='{{ title }}' />
+        </form>
+        </div>
+    </div>
+
+
+<style>
+@media screen and (max-width:750px){
+    .register-wrap{
+        margin-bottom:-30%;
+        margin-top:56px!important;
+    }
+}
+
+        .register-form .form-group{
+            display:block!important;
+            padding:15px!important;
+        }
+
+         .invalid-feedback,.help-block{
+        color:white!important;
+        text-align:center!important;
+        background:red!important;
+    }
+    </style>
+{% endblock content %}

@@ -1,0 +1,765 @@
+<script>
+let arr_score = {};
+let final_score=[]
+let contain = null;
+var changed = false;
+let link = document.querySelector(".link").value;
+let ran_score = document.querySelector(".ran_score").value;
+let t;
+
+
+
+
+
+function send_invite(){
+    let number= document.querySelector(".number").value
+    let invite= document.querySelector(".invite-url").value
+    // alert(number)
+    if (number){
+    $.ajax({
+      url: invite,
+      data: {'number':number,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        $(".respin").show()
+        if(data.onlyOnce){
+            $(".respin").hide()
+        document.querySelector(".invalid-result").innerHTML=data.onlyOnce   
+        document.querySelector(".valid-result").innerHTML=''}
+        else if(data.sent){
+        $(".respin").hide()
+        document.querySelector(".valid-result").innerHTML="Your Sms Was Sent Successfully."
+        document.querySelector(".invalid-result").innerHTML=''}
+      },
+}).fail(function() {
+    $(".respin").hide()
+    document.querySelector(".invalid-result").innerHTML="Sending Failed Please Try Again Later."
+    document.querySelector(".valid-result").innerHTML=''
+ })
+//     .done(function(response) {
+//     console.log("success");
+//     console.log(response);
+// })
+// .fail(function() {
+//     console.log("error");
+// })
+// .always(function() {
+//     console.log("complete");
+// })
+  
+}else{
+    document.querySelector(".invalid-result").innerHTML="Field Cannot Be Empty."
+}
+}
+
+
+
+function add_bonus(point){
+    let bonus= document.querySelector(".bonus").value
+    let loyalty= document.querySelector(".loyalty").value
+    let bonus_url= document.querySelector(".bonus-url").value
+    // alert(point)
+    if (bonus > 0 && point === 'bonus'){
+       
+    $.ajax({
+      url: bonus_url,
+      data: {'bonus':bonus,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        if (data.tapscore_added){
+        $(".valid-bonus").html(data.tapscore_added).show(1000,()=>{
+            setTimeout(()=>{$(".valid-bonus").hide(1000)},3000)
+        }).css("display","block")
+        document.querySelector(".bonus_status").innerHTML=" Bonus Points " + data.bonus_left
+        document.querySelector(".bonus").value=0 
+      
+}
+      },
+}).fail(function() {
+    $(".invalid-bonus").html("You currently don't have any boost points!")
+    .show(1000,()=>{
+            setTimeout(()=>{$(".invalid-bonus").hide(1000)},3000)
+        }).css("display","block")
+    document.querySelector(".valid-bonus").innerHTML=''
+ })
+//     .done(function(response) {
+//     console.log("success");
+//     console.log(response);
+// })
+// .fail(function() {
+//     console.log("error");
+// })
+// .always(function() {
+//     console.log("complete");
+// })
+  
+}
+
+   else if (loyalty > 0 && point === 'loyalty'){
+    $.ajax({
+      url: bonus_url,
+      data: {'loyalty':loyalty,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        if (data.tapscore_added){
+        $(".valid-loyalty").html(data.tapscore_added).show(1000,()=>{
+            setTimeout(()=>{$(".valid-loyalty").hide(1000)},3000)
+        }).css("display","block")
+        document.querySelector(".loyalty_status").innerHTML=" Loyalty Points " + data.bonus_left
+        document.querySelector(".loyalty").value=0 
+      
+}
+      },
+}).fail(function() {
+    $(".invalid-loyalty").html("You currently don't have any loyalty points!")
+    .show(1000,()=>{
+            setTimeout(()=>{$(".invalid-loyalty").hide(1000)},3000)
+        }).css("display","block")
+    document.querySelector(".valid-loyalty").innerHTML=''
+ })
+//     .done(function(response) {
+//     console.log("success");
+//     console.log(response);
+// })
+// .fail(function() {
+//     console.log("error");
+// })
+// .always(function() {
+//     console.log("complete");
+// })
+  
+}
+
+
+else{
+    
+    $(".invalid-bonus").html("You currently don't have boost or loyalty points or refresh page to reactivate boost points")
+    .show(1000,()=>{
+            setTimeout(()=>{$(".invalid-bonus").hide(1000)},3000)
+        }).css("display","block")
+      }
+}
+
+
+
+// <!-- 
+// function add_bonus(){
+//     let bonus= document.querySelector(".bonus").value
+//     let bonus_url= document.querySelector(".bonus-url").value
+//     // alert(number)
+//     if (bonus > 0){
+//     $.ajax({
+//       url: bonus_url,
+//       data: {'bonus':bonus,csrfmiddlewaretoken:'{{csrf_token}}'},
+//       type: "post",
+//       dataType: 'json',
+//       success: function (data) {
+//         if (data.tapscore_added){
+//         $(".valid-bonus").html(data.tapscore_added).show(1000,()=>{
+//             setTimeout(()=>{$(".valid-bonus").hide(1000)},3000)
+//         }).css("display","block")
+//         document.querySelector(".bonus_status").innerHTML=" Bonus Points 0"
+//         document.querySelector(".bonus").value=0 
+      
+// }
+//       },
+// }).fail(function() {
+//     $(".invalid-bonus").html("You currently don't have any boost points!")
+//     .show(1000,()=>{
+//             setTimeout(()=>{$(".invalid-bonus").hide(1000)},3000)
+//         }).css("display","block")
+//     document.querySelector(".valid-bonus").innerHTML=''
+//  })
+// //     .done(function(response) {
+// //     console.log("success");
+// //     console.log(response);
+// // })
+// // .fail(function() {
+// //     console.log("error");
+// // })
+// // .always(function() {
+// //     console.log("complete");
+// // })
+  
+// }else{
+    
+//     $(".invalid-bonus").html("You currently don't have any boost points!")
+//     .show(1000,()=>{
+//             setTimeout(()=>{$(".invalid-bonus").hide(1000)},3000)
+//         }).css("display","block")
+//       }
+// } -->
+
+
+
+
+function stopTimer(){
+    clearInterval(t)
+}
+
+
+function removeDummy() {
+    var elem = document.querySelector('.start-btn');
+    elem.parentNode.removeChild(elem);
+    return false;
+}
+
+
+
+
+function get_location(location){
+let level;
+
+let get_ind;
+
+
+if(location.includes('level1')){
+                get_ind = location.indexOf('level1')
+                level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+else if(location.includes('level2')){
+    get_ind = location.indexOf('level2')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+
+else if(location.includes('level3')){
+    get_ind = location.indexOf('level3')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+else if(location.includes('level4')){
+    get_ind = location.indexOf('level4')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+
+else if(location.includes('level5')){
+    get_ind = location.indexOf('level5')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+
+
+else if(location.includes('easy')){
+    get_ind = location.indexOf('easy')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+
+else if(location.includes('medium')){
+    get_ind = location.indexOf('medium')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+
+
+
+else if(location.includes('hard')){
+    get_ind = location.indexOf('hard')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            }
+
+
+
+else if(location.includes('xmas')){
+    get_ind = location.indexOf('xmas')
+    level = location[get_ind]
+                // alert(location[get_ind])
+
+            };
+
+return level
+}
+
+
+
+function started(){
+const time_start= "Player Started"
+const start = new Date().getTime();
+const start_time= Math.floor(start/1000 % 60);
+
+$.ajax({
+      url: link,
+      data: {'time_start':start_time,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+    if(data.limit){
+            document.querySelector(".result").innerHTML=data.limit
+            stopTimer()
+            
+        }
+
+     else if(data.previous){
+            document.querySelector(".result").innerHTML=data.previous
+            // document.querySelector("#recharge-time").style.display="none"
+            stopTimer()
+        }   
+
+
+     else if(data.weekday){
+            document.querySelector(".result").innerHTML=data.weekday
+            stopTimer()
+        }
+        // $('.easy-question')
+    else if(data.questions){
+        document.querySelector(".easy-question").innerHTML=data.questions
+}
+      },
+
+    });
+}
+
+
+
+
+function getName(event){
+var targ= event.target
+var minutes = 0
+
+
+// console.log(event)
+
+if(targ.checked){
+  
+            arr_score[targ.name]=targ.value
+            
+
+        }
+else{
+   
+    // console.log(index)
+     delete arr_score[targ.name]
+    //  delete final_score[targ.name]
+
+}
+    // console.log(arr_score)
+    
+
+// })    
+
+
+}
+
+
+
+
+function startTimer(duration, display) {
+ 
+    let timer = duration, minutes, seconds;
+    let get_total= document.querySelector(".score").innerHTML
+    let fire = 0
+    let user = document.querySelector(".user").value;
+    
+t =  setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+
+        function once(fn,context){
+            var result;
+            return function(){
+                if(fn){
+                    result = fn.apply(context || this, arguments);
+                    fn=null;
+                };
+                return result;
+            }
+        }
+
+        if (--timer == 0 && fire == 0) {
+            stopTimer()
+            document.querySelector(".respin").style.display="block"
+            timer = duration;
+
+
+            minutes = "";
+            seconds = "";
+
+            display.textContent = ""
+            document.querySelector(".easy-question").style.display="none"
+            document.querySelector("#recharge-time").innerHTML="Game Over"
+            document.querySelector(".play").style.display="block"
+            document.querySelector(".comp").style.display="block"
+            // document.querySelector(".begin").style.display="none"
+            document.querySelector(".notify").style.display="block"
+            // var user= document.querySelector(".user").value
+            // var total_sc= document.querySelector(".score").innerText
+            var token= document.getElementsByName("csrfmiddlewaretoken").innerText
+            fire = 1
+            // console.log(user)
+            // Save Scores For Recharging The Highest Scorer
+         
+ 
+ for (var i in arr_score){
+ final_score.push(arr_score[i])
+     }
+
+// alert(ran_score)
+
+var scoreSaver = once(function(){
+const end = new Date().getTime();
+const end_time= Math.floor(end/1000 % 60);
+    $.ajax({
+      url: link,
+      data: {'answer':final_score,'ran_score':ran_score,'end_time':end_time,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        // document.querySelector(".framewrap").style.display = "block"
+        
+        $('#start').attr("id","").hide();
+        $('#start_level_one').attr("id","").hide();
+        $('#start_level_two').attr("id","").hide();
+        $('#start_level_three').attr("id","").hide();
+        $('#start_level_four').attr("id","").hide();
+
+        
+
+            //    final_score.length = 0
+       for (var member in arr_score) delete arr_score[member];
+       final_score.splice(0,final_score.length);
+       console.log(final_score)
+       console.log(arr_score)
+
+    if(data.thanks){
+        
+          document.querySelector(".result").innerHTML=data.thanks
+
+          var player_score=data.user_score
+          var correct_ans=parseInt(player_score)
+          var location = window.location.href.split("/");
+            let up_next = ""
+           var  level_locatefive = get_location(location)
+        if (correct_ans == 100 || correct_ans == 500){
+        
+            level_location = get_location(location)
+            get_num = level_location.match(/\d+/)[0] 
+            add_up =parseInt(get_num) + 1 
+            document.querySelector(".questionwrap").innerHTML="Congratulations! Your score is  " + correct_ans + " . Move on to level " + add_up
+        
+        
+        // Create Dynamic html tags
+        var level_based = document.getElementById("level_based");   
+        var att = level_based.setAttribute("href","/recharge/level"+add_up+"/" + user + "/");       // Create a "href" attribute
+        document.querySelector("#level_based").innerHTML ="Click to Move to Level" + add_up
+        $("#level_based").addClass("btn")
+
+        $(".easy-question").load(document.URL + ' .easy-question')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        }
+        else if(level_locatefive == "level5"){
+        document.querySelector(".questionwrap").innerHTML="Congratulations For Making To The Top. You score is  "+ correct_ans + ""
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
+        }
+        
+        else if(level_locatefive == "easy"){
+        document.querySelector(".questionwrap").innerHTML="Sorry! Your score is "+ correct_ans + "."
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
+        }
+
+        else if(level_locatefive == "medium"){
+        document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
+        }
+
+        else if(level_locatefive == "hard"){
+        document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
+        }
+        
+        else if(level_locatefive == "xmas"){
+        document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
+        }
+
+
+        else{  
+        document.querySelector(".questionwrap").innerHTML="Your score is  "+ correct_ans + ". "
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Practice Over"
+        document.querySelector(".respin").style.display="none"
+        }
+
+
+
+        
+        //   document.querySelector(".user_score").innerHTML=data.user_score
+        //   document.querySelector(".wrapper").style.height="100%"
+  
+        //   document.querySelector(".wrapper").style.marginTop="7%"
+      
+        //   }
+
+      }
+
+      else if(data.busted){
+            document.querySelector(".result").innerHTML=data.busted
+        }
+
+      else{
+        document.querySelector(".result").innerHTML="Sorry No Score Recorded"
+        document.querySelector(".questionwrap").innerHTML="Your Score is 0" 
+      }
+
+      },
+// <!-- 
+//       complete: function(data){
+
+
+//           if(data.thanks){
+//           document.querySelector(".result").innerHTML=data.thanks
+//           document.querySelector(".questionwrap").innerHTML="Your Score is  "+ data.user_score 
+//             $(".easy-question").load(document.URL + ' .easy-question')
+//             $("#recharge-time").load(document.URL + ' #recharge-time')
+            
+//         //   document.querySelector(".user_score").innerHTML=data.user_score
+//         //   document.querySelector(".wrapper").style.height="100%"
+  
+//         //   document.querySelector(".wrapper").style.marginTop="7%"
+      
+//         //   }
+       
+//       }
+
+//       else{
+//         document.querySelector(".result").innerHTML="Sorry No Score Recorded"
+//         document.querySelector(".questionwrap").innerHTML="Your Score is 0" 
+//       }
+
+//             final_score=[];
+//             arr_score={};
+//       } -->
+
+    });
+
+
+
+
+
+
+
+
+
+
+});
+
+scoreSaver(); 
+
+
+
+            
+        }
+
+
+
+
+    }, 1000);
+}
+
+
+/********************** JAMB Start  **************************/
+var start_jamb = document.querySelector('#start_jamb');
+/************************************************************/
+
+var start = document.querySelector('#start');
+var start_xmas = document.querySelector('#start_xmas');
+var start_level_one = document.querySelector('#start_level_one');
+var start_level_two = document.querySelector('#start_level_two');
+var start_level_three = document.querySelector('#start_level_three');
+var start_level_four = document.querySelector('#start_level_four');
+var start_level_five = document.querySelector('#start_level_five');
+
+
+
+
+/********************** JAMB Start Function **************************/
+if(start_jamb){
+start_jamb.onclick = function () {
+    started()
+    removeDummy()
+    var minutes = 60 * 20,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start_jamb").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+/************************************************************/
+
+
+
+/*****************************High Score Based **************************************/
+// start
+if(start){
+start.onclick = function () {
+    started()
+    removeDummy()
+    var minutes = 60 * 2,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+
+if(start_xmas){
+start_xmas.onclick = function () {
+    started()
+    removeDummy()
+    var minutes = 60 * 1/6,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+/*****************************Level Base **************************************/
+
+// start_level_one
+if(start_level_one){
+start_level_one.onclick = function () {
+    started()
+    removeDummy()
+    var minutes = 60 * 10/12,
+        display = document.querySelector('#recharge-time');
+
+        // $('.result-wrap').hide();
+        $('.easy-question').show(1000);
+
+        $("#start_level_one").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+
+// start_level_two
+if(start_level_two){
+start_level_two.onclick = function () {
+    started()
+    var minutes = 60 * 10/15,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start_level_two").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+
+// start_level_three
+
+if(start_level_three){
+start_level_three.onclick = function () {
+    started()
+    var minutes = 60 * 10/20,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start_level_three").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+// start_level_four
+if(start_level_four){
+
+start_level_four.onclick = function () {
+    started()
+    var minutes = 60 * 1/3,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start_level_four").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+
+// start_level_five
+if(start_level_five){
+start_level_five.onclick = function () {
+    started()
+    var minutes = 60 * 2/6,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start_level_five").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+
+
+
+
+
+
+
+$(document).ready(function(){
+
+$(".start-btn").click(function() {
+    
+});
+
+
+        var location = window.location.href.split("/")
+                get_location(location)
+
+           $('.high-score .level-up .xmas-score .jamb-score').show() 
+        $('.high-score').click(() => {
+        $('.high-div button').toggle(1000,'linear')    
+        })
+
+
+
+   $('.xmas-score').click(() => {
+        $('.xmas-div button').toggle(1000,'linear')    
+        })
+
+         $('.level-up').click(() => {
+            $('.cat-div button').toggle(1000,'swing')
+        })
+
+        });
+        
+
+        /**************** JAMB Click *****************/
+        $('.jamb-score').click(() => {
+        $('.jamb-div button').toggle(1000,'linear')    
+        })
+        
+    </script>
