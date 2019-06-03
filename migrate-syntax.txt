@@ -1,3 +1,0 @@
-./manage.py dumpdata recharge > recharge/fixtures/recharge.json
-
-./manage.py loaddata recharge.json
