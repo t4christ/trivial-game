@@ -5,7 +5,9 @@ services:
 before_install:
   - docker-compose build
 
-
+script:
+  - docker-compose up -d
+  - docker-compose down
 
 after_success:
   - docker build -t texplode/free-airtime  .
