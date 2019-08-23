@@ -5,12 +5,6 @@
       "essential": true,
       "image": "postgres:alpine",
       "memory": 128,
-      "mountPoints": [
-        {
-          "containerPath": "/var/lib/postgresql/data/",
-          "sourceVolume": "Db_Data"
-        }
-      ],
       "name": "db"
     },
     {
@@ -33,7 +27,6 @@
       ],
       "essential": true,
       "memory": 128,
-      "links":["redis"],
       "image": "texplode/free-airtime",
       "name": "web_app"
     },
@@ -49,15 +42,6 @@
           "hostPort": 80
         }
       ]
-    }
-  ],
-  "family": "",
-  "volumes": [
-    {
-      "host": {
-        "sourcePath": "db_data"
-      },
-      "name": "Db_Data"
     }
   ]
 }
