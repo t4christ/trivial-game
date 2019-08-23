@@ -19,7 +19,6 @@ play.py
 complete-javascript-course/
 backups/
 media/
-nginx/
 static/
 web/
 build/
@@ -40,7 +39,6 @@ var/
 *.xls
 *.xlsx
 *.ods
-
 *.csv
 *.dump
 
