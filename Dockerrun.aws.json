@@ -4,6 +4,7 @@
             {
                 "essential": true,
                 "image": "postgres:alpine",
+                "memory": 128,
                 "links":["web_app"],
                 "mountPoints": [
                     {
@@ -16,6 +17,7 @@
             {
                 "essential": true,
                 "image": "redis:latest",
+                "memory": 128,
                 "links":["web_app"],
                 "name": "redis",
                 "memory": 128,
@@ -33,6 +35,7 @@
                     "python manage.py migrate && gunicorn quiz.wsgi:application --bind 0.0.0.0:8009 && celery -A quiz worker --beat --scheduler django --loglevel=info"
                 ],
                 "essential": true,
+                "memory": 128,
                 "image":"texplode/free-airtime",
                 
                 "mountPoints": [
