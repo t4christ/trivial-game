@@ -39,7 +39,7 @@ dotenv.load_dotenv()
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'sm@g)(fbwdh5wc*xe@j++m9rh^uza5se9a57c5ptwkg*b@ki0x'
 
 ALLOWED_HOSTS = ['*']
   
