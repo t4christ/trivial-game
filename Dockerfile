@@ -12,7 +12,16 @@ COPY ./requirements.txt /requirements.txt
 #run package installations
 RUN apk update && \
     apk add --virtual build-deps gcc python-dev musl-dev && \
-    apk add postgresql-dev libjpeg8-dev zlib1g-dev && pip install -r /requirements.txt
+    apk add \
+    postgresql-dev \
+    libpng \
+    libjpeg-turbo \
+    freetype-dev \
+    libpng-dev \
+    jpeg-dev \
+    libjpeg \
+    libjpeg-turbo-dev \
+    && pip install -r /requirements.txt
 
 
 
