@@ -5,7 +5,6 @@
       "essential": true,
       "image": "postgres:alpine",
       "memory": 128,
-      "links": ["web_app"],
       "mountPoints": [
         {
           "containerPath": "/var/lib/postgresql/data/",
@@ -18,7 +17,6 @@
       "essential": true,
       "image": "redis:latest",
       "memory": 128,
-      "links": ["web_app"],
       "name": "redis",
       "portMappings": [
         {
@@ -35,6 +33,7 @@
       ],
       "essential": true,
       "memory": 128,
+      "links":["redis"],
       "image": "texplode/free-airtime",
       "name": "web_app"
     },
