@@ -40,7 +40,7 @@ var/
 *.xls
 *.xlsx
 *.ods
-*.json
+
 *.csv
 *.dump
 

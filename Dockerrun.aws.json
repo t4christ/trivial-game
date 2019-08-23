@@ -1,0 +1,62 @@
+{
+    "AWSEBDockerrunVersion": 2,
+        "containerDefinitions": [
+            {
+                "essential": true,
+                "image": "postgres:alpine",
+                "links":["web_app"],
+                "mountPoints": [
+                    {
+                        "containerPath": "/var/lib/postgresql/data/",
+                        "sourceVolume": "Db_Data"
+                    }
+                ],
+                "name": "db"
+            },
+            {
+                "essential": true,
+                "image": "redis:latest",
+                "links":["web_app"],
+                "name": "redis",
+                "memory": 128,
+                "portMappings": [
+                    {
+                        "containerPort": 6379,
+                        "hostPort": 6379
+                    }
+                ]
+            },
+            {
+                "command": [
+                    "/bin/sh",
+                    "-c",
+                    "python manage.py migrate && gunicorn quiz.wsgi:application --bind 0.0.0.0:8009 && celery -A quiz worker --beat --scheduler django --loglevel=info"
+                ],
+                "essential": true,
+                "image":"texplode/free-airtime",
+                
+                "mountPoints": [
+                    {
+                        "containerPath": "/var/www/app/",
+                        "sourceVolume": "_"
+                    }
+                ],
+                "name": "web_app"
+            }
+        ],
+        "family": "",
+        "volumes": [
+            {
+                "host": {
+                    "sourcePath": "db_data"
+                },
+                "name": "Db_Data"
+            },
+            {
+                "host": {
+                    "sourcePath": "."
+                },
+                "name": "_"
+            }
+        ]
+    }
