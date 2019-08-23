@@ -41,7 +41,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['localhost','free-airtime.herokuapp.com','freeairtime.wstreams.com']
+ALLOWED_HOSTS = ['*']
   
 # Application definition
 

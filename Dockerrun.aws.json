@@ -39,7 +39,7 @@
     },
     {
       "essential": true,
-      "image": "texplode/nginx",
+      "image": "texplode/trivia-nginx",
       "memory": 256,
       "links": ["web_app"],
       "name": "nginx",
