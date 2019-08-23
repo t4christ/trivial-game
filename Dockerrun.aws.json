@@ -54,11 +54,11 @@
       "mountPoints": [
         {
           "containerPath": "/var/www/app/static",
-          "sourceVolume": "/app/static"
+          "sourceVolume": "static"
         },
         {
           "containerPath": "/var/www/app/media",
-          "sourceVolume": "/app/media"
+          "sourceVolume": "media"
         }
       ],
       "name": "nginx",
