@@ -27,7 +27,7 @@ deploy:
   provider: elasticbeanstalk
   region: us-east-2
   app: free-airtime
-  env: FreeAirtime-env
+  env: Trivia-env
   bucket_name: free-airtime
   bucket_path: elasticbeanstalk-us-east-2-807790523856
   on:
