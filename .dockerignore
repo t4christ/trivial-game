@@ -1,0 +1,7 @@
+kwrg.py
+*.dump
+*.1
+*.xls
+*.xlsx
+*.csv
+.vscode

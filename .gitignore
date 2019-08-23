@@ -43,6 +43,7 @@ var/
 *.json
 *.csv
 *.dump
+
 Procfile
 ProcfileHoncho
 latest.dump.1
@@ -86,3 +87,8 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

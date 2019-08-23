@@ -1,0 +1,35 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker-compose build
+
+
+
+after_success:
+  - docker build -t texplode/free-airtime  .
+
+
+# Login to Docker 
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+
+# Take images and push them to dockerhub
+
+  - docker push texplode/free-airtime
+
+
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: free-airtime
+  env: FreeAirtime-env
+  bucket_name: free-airtime
+  bucket_path: elasticbeanstalk-us-east-2-807790523856
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"

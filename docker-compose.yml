@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  db:
+    restart: always
+    image: postgres:alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    networks:
+      - db_nw
+  web_app:
+    build:
+      context: .
+    command: /bin/sh -c "python manage.py migrate && gunicorn quiz.wsgi:application --bind 0.0.0.0:8009"
+    volumes:
+      - .:/var/www/app/
+    restart: always
+    depends_on:
+      - db
+
+    # env_file: .env_app
+    networks:
+      - db_nw
+      - web_nw
+
+
+  
+
+volumes:
+  db_data:
+
+
+networks:
+  db_nw:
+    driver: bridge
+  web_nw:
+    driver: bridge

@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     
     'gunicorn',
-    'django_nose',
+
 
     # local apps
     'django_celery_beat',
@@ -71,17 +71,11 @@ INSTALLED_APPS = [
 
 # SITE_ID= 1
 
-# Use nose to run all tests
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-# Tell nose to measure coverage on the 'foo' and 'bar' apps
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=accounts,taptap,comments,posts',
-]
 
-ERC_USER = os.getenv('ERC_USER')
-ERC_PASS = os.getenv('ERC_PASS')
+
+ERC_USER = os.environ.get('ERC_USER')
+ERC_PASS = os.environ.get('ERC_PASS')
 ERC_LOGIN_URL = 'https://clients.primeairtime.com/api/auth'
 ERC_TOPUP_INFO = 'https://clients.primeairtime.com/api/topup/info/%(msisdn)s'
 ERC_TOPUP_URL = 'https://clients.primeairtime.com/api/topup/exec/%(msisdn)s'
@@ -150,8 +144,6 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-import dj_database_url
-from decouple import config
 if DEBUG:
 
     DATABASES = {
@@ -179,20 +171,15 @@ if DEBUG:
 else:
 
     DATABASES = {
-    'default': dj_database_url.config(
-        default='DATABASE_URL'
-    )
-}
-    # DATABASES = {
-    #      'default': {
-    #      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #      'HOST': os.getenv('DB_HOST'),
-    #      'PORT': os.getenv('DB_PORT'),
-    #      'NAME': os.getenv('DB_NAME'),
-    #      'USER': os.getenv('DB_USER'),
-    #      'PASSWORD': os.getenv('DB_PASSWORD')
-    #      }
-    #  }
+         'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'HOST': os.environ.get('DB_HOST'),
+         'PORT': os.environ.get('DB_PORT'),
+         'NAME': os.environ.get('DB_NAME'),
+         'USER': os.environ.get('DB_USER'),
+         'PASSWORD': os.environ.get('DB_PASSWORD')
+         }
+     }
 
 
 
@@ -241,8 +228,8 @@ if DEBUG:
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 else:
     
-    CELERY_BROKER_URL =  os.getenv('CELERY_BROKER_URL')
-    CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+    CELERY_BROKER_URL =  os.environ.get('CELERY_BROKER_URL')
+    CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
