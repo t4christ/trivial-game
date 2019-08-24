@@ -10,7 +10,7 @@ django-extensions
 phonenumbers
 dj-database-url
 dj-static
-boto
+boto3
 django-celery-beat
 django-celery-results
 redis
