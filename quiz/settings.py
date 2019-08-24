@@ -257,24 +257,20 @@ if DEBUG:
 
 else:
 
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3Boto3Storage'
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-    STATIC_URL = os.environ.get('STATIC_URL')
-    MEDIA_URL = os.environ.get('MEDIA_URL')
-    # DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
-    # STATICFILES_STORAGE = 'storages.backends.gs.GSBotoStorage'
-    # DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    # DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
-    # STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    # GS_ACCESS_KEY_ID =os.getenv("CLIENT_ID")
-    # GS_SECRET_ACCESS_KEY = os.getenv("CLIENT_SECRET")
-    # GS_BUCKET_NAME = "free-airtime"
-    # GS_PROJECT_ID = "secure-media"
-    # STATIC_ROOT = "https://storage.googleapis.com/bezop-uploads/"
-    # STATIC_URL = 'https://storage.googleapis.com/free-airtime/static/'
-    # MEDIA_URL = 'https://storage.googleapis.com/free-airtime/media/'
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+        }
+    AWS_LOCATION = 'static'
+    STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    ]
+    STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 
 
