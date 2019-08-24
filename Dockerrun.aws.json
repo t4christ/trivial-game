@@ -28,13 +28,13 @@
       "essential": true,
       "memory": 128,
       "image": "texplode/free-airtime",
-      "name": "web_app"
+      "name": "web"
     },
     {
       "essential": true,
       "image": "texplode/trivia-nginx",
       "memory": 256,
-      "links": ["web_app"],
+      "links": ["web"],
       "name": "nginx",
       "portMappings": [
         {

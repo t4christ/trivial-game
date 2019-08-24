@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third party
     'crispy_forms',
-    
+    'storages',
     'gunicorn',
 
 
@@ -257,18 +257,24 @@ if DEBUG:
 
 else:
 
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    STATIC_URL = os.environ.get('STATIC_URL')
+    MEDIA_URL = os.environ.get('MEDIA_URL')
     # DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
     # STATICFILES_STORAGE = 'storages.backends.gs.GSBotoStorage'
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    # DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     # DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
-    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    # STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     # GS_ACCESS_KEY_ID =os.getenv("CLIENT_ID")
     # GS_SECRET_ACCESS_KEY = os.getenv("CLIENT_SECRET")
-    GS_BUCKET_NAME = "free-airtime"
+    # GS_BUCKET_NAME = "free-airtime"
     # GS_PROJECT_ID = "secure-media"
     # STATIC_ROOT = "https://storage.googleapis.com/bezop-uploads/"
-    STATIC_URL = 'https://storage.googleapis.com/free-airtime/static/'
-    MEDIA_URL = 'https://storage.googleapis.com/free-airtime/media/'
+    # STATIC_URL = 'https://storage.googleapis.com/free-airtime/static/'
+    # MEDIA_URL = 'https://storage.googleapis.com/free-airtime/media/'
 
 
 
