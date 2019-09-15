@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 FIXTURE_DIRS = (
@@ -237,7 +237,7 @@ CELERY_TIMEZONE = TIME_ZONE
 
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=os.path.join(BASE_DIR, 'secure-media-eb1f179c0076.json')
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=os.path.join(BASE_DIR, 'secure-media-eb1f179c0076.json')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
