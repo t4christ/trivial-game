@@ -24,14 +24,14 @@ from itertools import chain
 import datetime
 import json
 # import pandas as pd
-# import csv
+import csv
 from utils.smsclient import SmsClient
 
 sms_client = SmsClient()
 
 
 def answer():
-    question=JChemistryQuestion.objects.all()
+    question=LevelThreeQuestion.objects.all()
     with open('answer.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row, quest in zip(reader,question):
@@ -40,9 +40,9 @@ def answer():
                 choice2 = row['choice2']
                 choice3 = row['choice3']
                 choice4 = row['choice4']
-                choice5 = row['choice5']
+                # choice5 = row['choice5']
                 correct_answer = row['correct_answer']
-                get_answer=JChemistryAnswer(choice1=choice1,choice2=choice2,choice3=choice3,choice4=choice4,choice5=choice5,correct_answer=correct_answer,questions=quest)
+                get_answer=LevelThreeAnswer(choice1=choice1,choice2=choice2,choice3=choice3,choice4=choice4,correct_answer=correct_answer,questions=quest)
                 get_answer.save()
             # else:
             #     choice1 = row['choice1']
@@ -55,13 +55,13 @@ def answer():
 
 
 def question(request):
-    # question=LevelOneQuestion.objects.all()
-    with open('new_question.csv') as csvfile:
+    question=LevelThreeQuestion.objects.all()
+    with open('question.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             content = row['content']
             poster = request.user
-            get_question = JEngQuestion(content=content,poster=poster)
+            get_question = LevelThreeQuestion(content=content,poster=poster)
             get_question.save()
 
 def del_answer():

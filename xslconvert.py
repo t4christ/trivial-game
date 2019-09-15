@@ -1,7 +1,7 @@
 import xlrd
 import csv
 import json
-import pandas as pd
+# import pandas as pd
 def Excel2CSV(ExcelFile, SheetName, CSVFile):
 
      workbook = xlrd.open_workbook(ExcelFile)
@@ -15,11 +15,11 @@ def Excel2CSV(ExcelFile, SheetName, CSVFile):
      csvfile.close()
 
 
-def CSV2Json(CSVFile):
+# def CSV2Json(CSVFile):
     
-    df = pd.read_csv(CSVFile)
+    # df = pd.read_csv(CSVFile)
     # any operations on dataframe df
-    df.to_json('question.json')
+    # df.to_json('question.json')
     # data_list = list()  
     # with open(CSVFile, 'r') as f:
     #     reader = csv.reader(f, delimiter=';')
@@ -32,8 +32,8 @@ def CSV2Json(CSVFile):
     # print (s)
 
 if __name__ == "__main__":
-    Excel2CSV('new_answer.xls','Sheet1','answer.csv')
-    CSV2Json('answer.csv')
+    Excel2CSV('new_answer.xlsx','Sheet1','answer.csv')
+    # CSV2Json('question.csv')
 
 
 

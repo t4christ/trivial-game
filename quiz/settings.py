@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 FIXTURE_DIRS = (
@@ -144,7 +144,7 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if DEBUG:
+if  DEBUG:
 
     DATABASES = {
     'default': {
@@ -171,15 +171,15 @@ if DEBUG:
 else:
 
     DATABASES = {
-         'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'HOST': os.environ.get('DB_HOST'),
-         'PORT': os.environ.get('DB_PORT'),
-         'NAME': os.environ.get('DB_NAME'),
-         'USER': os.environ.get('DB_USER'),
-         'PASSWORD': os.environ.get('DB_PASSWORD')
-         }
-     }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('POSTGRES_DATABASE'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
+    }
+}
 
 
 
@@ -250,9 +250,9 @@ if DEBUG:
         #'/var/www/static/',
     ]
     PROFILE_URL='profile_photo'
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
+    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
     MEDIA_URL = "media/"
-    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
 
 else:

@@ -5,13 +5,13 @@
       "essential": true,
       "image": "postgres:alpine",
       "memory": 128,
-      "name": "db"
+      "hostname": "db"
     },
     {
       "essential": true,
       "image": "redis:latest",
       "memory": 128,
-      "name": "redis",
+      "hostname": "redis",
       "portMappings": [
         {
           "containerPort": 6379,
@@ -28,14 +28,14 @@
       "essential": true,
       "memory": 128,
       "image": "texplode/free-airtime",
-      "name": "web"
+      "hostname": "web"
     },
     {
       "essential": true,
       "image": "texplode/trivia-nginx",
       "memory": 256,
       "links": ["web"],
-      "name": "nginx",
+      "hostname": "nginx",
       "portMappings": [
         {
           "containerPort": 80,

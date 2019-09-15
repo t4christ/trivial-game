@@ -3,7 +3,7 @@ bin/
 include/
 lib/
 pip-selfcheck.json
-
+*.pem
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -16,6 +16,7 @@ __pycache__/
 env/
 kwrg.py
 play.py
+*.sh
 complete-javascript-course/
 backups/
 media/

@@ -12,17 +12,54 @@ services:
   web_app:
     build:
       context: .
-    command: /bin/sh -c "python manage.py migrate && gunicorn quiz.wsgi:application --bind 0.0.0.0:8009"
+    command: /bin/sh -c "gunicorn quiz.wsgi:application --bind 0.0.0.0:8009"
     volumes:
       - .:/var/www/app/
     restart: always
     depends_on:
       - db
+      - redis
 
-    # env_file: .env_app
+    env_file: .env
     networks:
       - db_nw
       - web_nw
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./static:/var/www/app/static
+      - ./media:/var/www/app/media
+    ports:
+      - "8009:80"
+    depends_on:
+      - web_app
+    networks:
+      - web_nw
+  redis:
+    image: 'redis:alpine'
+
+  celery:
+    build:
+       context: .
+    command: /bin/sh -c "celery -A quiz worker -l info"
+    volumes:
+      - .:/var/www/app/
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build:
+       context: .
+    command: /bin/sh -c "celery -A quiz beat -l info"
+    volumes:
+      - .:/var/www/app/
+    depends_on:
+      - db
+      - redis
+      - celery
 
 
   
@@ -36,3 +73,4 @@ networks:
     driver: bridge
   web_nw:
     driver: bridge
+

@@ -21,3 +21,4 @@ python-decouple
 psycopg2-binary
 Pillow
 xlwt
+xlrd
