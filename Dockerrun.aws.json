@@ -25,7 +25,7 @@
       "command": [
         "/bin/sh",
         "-c",
-        "python manage.py migrate && gunicorn quiz.wsgi:application --bind 0.0.0.0:8009 && celery -A quiz worker --beat --scheduler django --loglevel=info"
+        "gunicorn quiz.wsgi:application --bind 0.0.0.0:8009"
       ],
       "name":"web",
       "essential": true,
