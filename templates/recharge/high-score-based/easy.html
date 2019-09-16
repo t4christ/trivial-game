@@ -172,7 +172,7 @@
 {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
 <a></a>
 {% else %}
-<audio id="audio"   src="{% static '/audio/tapsound.mp3' %}" autoplay="autoplay" >
+<audio id="audio"   src="{% static 'audio/tapsound.mp3' %}" autoplay="autoplay" >
             
   </audio>
   {% endif %}
