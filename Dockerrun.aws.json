@@ -5,7 +5,7 @@
       "name":"postgres",
       "essential": true,
       "image": "postgres:alpine",
-      "memory": 128,
+      "memory": 256,
       "hostname": "db"
     },
     {
@@ -29,7 +29,7 @@
       ],
       "name":"web",
       "essential": true,
-      "memory": 128,
+      "memory": 256,
       "image": "texplode/free-airtime",
       "hostname": "web"
     },
