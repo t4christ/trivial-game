@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^recharge/easy/(?P<username>[-\w]+)/$', quiz, name='easy'),
     url(r'^recharge/medium/(?P<username>[-\w]+)/$', quiz, name='medium'),
     url(r'^recharge/hard/(?P<username>[-\w]+)/$', quiz, name='hard'),
+    url(r'^recharge/akwa/(?P<username>[-\w]+)/$', quiz, name='akwa'),
     url(r'^recharge/xmas/(?P<username>[-\w]+)/$', quiz, name='xmas'),
    
     url(r'^qloads/$',load_question, name='load_question'),

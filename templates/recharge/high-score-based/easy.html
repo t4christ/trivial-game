@@ -100,7 +100,16 @@
           {{ran_score}}
           {% endfor %}
 
-
+          {% elif request.path == '/recharge/akwa/'|add:request.user.username|add:'/' %}
+          {% for score in all_score %}
+          {% if score.score > ran_score %}
+          {{score.score}}
+          {% else %}
+          {{ran_score}}
+          {% endif %}
+          {%empty%}
+          {{ran_score}}
+          {% endfor %}
 
           {% endif %}
 
@@ -199,7 +208,10 @@
   </audio>
   {% endif %}
 <div onClick="javascript:playSound()">
-{% if request.path == '/recharge/easy/'|add:request.user.username|add:'/' or request.path == '/recharge/medium/'|add:request.user.username|add:'/' or request.path == '/recharge/hard/'|add:request.user.username|add:'/'%}
+{% if request.path == '/recharge/easy/'|add:request.user.username|add:'/' or request.path == '/recharge/medium/'|add:request.user.username|add:'/' or request.path == '/recharge/hard/'|add:request.user.username|add:'/' or request.path == '/recharge/akwa/'|add:request.user.username|add:'/'%}
+
+
+
 <div onclick="add_bonus('bonus')" class="col-md-3 col-sm-4 activate" style="cursor:pointer;padding:4px;background:#e80068;margin-left:auto;margin-right:15px;"><p class="text-center" style="margin:5%;color:white;font-weight:bold;">Activate Boost Point</p></div>
 
 <div onclick="add_bonus('loyalty')" class="col-md-3 col-sm-4 activate" style="cursor:pointer;padding:4px;background:#e80068;margin-left:auto;margin-right:15px;"><p class="text-center" style="margin:5%;color:white;font-weight:bold;">Activate Loyalty Point</p></div>

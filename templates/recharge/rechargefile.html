@@ -280,7 +280,12 @@ else if(location.includes('hard')){
 
             }
 
+else if(location.includes('akwa')){
+    get_ind = location.indexOf('akwa')
+    level = location[get_ind]
+                // alert(location[get_ind])
 
+            }
 
 else if(location.includes('xmas')){
     get_ind = location.indexOf('xmas')
@@ -506,6 +511,16 @@ const end_time= Math.floor(end/1000 % 60);
         document.querySelector(".respin").style.display="none"
         }
         
+
+        else if(level_locatefive == "akwa"){
+        document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
+        }
+
+
         else if(level_locatefive == "xmas"){
         document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
         $(".easy-question").load(document.URL + ' .easy-question')

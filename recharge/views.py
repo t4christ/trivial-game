@@ -31,7 +31,7 @@ sms_client = SmsClient()
 
 
 def answer():
-    question=LevelThreeQuestion.objects.all()
+    question=LevelFourQuestion.objects.all()
     with open('answer.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row, quest in zip(reader,question):
@@ -40,9 +40,8 @@ def answer():
                 choice2 = row['choice2']
                 choice3 = row['choice3']
                 choice4 = row['choice4']
-                # choice5 = row['choice5']
                 correct_answer = row['correct_answer']
-                get_answer=LevelThreeAnswer(choice1=choice1,choice2=choice2,choice3=choice3,choice4=choice4,correct_answer=correct_answer,questions=quest)
+                get_answer=LevelFourAnswer(choice1=choice1,choice2=choice2,choice3=choice3,choice4=choice4,correct_answer=correct_answer,questions=quest)
                 get_answer.save()
             # else:
             #     choice1 = row['choice1']
@@ -55,13 +54,13 @@ def answer():
 
 
 def question(request):
-    question=LevelThreeQuestion.objects.all()
+    question=LevelFourQuestion.objects.all()
     with open('question.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             content = row['content']
             poster = request.user
-            get_question = LevelThreeQuestion(content=content,poster=poster)
+            get_question = LevelFourQuestion(content=content,poster=poster)
             get_question.save()
 
 def del_answer():
@@ -107,7 +106,7 @@ def del_question():
 
 
 def load_question(request):
-    answer()
+    del_question()
 
     return HttpResponse("Questions Loading Activity Successful")
 
@@ -630,6 +629,7 @@ def easy_submit(request,username):
         get_easy = "%s/recharge/easy/%s/"%(current_site,request.user)
         get_medium = "%s/recharge/medium/%s/"%(current_site,request.user)
         get_hard = "%s/recharge/hard/%s/"%(current_site,request.user)
+        get_akwa = "%s/recharge/akwa/%s/"%(current_site,request.user)
         get_xmas = "%s/recharge/xmas/%s/"%(current_site,request.user)
         get_level1 = "%s/recharge/level1/%s/"%(current_site,request.user)
         get_level2 = "%s/recharge/level2/%s/"%(current_site,request.user)
@@ -727,6 +727,12 @@ def easy_submit(request,username):
                 easy=HardAnswer.objects.all().order_by('?')[:50]
                 num_score=HardAnswer.objects.all()[:50]
                 context={"easy":easy}
+                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+            elif get_akwa in where_from:
+                akwa=AkwaIbomAnswer.objects.all().order_by('?')[:50]
+                num_score=AkwaIbomAnswer.objects.all()[:50]
+                context={"easy":akwa}
                 data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
             elif get_xmas in where_from:
@@ -843,6 +849,7 @@ def easy_submit(request,username):
                     easy_ans=EasyAnswer.objects.all()
                     medium_ans=MediumAnswer.objects.all()
                     hard_ans=HardAnswer.objects.all()
+                    akwa_ans=AkwaIbomAnswer.objects.all()
                     xmas_ans=HardAnswer.objects.all()
                     levone_ans=LevelOneAnswer.objects.all()
                     levtwo_ans=LevelTwoAnswer.objects.all()
@@ -865,7 +872,7 @@ def easy_submit(request,username):
                     jeng_ans = JMathAnswer.objects.all()
                     jmath_ans = JEngAnswer.objects.all()
                     
-                    num_score=list(set(chain(jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans,easy_ans,medium_ans,hard_ans,xmas_ans,levone_ans,levtwo_ans,levthree_ans,levfour_ans,levfive_ans)))
+                    num_score=list(set(chain(jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans,easy_ans,medium_ans,hard_ans,akwa_ans,xmas_ans,levone_ans,levtwo_ans,levthree_ans,levfour_ans,levfive_ans)))
                     score_count=request.POST.getlist('answer[]',None)
                     score_point=request.POST.getlist('ran_score',None)
                     if type(score_point) == "<class 'list'>" :
@@ -927,6 +934,15 @@ def easy_submit(request,username):
                             elif score > score_point:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="hard")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score)
+                                data["thanks"]="Thanks For playing See You Next Time"
+                        elif get_akwa in where_from:
+                            if score > 0:
+                                UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
+                                PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score)
+                                data["thanks"]="Thanks For playing See You Next Time"
+                            elif score > score_point:
+                                UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
+                                PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score)
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_xmas in where_from:
@@ -1170,6 +1186,7 @@ def quiz(request,username):
     now_time=now.time()
     easy_ran_score=[250,260,270,280,290,300]
     med_ran_score=[200,210,220,230,240,250]
+    akwa_ran_score=[200,210,220,230,240,250]
     hard_ran_score=[230,240,250,260,270,280]
     winner=ERCTransaction.objects.all()[:10]
     
@@ -1202,6 +1219,7 @@ def quiz(request,username):
     get_easy = "%s/recharge/easy/%s/"%(current_site,request.user)
     get_medium = "%s/recharge/medium/%s/"%(current_site,request.user)
     get_hard = "%s/recharge/hard/%s/"%(current_site,request.user)
+    get_akwa = "%s/recharge/akwa/%s/"%(current_site,request.user)
     get_xmas = "%s/recharge/xmas/%s/"%(current_site,request.user)
     
     ##############Level Based Score Url Check ##########################
@@ -1246,6 +1264,8 @@ def quiz(request,username):
         all_score=UserCorrectAnswer.objects.filter(difficulty='medium').order_by('-score','-timestamp')[:1]
     elif get_hard in where_from:
         all_score=UserCorrectAnswer.objects.filter(difficulty='hard').order_by('-score','-timestamp')[:1]
+    elif get_akwa in where_from:
+        all_score=UserCorrectAnswer.objects.filter(difficulty='akwa').order_by('-score','-timestamp')[:1]
     elif get_xmas in where_from:
         all_score=UserCorrectAnswer.objects.filter(difficulty='xmas').order_by('-score','-timestamp')[:1]
 
@@ -1351,7 +1371,7 @@ def quiz(request,username):
             if not time(6,00) <= now_time <= time(23,59):
                 messages.error(request,"This Game is only opened from 6a.m to 12 midnight")
                 return redirect("/")
-            if not time(6,00) <= now_time <= time(21,00) and weekday == 'Saturday':
+            if not time(6,00) <= now_time <= time(21,50) and weekday == 'Saturday':
                 messages.error(request,"This Game is only opened from 6 a.m to 9 p.m")
                 return redirect("/")
 
@@ -1432,13 +1452,19 @@ def quiz(request,username):
 
             
             elif get_hard in where_from:
-                # if  "mediumcompleted" in request.session:
                     pick=random.choice(hard_ran_score)
                     ran_score=pick
-                    level_progress = "hard"
                     easy=HardAnswer.objects.all().order_by('?')[:50]
                     num_score=HardAnswer.objects.all()[:50]
                     user_score=UserCorrectAnswer.objects.filter(user=request.user,difficulty="hard").order_by('-timestamp')[:1]
+            elif get_akwa in where_from:
+
+                    pick=random.choice(akwa_ran_score)
+                    ran_score=pick
+                    easy=AkwaIbomAnswer.objects.all().order_by('?')[:50]
+                    num_score=AkwaIbomAnswer.objects.all()[:50]
+                    user_score=UserCorrectAnswer.objects.filter(user=request.user,difficulty="akwa").order_by('-timestamp')[:1]
+
 
      
 
@@ -1501,6 +1527,7 @@ def add_bonus(request):
         get_easy="%s/recharge/easy/%s/"%(current_site,request.user)
         get_med="%s/recharge/medium/%s/"%(current_site,request.user)
         get_hard="%s/recharge/hard/%s/"%(current_site,request.user)
+        get_akwa="%s/recharge/akwa/%s/"%(current_site,request.user)
         where_from= "%s%s"%(current_site,request.get_full_path())
         invite = request.POST.get('bonus')
         # print("Am current bonus",invite)

@@ -99,6 +99,15 @@ class LevelFiveQuestionModelAdmin(admin.ModelAdmin):
 	class Meta:
 		model = LevelFiveQuestion
 
+class AkwaIbomQuestionModelAdmin(admin.ModelAdmin):
+	list_display = ["content", "timestamp"]
+	list_display_links = ["content"]
+	# list_editable = ["content"]
+	list_filter = ["content","timestamp"]
+
+	search_fields = ["content","poster"]
+	class Meta:
+		model = AkwaIbomQuestion
 
 
 
@@ -277,11 +286,13 @@ admin.site.register(LevelTwoQuestion, LevelTwoQuestionModelAdmin)
 admin.site.register(LevelThreeQuestion, LevelThreeQuestionModelAdmin)
 admin.site.register(LevelFourQuestion, LevelFourQuestionModelAdmin)
 admin.site.register(LevelFiveQuestion, LevelFiveQuestionModelAdmin)
+admin.site.register(AkwaIbomQuestion, AkwaIbomQuestionModelAdmin)
 admin.site.register(LevelOneAnswer)
 admin.site.register(LevelTwoAnswer)
 admin.site.register(LevelThreeAnswer)
 admin.site.register(LevelFourAnswer)
 admin.site.register(LevelFiveAnswer)
+admin.site.register(AkwaIbomAnswer)
 admin.site.register(UserCorrectAnswer)
 admin.site.register(HighestScoreStatistic,HighestScoreModelAdmin)
 admin.site.register(PlayerStatistic)
