@@ -871,8 +871,8 @@ def easy_submit(request,username):
                     jgov_ans = JGovAnswer.objects.all()
                     jeng_ans = JMathAnswer.objects.all()
                     jmath_ans = JEngAnswer.objects.all()
-                    
-                    num_score=list(set(chain(jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans,easy_ans,medium_ans,hard_ans,akwa_ans,xmas_ans,levone_ans,levtwo_ans,levthree_ans,levfour_ans,levfive_ans)))
+                    # jamb=jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans
+                    num_score=list(set(chain(easy_ans,medium_ans,hard_ans,akwa_ans,xmas_ans,levone_ans,levtwo_ans,levthree_ans,levfour_ans,levfive_ans)))
                     score_count=request.POST.getlist('answer[]',None)
                     score_point=request.POST.getlist('ran_score',None)
                     if type(score_point) == "<class 'list'>" :
