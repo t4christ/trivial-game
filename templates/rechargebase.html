@@ -464,6 +464,12 @@ box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
     </nav>
 </header>
     <!-- End Header Area -->
+
+
+
+            {% block content %}
+
+
     {% include "messages_display.html" %}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- header -->
@@ -474,18 +480,8 @@ box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-
-
-            {% block content %}
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- top content -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-7739624904077396"
-     data-ad-slot="3804921406"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+
             
             
             {% endblock content %}

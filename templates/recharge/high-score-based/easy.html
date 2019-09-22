@@ -208,7 +208,7 @@
   </audio>
   {% endif %}
 <div onClick="javascript:playSound()">
-{% if request.path == '/recharge/easy/'|add:request.user.username|add:'/' or request.path == '/recharge/medium/'|add:request.user.username|add:'/' or request.path == '/recharge/hard/'|add:request.user.username|add:'/' or request.path == '/recharge/akwa/'|add:request.user.username|add:'/'%}
+{% if request.path == '/recharge/easy/'|add:request.user.username|add:'/' or request.path == '/recharge/medium/'|add:request.user.username|add:'/' or request.path == '/recharge/hard/'|add:request.user.username|add:'/'%}
 
 
 
@@ -224,6 +224,9 @@
 {% elif request.path == '/recharge/xmas/'|add:request.user.username|add:'/' %}
 <button  id="start_xmas" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
 
+
+{% elif request.path == '/recharge/akwa/'|add:request.user.username|add:'/' %}
+<button  id="start_anniv" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
 
 {% elif request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
 <button  id="start_jamb" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 

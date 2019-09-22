@@ -620,6 +620,7 @@ var start_jamb = document.querySelector('#start_jamb');
 /************************************************************/
 
 var start = document.querySelector('#start');
+var start_anniv = document.querySelector('#start_anniv');
 var start_xmas = document.querySelector('#start_xmas');
 var start_level_one = document.querySelector('#start_level_one');
 var start_level_two = document.querySelector('#start_level_two');
@@ -671,6 +672,21 @@ start_xmas.onclick = function () {
     startTimer(minutes, display);
 };
 }
+
+
+if(start_anniv){
+start_anniv.onclick = function () {
+    started()
+    removeDummy()
+    var minutes = 60 * 1/4,
+        display = document.querySelector('#recharge-time');
+        $('.easy-question').show(1000);
+        $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
+    startTimer(minutes, display);
+};
+}
+
+
 /*****************************Level Base **************************************/
 
 // start_level_one

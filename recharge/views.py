@@ -730,8 +730,8 @@ def easy_submit(request,username):
                 data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
             elif get_akwa in where_from:
-                akwa=AkwaIbomAnswer.objects.all().order_by('?')[:50]
-                num_score=AkwaIbomAnswer.objects.all()[:50]
+                akwa=AkwaIbomAnswer.objects.all().order_by('?')[:10]
+                num_score=AkwaIbomAnswer.objects.all()[:10]
                 context={"easy":akwa}
                 data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -1200,7 +1200,7 @@ def quiz(request,username):
     else: 
          ActivePlayer.objects.create(player_num=+1)
     weekday = datetime.datetime.now().strftime('%A') 
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',]
+    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
     user=get_object_or_404(MyUser,username=username)
     try:
         bonus=BonusPointAirtime.objects.get(player=request.user)
@@ -1371,7 +1371,7 @@ def quiz(request,username):
             if not time(6,00) <= now_time <= time(23,59):
                 messages.error(request,"This Game is only opened from 6a.m to 12 midnight")
                 return redirect("/")
-            if not time(6,00) <= now_time <= time(21,50) and weekday == 'Saturday':
+            if not time(6,00) <= now_time <= time(21,50) and weekday == 'Sunday':
                 messages.error(request,"This Game is only opened from 6 a.m to 9 p.m")
                 return redirect("/")
 
