@@ -1200,7 +1200,7 @@ def quiz(request,username):
     else: 
          ActivePlayer.objects.create(player_num=+1)
     weekday = datetime.datetime.now().strftime('%A') 
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     user=get_object_or_404(MyUser,username=username)
     try:
         bonus=BonusPointAirtime.objects.get(player=request.user)
