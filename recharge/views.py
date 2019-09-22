@@ -621,7 +621,7 @@ def easy_submit(request,username):
         time_diff = timezone.now() - timezone.timedelta(hours=3)
 
         weekday = datetime.datetime.now().strftime('%A') 
-        current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+        current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
         current_site = request.META['HTTP_HOST']
         where_from = request.META.get('HTTP_REFERER')
 
