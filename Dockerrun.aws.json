@@ -34,6 +34,34 @@
       "hostname": "web"
     },
     {
+      "command": [
+        "/bin/sh",
+        "-c",
+        "celery -A quiz worker -l info"
+      ],
+      "name":"celery-worker",
+      "links": ["redis,db"],
+      "essential": false,
+      "memory": 256,
+      "image": "texplode/free-airtime",
+      "hostname": "celery-worker"
+    },
+
+    {
+      "command": [
+        "/bin/sh",
+        "-c",
+        "celery -A quiz beat -l info"
+      ],
+      "name":"celery-beat",
+      "links": ["celery-worker,redis,db"],
+      "essential": false,
+      "memory": 256,
+      "image": "texplode/free-airtime",
+      "hostname": "celery-beat"
+    },
+
+    {
       "name":"nginx",
       "essential": true,
       "image": "texplode/trivia-nginx",

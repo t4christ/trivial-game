@@ -34,7 +34,7 @@ class RegisterForm(forms.Form):
     	except MyUser.DoesNotExist:
     		return username
     	except:
-    		raise forms.ValidationError("There was an error, please try again or contact us.")
+    		raise forms.ValidationError("This username already exists")
 
 
     def clean_phone_number(self):
@@ -53,11 +53,11 @@ class RegisterForm(forms.Form):
     	email = self.cleaned_data.get("email")
     	try:
     		exists = MyUser.objects.get(email=email)
-    		raise forms.ValidationError("This username is taken")
+    		raise forms.ValidationError("This email is taken")
     	except MyUser.DoesNotExist:
     		return email
     	except:
-    		raise forms.ValidationError("There was an error, please try again or contact us.")
+    		raise forms.ValidationError("This email already exist.")
 
 
 

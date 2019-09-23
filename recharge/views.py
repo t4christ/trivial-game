@@ -1186,7 +1186,7 @@ def quiz(request,username):
     now_time=now.time()
     easy_ran_score=[250,260,270,280,290,300]
     med_ran_score=[200,210,220,230,240,250]
-    akwa_ran_score=[200,210,220,230,240,250]
+    akwa_ran_score=[80,70,50,40,90,60]
     hard_ran_score=[230,240,250,260,270,280]
     winner=ERCTransaction.objects.all()[:10]
     

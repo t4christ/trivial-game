@@ -15,12 +15,14 @@ services:
     command: /bin/sh -c "gunicorn quiz.wsgi:application --bind 0.0.0.0:8009"
     volumes:
       - .:/var/www/app/
+      - ./staticfiles:/var/www/app/staticfiles
+    tty: true
     restart: always
     depends_on:
       - db
       - redis
 
-    # env_file: .env
+    env_file: .env
     networks:
       - db_nw
       - web_nw
@@ -29,7 +31,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile.dev
     volumes:
-      - ./static:/var/www/app/static
+      - ./staticfiles:/var/www/app/staticfiles
       - ./media:/var/www/app/media
     ports:
       - "8009:80"

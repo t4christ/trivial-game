@@ -144,7 +144,7 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if  DEBUG:
+if DEBUG:
 
     DATABASES = {
     'default': {
@@ -242,15 +242,14 @@ CELERY_TIMEZONE = TIME_ZONE
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 if DEBUG:
+
+    STATIC_DIR = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     STATIC_URL = '/static/'
-
-
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "static"),
-        #'/var/www/static/',
+    STATIC_DIR,
     ]
     PROFILE_URL='profile_photo'
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
     MEDIA_URL = "media/"
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
