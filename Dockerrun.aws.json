@@ -40,7 +40,7 @@
         "celery -A quiz worker -l info"
       ],
       "name":"celery-worker",
-      "links": ["redis,db"],
+      "links": ["redis","db"],
       "essential": false,
       "memory": 256,
       "image": "texplode/free-airtime",
@@ -54,7 +54,7 @@
         "celery -A quiz beat -l info"
       ],
       "name":"celery-beat",
-      "links": ["celery-worker,redis,db"],
+      "links": ["celery-worker","redis","db"],
       "essential": false,
       "memory": 256,
       "image": "texplode/free-airtime",
