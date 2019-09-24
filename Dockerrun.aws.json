@@ -41,7 +41,7 @@
       ],
       "name":"celery-worker",
       "links": ["redis","postgres"],
-      "essential": false,
+      "essential": true,
       "memory": 256,
       "image": "texplode/free-airtime",
       "hostname": "celery-worker"
@@ -55,7 +55,7 @@
       ],
       "name":"celery-beat",
       "links": ["celery-worker","redis","postgres"],
-      "essential": false,
+      "essential": true,
       "memory": 256,
       "image": "texplode/free-airtime",
       "hostname": "celery-beat"
