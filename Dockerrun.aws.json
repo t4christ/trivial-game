@@ -33,7 +33,34 @@
       "image": "texplode/free-airtime",
       "hostname": "web"
     },
-    
+    {
+      "command": [
+        "/bin/sh",
+        "-c",
+        "celery -A quiz worker -l info"
+      ],
+      "name":"celery-worker",
+      "links": ["redis","postgres"],
+      "essential": true,
+      "memory": 128,
+      "image": "texplode/free-airtime",
+      "hostname": "celery-worker"
+    },
+
+    {
+      "command": [
+        "/bin/sh",
+        "-c",
+        "celery -A quiz beat -l info"
+      ],
+      "name":"celery-beat",
+      "links": ["celery-worker","redis","postgres"],
+      "essential": true,
+      "memory": 256,
+      "image": "texplode/free-airtime",
+      "hostname": "celery-beat"
+    },
+
     {
       "name":"nginx",
       "essential": true,
