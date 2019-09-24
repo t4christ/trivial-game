@@ -1,16 +1,5 @@
 #!/bin/sh
 
-#Start Celery Worker
-# echo Starting Celery Worker
-# exec celery -A quiz worker -l info
-
-
- # Start Celery Beat
-# echo Starting Celery Beat
-# exec celery -A quiz beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
-
-
-
 # Start Gunicorn processes
 echo Starting Gunicorn.
 exec gunicorn quiz.wsgi:application \

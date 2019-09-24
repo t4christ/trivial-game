@@ -226,8 +226,8 @@ if DEBUG:
     CELERY_BROKER_URL = 'redis://localhost:6379'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 else:  
-    CELERY_BROKER_URL = 'redis://redis:6379'
-    CELERY_RESULT_BACKEND = 'redis://redis:6379'
+    CELERY_BROKER_URL = f'redis://{os.environ.get(CELERY_BROKER_URL)}'
+    CELERY_RESULT_BACKEND = f'redis://{os.environ.get(CELERY_RESULT_BACKEND)}'
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
