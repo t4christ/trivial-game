@@ -9,23 +9,25 @@ services:
       - db_data:/var/lib/postgresql/data/
     networks:
       - db_nw
-  web_app:
+  web:
     build:
       context: .
-    command: /bin/sh -c "gunicorn quiz.wsgi:application --bind 0.0.0.0:8009"
     volumes:
       - .:/var/www/app/
       - ./staticfiles:/var/www/app/staticfiles
     tty: true
-    restart: always
+    stdin_open: true
+    command: ./start.sh
+    # restart: always
     depends_on:
       - db
       - redis
 
-    # env_file: .env
+    env_file: .env
     networks:
       - db_nw
       - web_nw
+      - redis_nw
   nginx:
     build: 
       context: ./nginx
@@ -36,33 +38,14 @@ services:
     ports:
       - "8009:80"
     depends_on:
-      - web_app
+      - web
     networks:
       - web_nw
+      
   redis:
-    image: 'redis:alpine'
-
-  celery:
-    build:
-       context: .
-    command: /bin/sh -c "celery -A quiz worker -l info"
-    volumes:
-      - .:/var/www/app/
-    depends_on:
-      - db
-      - redis
-
-  celery-beat:
-    build:
-       context: .
-    command: /bin/sh -c "celery -A quiz beat -l info"
-    volumes:
-      - .:/var/www/app/
-    depends_on:
-      - db
-      - redis
-      - celery
-
+    image: redis:alpine
+    networks:
+      - redis_nw
 
   
 
@@ -74,5 +57,7 @@ networks:
   db_nw:
     driver: bridge
   web_nw:
+    driver: bridge
+  redis_nw:
     driver: bridge
 

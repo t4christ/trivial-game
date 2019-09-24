@@ -24,10 +24,15 @@ RUN apk update && \
     && pip install -r /requirements.txt
 
 
+COPY ./start.sh /var/www/app/start.sh
+
 
 # set working directory
 WORKDIR /var/www/app
 
+
 # copy project root to app folder in the container
 COPY . /var/www/app
+
+RUN chmod +x start.sh
 

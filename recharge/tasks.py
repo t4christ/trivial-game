@@ -66,21 +66,25 @@ def airtime_level():
     current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',]
     weekday = datetime.now().strftime('%A') 
     time_diff = timezone.now() - timezone.timedelta(days=5)
+    airtime_score_akwa=HighestLevelScore.objects.filter(difficulty='akwa').order_by("-score","-timestamp")
     airtime_score_levone=HighestLevelScore.objects.filter(difficulty='levelone').order_by("-score","-timestamp")
     airtime_score_levtwo=HighestLevelScore.objects.filter(difficulty='leveltwo').order_by("-score","-timestamp")
     airtime_score_levthree=HighestLevelScore.objects.filter(difficulty='levelthree').order_by("-score","-timestamp")
     airtime_score_levfour=HighestLevelScore.objects.filter(difficulty='levelfour').order_by("-score","-timestamp")
     level_credit_levone=[recharge.difficulty for recharge in airtime_score_levone][:1]
+    level_credit_akwa=[recharge.difficulty for recharge in airtime_score_akwa][:1]
     level_credit_levtwo=[recharge.difficulty for recharge in airtime_score_levtwo][:1]
     level_credit_levthree=[recharge.difficulty for recharge in airtime_score_levthree][:1]
     level_credit_levfour=[recharge.difficulty for recharge in airtime_score_levfour][:1]
     # recharge=[recharge.score for recharge in airtime_score_easy][:1]
     recharge_player_levone=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levone][:1]
+    recharge_player_akwa=[winner_arr.append(str(air.phone_number)) for air in airtime_score_akwa][:1]
     recharge_player_levtwo=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levtwo][:1]
     recharge_player_levthree=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levthree][:1]
     recharge_player_levfour=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levfour][:1]
 
     recharge_play_levonenum=[str(air.phone_number) for air in airtime_score_levone][:1]
+    recharge_play_akwanum=[str(air.phone_number) for air in airtime_score_akwa][:1]
     recharge_play_levtwonum=[str(air.phone_number) for air in airtime_score_levtwo][:1]
     recharge_play_levthreenum=[str(air.phone_number) for air in airtime_score_levthree][:1]
     recharge_play_levfournum=[str(air.phone_number) for air in airtime_score_levfour][:1]
@@ -88,6 +92,7 @@ def airtime_level():
 
 
     recharge_levone_user=[str(air.player) for air in airtime_score_levone][:1]
+    recharge_akwa_user=[str(air.player) for air in airtime_score_akwa][:1]
     recharge_levtwo_user=[str(air.player) for air in airtime_score_levtwo][:1]
     recharge_levthree_user=[str(air.player) for air in airtime_score_levthree][:1]
     recharge_levfour_user=[str(air.player) for air in airtime_score_levfour][:1]
@@ -166,6 +171,36 @@ def airtime_level():
                                     print("No recharge url available yet")
                         else:
                             print('No winner for leveleone')
+
+                        if recharge_play_akwanum and str(recharge_play_akwanum[0]) in winner_arr and level_credit_akwa and level_credit_akwa[0] == 'akwa':
+                            user_num=MyUser.objects.get(username=recharge_levone_user[0])
+                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_akwanum[0]).count()
+                            if high_score == 0:
+                                recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_akwanum[0]
+                                recharge_payload={"product_id": "MFIN-5-OR",
+                                "denomination" :100,
+                                "send_sms" : True,
+                                "sms_text" : "Congratulations!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"}
+                            else:
+                                print("Level one winner can only win once  in 5 days")
+                            if recharge:
+                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
+                                    print(recharge)
+                                    print(response.text)
+                                    retrieve=response.text
+                                    get_data=json.loads(retrieve)
+                                    if response.text and get_data['status'] == 201:
+                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
+                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_akwanum[0],
+                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
+                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
+                                    else:
+                                        ERCTransaction.objects.create(target=user_num,status="Failed")
+                            else:
+                                    print("No recharge url available yet")
+                        else:
+                             print('No winner for akwa')
+
                         
                         if  recharge_play_levtwonum and str(recharge_play_levtwonum[0]) in winner_arr and level_credit_levtwo and level_credit_levtwo[0] == 'leveltwo':
                                 user_num=MyUser.objects.get(username=recharge_levtwo_user[0])

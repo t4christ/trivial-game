@@ -23,15 +23,12 @@
     },
     {
       "command": [
-        "/bin/sh",
-        "-c",
-        "gunicorn quiz.wsgi:application --bind 0.0.0.0:8009",
-        "celery -A quiz worker -l info",
-        "celery -A quiz beat -l info"
+        "./start.sh"
       ],
       "name":"web",
       "essential": true,
-      "memory": 128,
+      "links": ["redis"],
+      "memory": 256,
       "image": "texplode/free-airtime",
       "hostname": "web"
     },

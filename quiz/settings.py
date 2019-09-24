@@ -144,7 +144,7 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if DEBUG:
+if  DEBUG:
 
     DATABASES = {
     'default': {
@@ -222,18 +222,50 @@ USE_TZ = True
 
 
 
-
 if DEBUG:
     CELERY_BROKER_URL = 'redis://localhost:6379'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-else:
-    
-    CELERY_BROKER_URL =  os.environ.get('CELERY_BROKER_URL')
-    CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+else:  
+    CELERY_BROKER_URL = 'redis://redis:6379'
+    CELERY_RESULT_BACKEND = 'redis://redis:6379'
+
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+
+CELERY_BEAT_SCHEDULE = {
+
+'airtime': {
+        'task': 'recharge_airtime',
+        'schedule': 120.0,
+        # 'args': (16, 16)
+    },
+
+    'remove_airtime': {
+        'task': 'delete_airtime',
+        'schedule': 240.0,
+        # 'args': (16, 16)
+    },
+
+
+
+
+'airtime_level': {
+        'task': 'recharge_airtime_level',
+        'schedule': 90.0,
+        # 'args': (16, 16)
+    },
+
+
+    'remove_airtime_level': {
+        'task': 'delete_airtime_level',
+        'schedule': 110.0,
+        # 'args': (16, 16)
+    }
+}
 
 
 
