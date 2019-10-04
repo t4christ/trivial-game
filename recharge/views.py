@@ -31,7 +31,7 @@ sms_client = SmsClient()
 
 
 def answer():
-    question=LevelFourQuestion.objects.all()
+    question=JMathQuestion.objects.all()
     with open('answer.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row, quest in zip(reader,question):
@@ -40,8 +40,10 @@ def answer():
                 choice2 = row['choice2']
                 choice3 = row['choice3']
                 choice4 = row['choice4']
+                choice5 = row['choice5']
                 correct_answer = row['correct_answer']
-                get_answer=LevelFourAnswer(choice1=choice1,choice2=choice2,choice3=choice3,choice4=choice4,correct_answer=correct_answer,questions=quest)
+
+                get_answer=JMathAnswer(choice1=choice1,choice2=choice2,choice3=choice3,choice4=choice4,choice5=choice5,correct_answer=correct_answer,questions=quest)
                 get_answer.save()
             # else:
             #     choice1 = row['choice1']
@@ -54,13 +56,13 @@ def answer():
 
 
 def question(request):
-    question=LevelFourQuestion.objects.all()
+    question=JEngQuestion.objects.all()
     with open('question.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             content = row['content']
             poster = request.user
-            get_question = LevelFourQuestion(content=content,poster=poster)
+            get_question = JEngQuestion(content=content,poster=poster)
             get_question.save()
 
 def del_answer():
@@ -106,7 +108,7 @@ def del_question():
 
 
 def load_question(request):
-    del_question()
+    answer()
 
     return HttpResponse("Questions Loading Activity Successful")
 
