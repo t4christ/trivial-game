@@ -28,7 +28,7 @@
       "name":"web",
       "essential": true,
       "links": ["redis"],
-      "memory": 256,
+      "memory": 512,
       "image": "texplode/free-airtime",
       "hostname": "web"
     },

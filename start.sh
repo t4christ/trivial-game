@@ -10,7 +10,7 @@ exec gunicorn quiz.wsgi:application \
     echo Starting Celery Worker &
     celery -A quiz beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler &
     echo Loading Database With Questions &
-    python manage.py loaddata recharge/fixtures/recharge.json --app recharge
+    # python manage.py loaddata recharge/fixtures/recharge.json --app recharge
 
 
 
