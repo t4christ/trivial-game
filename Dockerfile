@@ -30,5 +30,5 @@ RUN apk update && \
 # set working directory
 WORKDIR /var/www/app
 
-RUN chmod +x start.sh
+RUN chmod +x ./start.sh
 
