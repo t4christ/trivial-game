@@ -30,5 +30,9 @@ RUN apk update && \
 # set working directory
 WORKDIR /var/www/app
 
-RUN chmod +x ./start.sh
+
+# copy project root to app folder in the container
+COPY . /var/www/app
+
+RUN chmod +x start.sh
 
