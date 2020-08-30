@@ -1,3 +1,8 @@
 {
-    "python.linting.pylintEnabled": false
+    "python.pythonPath": "~/Public/web-apps/denv/bin/python",
+    "launch": {
+
+        "configurations": [],
+        "compounds": []
+    }
 }

@@ -2,9 +2,23 @@ from django.db import models
 from accounts.models import MyUser
 # Create your models here.
 
+class QuestionDetail(models.Model):
+    lecturer = models.CharField(max_length=150)
+    question_name= models.CharField(max_length=100)
+    # duration_min = models.PositiveIntegerField(default=0)
+    # level = models.CharField(max_length=10,default=100)
+    publish_status = models.BooleanField(default=False)
+    
+    @property
+    def get_question_name(self):
+        return self.question_name
+    
+    def __str__(self):
+        return "{} question".format(self.question_name)
 
 class EasyQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_easy")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="easy_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -14,6 +28,7 @@ class EasyQuestion(models.Model):
 
 class MediumQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_medium")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="medium_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -25,6 +40,7 @@ class MediumQuestion(models.Model):
 
 class HardQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_hard")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="hard_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -34,6 +50,7 @@ class HardQuestion(models.Model):
 
 class LevelOneQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_levelone")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelone_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -42,6 +59,7 @@ class LevelOneQuestion(models.Model):
 
 class LevelTwoQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_leveltwo")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="leveltwo_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -51,6 +69,7 @@ class LevelTwoQuestion(models.Model):
 
 class LevelThreeQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_levelthree")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelthree_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -60,6 +79,7 @@ class LevelThreeQuestion(models.Model):
 
 class LevelFourQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_levelfour")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelfour_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -70,6 +90,7 @@ class LevelFourQuestion(models.Model):
 
 class LevelFiveQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_five")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelfive_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -78,6 +99,7 @@ class LevelFiveQuestion(models.Model):
 
 class AkwaIbomQuestion(models.Model):
     poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="aksg_user")
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="akwaibom_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 

@@ -7,8 +7,7 @@ from recharge.models import UserCorrectAnswer,HighestScoreStatistic,PlayerStatis
 from accounts.models import MyUser
 from erc.models import ERCTransaction
 import json
-import urllib
-from requests import session
+from requests 
 import logging
 from django.core.mail import send_mail
 from quiz.celery import app
@@ -16,6 +15,61 @@ from datetime import datetime
 from django.utils import timezone
 import random
 
+class TokenAuth(AuthBase):
+    """Implements a custom authentication scheme."""
+
+    def __init__(self, token):
+        self.token = token
+
+    def __call__(self, r):
+        """Attach an API token to a custom auth header."""
+        r.headers['Authorization'] = f'Bearer {self.token}'  # Python 3.6+
+        return r
+
+
+def recharge_session(login_payload,url,phone_number,amount):
+    try:
+        with requests.Session() as session:
+
+            response = session.post("https://clients.primeairtime.com/api/auth",json=login_payload)
+            use_token = response.json().get('token',None)
+
+            recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%phone_number
+            recharge_payload={"product_id": "MFIN-5-OR",
+            "denomination" :amount,
+            "send_sms" : True,
+            "sms_text" : "Congratulations!!! Your high score on TapTap just earned you N50! Keep on Tapping,spread the word!!!"}
+            
+            if recharge:
+                        recharge_response = session.post(recharge,data=recharge_payload,auth=TokenAuth(use_token))
+                        print(recharge_response.json())
+                        get_data = recharge_response.json()
+                        if get_data['status'] == 201:
+                            ERCTransaction.objects.create(target='Temitayo',status=get_data['status'],
+                            product_id=get_data['product_id'],reference=get_data['reference'],phone_number=phone_number,
+                            code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
+                            paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
+                        else:
+                            ERCTransaction.objects.create(target='Temitayo',status="Failed")
+            return HttpResponse("Recharge Successful")
+    except Exception as e:
+        print("Recharge Error",e)
+        return HttpResponse("Recharge Failed. Check your logs for reasons why.")
+
+
+
+def test_recharge(phone_number,amount):
+            username = str(settings.ERC_USER)
+            password = (settings.ERC_PASS)
+            url =  settings.ERC_LOGIN_URL 
+            print("User and pass",username,password,url)
+                        
+            login_payload={
+                    'action':'login',
+                    'username':username,
+                    'password':password
+                    }
+            return recharge_session(login_payload,url,phone_number)
 
 
 @task(name="delete_airtime")

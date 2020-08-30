@@ -26,9 +26,68 @@ import json
 # import pandas as pd
 import csv
 from utils.smsclient import SmsClient
+import requests
+import urllib
 
 sms_client = SmsClient()
 
+from requests.auth import AuthBase
+
+class TokenAuth(AuthBase):
+    """Implements a custom authentication scheme."""
+
+    def __init__(self, token):
+        self.token = token
+
+    def __call__(self, r):
+        """Attach an API token to a custom auth header."""
+        r.headers['Authorization'] = f'Bearer {self.token}'  # Python 3.6+
+        return r
+
+
+def recharge_session(login_payload,url,phone_number):
+    try:
+        with requests.Session() as session:
+
+            response = session.post("https://clients.primeairtime.com/api/auth",json=login_payload)
+            use_token = response.json().get('token',None)
+
+            recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%phone_number
+            recharge_payload={"product_id": "MFIN-5-OR",
+            "denomination" :10,
+            "send_sms" : True,
+            "sms_text" : "Congratulations!!! Your high score on TapTap just earned you N50! Keep on Tapping,spread the word!!!"}
+            
+            if recharge:
+                        recharge_response = session.post(recharge,data=recharge_payload,auth=TokenAuth(use_token))
+                        print(recharge_response.json())
+                        get_data = recharge_response.json()
+                        if get_data['status'] == 201:
+                            ERCTransaction.objects.create(target='Temitayo',status=get_data['status'],
+                            product_id=get_data['product_id'],reference=get_data['reference'],phone_number=phone_number,
+                            code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
+                            paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
+                        else:
+                            ERCTransaction.objects.create(target='Temitayo',status="Failed")
+            return HttpResponse("Recharge Successful")
+    except Exception as e:
+        print("Recharge Error",e)
+        return HttpResponse("Recharge Failed. Check your logs for reasons why.")
+
+# {'status': 201, 'message': 'Operation Successful, Recharge created, Reference : 4af27080-ea05-11ea-bae2-27292d5c5721', 'reference': '4af27080-ea05-11ea-bae2-27292d5c5721', 'code': 'RECHARGE_COMPLETE', 'paid_amount': 97, 'paid_currency': 'NGN', 'topup_amount': 100, 'topup_currency': 'NGN', 'target': '7063419292', 'product_id': 'MFIN-5-OR', 'time': '2020-08-29T14:38:26.446Z', 'country': 'Nigeria', 'operator_name': 'MTN', 'completed_in': 1094, 'api_transactionid': '2020082915382587101548740', 'pin_based': False}
+
+def test_recharge(request,phone_number):
+            username = str(settings.ERC_USER)
+            password = (settings.ERC_PASS)
+            url =  settings.ERC_LOGIN_URL 
+            print("User and pass",username,password,url)
+                        
+            login_payload={
+                    'action':'login',
+                    'username':username,
+                    'password':password
+                    }
+            return recharge_session(login_payload,url,phone_number)
 
 def answer():
     question=JMathQuestion.objects.all()
@@ -1696,3 +1755,80 @@ def download_exce_data(request):
         ws.write(row_num,4,my_row.difficulty, font_style)
     wb.save(response)
     return response
+
+
+
+def UploadQuestion(request, format=None):
+        question_object_array = {
+                                'EasyQuestion':EasyQuestion,'MediumQuestion':MediumQuestion,'HardQuestion':HardQuestion,
+                                 'LevelOneQuestion':LevelOneQuestion,'LevelTwoQuestion':LevelTwoQuestion,
+                                 'LevelThreeQuestion':LevelThreeQuestion,'LevelFourQuestion':LevelFourQuestion,
+                                 'LevelFiveQuestion':LevelFiveQuestion
+                                 }
+        answer_object_array = {
+                        'EasyQuestion':EasyAnswer,'MediumQuestion':MediumAnswer,'HardQuestion':HardAnswer,
+                            'LevelOneQuestion':LevelOneAnswer,'LevelTwoQuestion':LevelTwoAnswer,
+                            'LevelThreeQuestion':LevelThreeAnswer,'LevelFourQuestion':LevelFourAnswer,
+                            'LevelFiveQuestion':LevelFiveAnswer
+                            }
+        print("Files",request.FILES['question_file'])
+        try:
+            excel_file = request.FILES['question_file']
+            print("excel",excel_file)
+        except MultiValueDictKeyError:
+            return HttpResponse({"error":"File is not valid"})
+        if (str(excel_file).split('.')[-1] == "xls"):
+            data = xls_get(excel_file, column_limit=6)
+        elif (str(excel_file).split('.')[-1] == "xlsx"):
+            data = xlsx_get(excel_file, column_limit=6)
+        else:
+            return HttpResponse({"error":"Columns limit exceed"})
+        question_detail = data["QuestionDetail"]
+        questions = data["Question"]
+        answers = data["Answer"]
+        del questions[0]
+        del answers[0]
+        del question_detail[0]
+        try:
+            if (len(question_detail) > 0): # We have question data
+                # for detail in question_detail:
+                    if (len(question_detail) > 0): # The row is not blank
+                        content = question_detail[0][1]
+                        # print("My Question Detail", content)
+                        c = QuestionDetail.objects.filter(question_name=content)
+                        if ( c.count() == 0):
+                            QuestionDetail.objects.create(
+                            poster = question_detail[0][0],
+                            question_name = question_detail[0][1],
+                                            )
+                            
+            if (len(questions) > 1): # We have question data
+                for num,question in enumerate(questions):
+                    if (len(questions) > 0): # The row is not blank
+                        content = question_detail[0][1]
+                        q_content = question[1]
+                        print("Qcontent",q_content)
+                        q_detail = QuestionDetail.objects.get(question_name=content)
+                        c = question_object_array.get(content).objects.filter(content=q_content)
+                        if q_detail and c.count() == 0:
+                            question_object_array.get(content).objects.create(
+                            lecturer= question[0],
+                            content= question[1],
+                            question_detail = q_detail
+                                            )
+                            question_instance = question_object_array.get(content).objects.get(content=q_content)
+                            
+                            print("Answers",answers[0])
+                            answer_object_array.get(content).objects.create(
+                                question=question_instance,
+                                choice1= answers[num][0],
+                                choice2= answers[num][1],
+                                choice3= answers[num][2],
+                                choice4= answers[num][3],
+                                    )
+
+            
+            return HttpResponse({"Message":"Questions uploaded successfully"})
+        except Exception as e:
+            print("Error",e)
+            HttpResponse({"Message":"Error uploading file. Check your file formats well."})

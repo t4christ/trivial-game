@@ -36,7 +36,7 @@ class ERCTransaction(TimeStampedModel):
     pin_based = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return "Airtime Recharge For {} on {}".format(self.target,self.time)
+        return "{} was recharged {} naira airtime  on {}".format(self.target,self.paid_amount,self.time)
 
 
 # {"status":201,"message":"Operation Successful, Recharge created, Reference : 7b3c03c0-9280-11e8-9cc6-2db20206c01a","reference":"7b3c03c0-9280-11e8-9cc6-2db20206c01a","code":"RECHARGE_COMPLETE","paid_amount":97,"paid_currency":"NGN","topup_amount":100,"topup_currency":"NGN","target":"2347033288348","product_id":"MFIN-5-OR","time":"2018-07-28T16:08:36.540Z","country":"Nigeria","operator_name":"MTN","completed_in":982,"customer_reference":null,"api_transactionid":"80062496","pin_based":false}
