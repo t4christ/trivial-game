@@ -24,3 +24,5 @@ psycopg2-binary
 Pillow
 xlwt
 xlrd
+pyexcel_xls
+pyexcel_xlsx
