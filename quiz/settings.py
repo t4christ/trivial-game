@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 FIXTURE_DIRS = (
@@ -93,7 +93,7 @@ COUNTRY_CODE = 'NG'
 AUTH_USER_MODEL = 'accounts.MyUser'
 
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # MIDDLEWARE_CLASSES = [
 #     'django.middleware.security.SecurityMiddleware',

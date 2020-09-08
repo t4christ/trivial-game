@@ -17,6 +17,19 @@ class EasyQuestionModelAdmin(admin.ModelAdmin):
 
 
 
+class QuestionDetailModelAdmin(admin.ModelAdmin):
+	list_display = ["question_name", "publish_status"]
+	list_display_links = ["question_name"]
+	# list_editable = ["content"]
+
+	
+	list_filter = ["question_name", "publish_status"]
+
+	search_fields = ["question_name", "publish_status"]
+	class Meta:
+		model = QuestionDetail
+
+
 class MediumQuestionModelAdmin(admin.ModelAdmin):
 	list_display = ["content", "timestamp"]
 	list_display_links = ["content"]
@@ -274,6 +287,7 @@ admin.site.register(BonusPointAirtime)
 
 # High Score Based
 admin.site.register(EasyQuestion, EasyQuestionModelAdmin)
+admin.site.register(QuestionDetail, QuestionDetailModelAdmin)
 admin.site.register(MediumQuestion, MediumQuestionModelAdmin)
 admin.site.register(HardQuestion, HardQuestionModelAdmin)
 admin.site.register(EasyAnswer)

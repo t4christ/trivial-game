@@ -371,7 +371,8 @@ else{
 
 
 function startTimer(duration, display) {
- 
+    console.log("Document",link)
+
     let timer = duration, minutes, seconds;
     let get_total= document.querySelector(".score").innerHTML
     let fire = 0
@@ -427,7 +428,6 @@ t =  setInterval(function () {
      }
 
 // alert(ran_score)
-
 var scoreSaver = once(function(){
 const end = new Date().getTime();
 const end_time= Math.floor(end/1000 % 60);
@@ -498,6 +498,7 @@ const end_time= Math.floor(end/1000 % 60);
         else if(level_locatefive == "medium"){
         document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
         $(".easy-question").load(document.URL + ' .easy-question')
+        
         // $("#recharge-time").load(document.URL + ' #recharge-time')
         document.querySelector("#recharge-time").innerHTML="Game Over"
         document.querySelector(".respin").style.display="none"

@@ -20,6 +20,7 @@ class ERCTransaction(TimeStampedModel):
     status = models.CharField(max_length=20,null=True, blank=True)
     phone_number = models.CharField(max_length=13,null=True, blank=True)
     message = models.TextField(null=True, blank=True)
+    difficulty = models.CharField(max_length=50,blank=True)
     product_id = models.CharField(max_length=100,null=True, blank=True)
     reference = models.CharField(max_length=255,null=True, blank=True)
     code = models.CharField(max_length=100,null=True, blank=True)

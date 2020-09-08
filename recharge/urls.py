@@ -4,7 +4,7 @@ from django.contrib import admin
 from .views import (
 	recharge,
     statistics,
-    test_recharge,
+    UploadQuestion,
     quiz,
     easy_submit,
     download_excel_data,
@@ -28,7 +28,7 @@ urlpatterns = [
 ###### High Score Based ##########
      path('invite/',send_invite, name='invite'),
      path('bonus/',add_bonus, name='bonus'),
-	path('test_recharge/<str:phone_number>/', test_recharge, name='test_recharge'),
+	path('upload_question/', UploadQuestion, name='upload_question'),
     # path('medium/<str:username>/', medium, name='medium'),\
     path('generate_excel/', download_excel_data, name='get_excel'),
      path('generate_winners/', download_exce_data, name='get_winners'),

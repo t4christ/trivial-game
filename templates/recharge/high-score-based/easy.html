@@ -243,7 +243,7 @@
 <button  id="start_level_five" class="col-md-2 btn-warning start-btn" style="float:right;color:white;background:#2d3243;border:none;">Start</button> 
 {% else %}
 
-<h2 class="text-center text-danger">You Have To Complete The Previous Level To Proceed</h2>
+<h2 class="text-center text-danger">{{request.user.username}}You Have To Complete The Previous Level To Proceed</h2>
 
 {% endif %}
 

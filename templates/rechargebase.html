@@ -24,7 +24,8 @@
 <link rel="stylesheet" type="text/css"  href="{% static 'css-wstreams/owl.carousel.css' %}" />
 <link rel="stylesheet" type="text/css"  href="{% static 'css-wstreams/main.css' %}" />
 <link rel="stylesheet" type="text/css"  href="{% static 'css-wstreams/footer.css' %}" />
-<link rel="stylesheet" type="text/css"  href="{% static 'css-wstreams/bootstrap.css' %}" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% comment %} <link rel="stylesheet" type="text/css"  href="{% static 'css-wstreams/bootstrap.css' %}" /> {% endcomment %}
 <link rel="stylesheet" type="text/css"  href="{% static 'css-wstreams/frontend.min.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'css-wstreams/jquery.countdown.css' %}"> 
 <link rel="stylesheet" type="text/css" href="{% static 'css-wstreams/animate.min.css' %}"> 
@@ -429,6 +430,7 @@ box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
     {% elif request.user.is_admin %}
     <li><a href="/">Home</a></li>
     <li class='pull-right'><a href='/statistics/'>Statistics</a></li>
+    <li class='pull-right'><a href='/upload_question/'>Upload Question</a></li>
     <li class='pull-right'><a href='{% url "logout" %}'>Logout</a></li>
 
     {% elif request.user.is_authenticated %}
@@ -460,11 +462,11 @@ box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 
 </header>
     <!-- End Header Area -->
+{% include "messages_display.html" %}
 
 
-
-            {% block content %}
-    {% include "messages_display.html" %}
+    {% block content %}
+    
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- header -->
 <ins class="adsbygoogle"
@@ -504,7 +506,9 @@ box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 <script type='text/javascript' src="{% static 'js-wstreams/main.js' %}"></script>
 
 
+{% block javascript %}
 
+{% endblock javascript %}
 
 {% include 'recharge/rechargefile.html' %}
 

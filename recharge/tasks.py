@@ -7,7 +7,8 @@ from recharge.models import UserCorrectAnswer,HighestScoreStatistic,PlayerStatis
 from accounts.models import MyUser
 from erc.models import ERCTransaction
 import json
-from requests 
+import requests 
+from requests.auth import AuthBase
 import logging
 from django.core.mail import send_mail
 from quiz.celery import app
@@ -27,7 +28,7 @@ class TokenAuth(AuthBase):
         return r
 
 
-def recharge_session(login_payload,url,phone_number,amount):
+def recharge_session(username,difficulty,login_payload,url,phone_number,amount):
     try:
         with requests.Session() as session:
 
@@ -45,20 +46,20 @@ def recharge_session(login_payload,url,phone_number,amount):
                         print(recharge_response.json())
                         get_data = recharge_response.json()
                         if get_data['status'] == 201:
-                            ERCTransaction.objects.create(target='Temitayo',status=get_data['status'],
+                            ERCTransaction.objects.create(target=username,difficulty=difficulty,status=get_data['status'],
                             product_id=get_data['product_id'],reference=get_data['reference'],phone_number=phone_number,
                             code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
                             paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
                         else:
                             ERCTransaction.objects.create(target='Temitayo',status="Failed")
-            return HttpResponse("Recharge Successful")
+            return ("Recharge Successful")
     except Exception as e:
         print("Recharge Error",e)
-        return HttpResponse("Recharge Failed. Check your logs for reasons why.")
+        return ("Recharge Failed. Check your logs for reasons why.")
 
 
 
-def test_recharge(phone_number,amount):
+def test_recharge(username,difficulty,phone_number,amount):
             username = str(settings.ERC_USER)
             password = (settings.ERC_PASS)
             url =  settings.ERC_LOGIN_URL 
@@ -69,7 +70,7 @@ def test_recharge(phone_number,amount):
                     'username':username,
                     'password':password
                     }
-            return recharge_session(login_payload,url,phone_number)
+            return recharge_session(username,difficulty,login_payload,url,phone_number,amount)
 
 
 @task(name="delete_airtime")
@@ -117,7 +118,7 @@ def airtime_level():
     winner_arr=[]
     recharge_payload=[]
     recharge=''
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',]
+    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     weekday = datetime.now().strftime('%A') 
     time_diff = timezone.now() - timezone.timedelta(days=5)
     airtime_score_akwa=HighestLevelScore.objects.filter(difficulty='akwa').order_by("-score","-timestamp")
@@ -159,70 +160,15 @@ def airtime_level():
         now=datetime.now()
         now_time=now.time()
         if time(5,59) <= now.time() <= time(21,5)  and weekday in current_day:
-            # if   time(9,00) <= now.time() <= time(9,2) or time(12,00) <= now.time() <= time(12,2) or time(15,00) <= now.time() <= time(15,9) or time(18,00) <= now.time() <= time(18,2) or time(21,00) <= now.time() <= time(21,2):
-                
-                    # print("My number %s"%user_num)
-                    
-                    username = str(settings.ERC_USER)
-                    password = (settings.ERC_PASS)
-                    url =  settings.ERC_LOGIN_URL #'https://clients.primeairtime.com/api/topup/status/'    #settings.ERC_LOGIN_URL
-                # status = 'https://clients.primeairtime.com/api/topup/info/2347063419292/'
-                    
-                        
-                    login_payload={
-                    'action':'login',
-                    'username':username,
-                    'password':password
-                    }
 
-                   
-
-                   
-                    # print('My Recharge%s'%recharge_payload)
-                    with session() as c:
-                        
-                        null = " "
-                        false = " "
-                        c.post(url,data=login_payload)
-                        values = { 'username': username,'password': password }
-                        data = urllib.parse.urlencode(values)
-                        data = data.encode('utf-8') # data should be bytes
-                        req = urllib.request.Request(url, data)	
-                        resp = urllib.request.urlopen(req)
-                        respData = resp.read()
-                        get_token=json.loads(respData)
-                        use_token=get_token['token']
-                        print(use_token)
-                        second_get={'Authorization':'Bearer {}'.format(use_token)}
-                        print(second_get)
-                        # for recharge_payload in recharge_payload:
-                        # print("My recharge load number is %s"%user_num)
                         if recharge_play_levonenum and str(recharge_play_levonenum[0]) in winner_arr and level_credit_levone and level_credit_levone[0] == 'levelone':
                             user_num=MyUser.objects.get(username=recharge_levone_user[0])
                             high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levonenum[0]).count()
                             if high_score == 0:
-                                recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_levonenum[0]
-                                recharge_payload={"product_id": "MFIN-5-OR",
-                                "denomination" :100,
-                                "send_sms" : True,
-                                "sms_text" : "Congratulations!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"}
+                               test_recharge(user_num.username,'levelone',recharge_play_levonenum[0],10)
                             else:
                                 print("Level one winner can only win once  in 5 days")
-                            if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_levonenum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                            else:
-                                    print("No recharge url available yet")
+  
                         else:
                             print('No winner for leveleone')
 
@@ -230,28 +176,11 @@ def airtime_level():
                             user_num=MyUser.objects.get(username=recharge_levone_user[0])
                             high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_akwanum[0]).count()
                             if high_score == 0:
-                                recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_akwanum[0]
-                                recharge_payload={"product_id": "MFIN-5-OR",
-                                "denomination" :100,
-                                "send_sms" : True,
-                                "sms_text" : "Congratulations!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"}
+                                    test_recharge('akwa',user_num.username,recharge_play_levonenum[0],100)
+
                             else:
                                 print("Level one winner can only win once  in 5 days")
-                            if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_akwanum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                            else:
-                                    print("No recharge url available yet")
+
                         else:
                              print('No winner for akwa')
 
@@ -260,26 +189,11 @@ def airtime_level():
                                 user_num=MyUser.objects.get(username=recharge_levtwo_user[0])
                                 high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levtwonum[0]).count()
                                 if high_score == 0:
-                                    print(recharge_play_levtwonum)
-                                    recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_levtwonum[0]
-                                    recharge_payload={"product_id": "MFIN-5-OR","denomination" :200,"send_sms" : True,"sms_text" : "Congratulations easy!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"}
+                                    test_recharge(user_num.username,'leveltwo',recharge_play_levonenum[0],200)
+
                                 else:
                                     print("Level two Winner can only win once in 5 days")
-                                if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_levtwonum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                                else:
-                                    print("No recharge url available yet")
+
                         else:
                             print('level two is not yet ready')
 
@@ -287,32 +201,11 @@ def airtime_level():
                                 user_num=MyUser.objects.get(username=recharge_levthree_user[0])
                                 high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levthreenum[0]).count()
                                 if high_score == 0:
-                                    print("levelthree%s"%recharge_play_levthreenum)
-                                    recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_levthreenum[0]
-                                    recharge_payload={
-                                # "message":"This is working"
-                                    "product_id": "MFIN-5-OR",
-                                    "denomination" :300,
-                                    "send_sms" : True,
-                                    "sms_text" : "Congratulations medium!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"
-                                        }
+                                    test_recharge(user_num.username,'level_three',recharge_play_levonenum[0],300)
+
                                 else:
                                     print("Level three winner can only win once in 5 days")
-                                if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_levthreenum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                                else:
-                                    print("No recharge url available yet")
+
                         else:
                             print('level three not yet ready')
 
@@ -322,32 +215,11 @@ def airtime_level():
                                 user_num=MyUser.objects.get(username=recharge_levfour_user[0])
                                 high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levfournum[0]).count()
                                 if high_score == 0:
-                                    print("Hard %s"%recharge_play_levfournum)
-                                    recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_levfournum[0]
-                                    recharge_payload={
-                                # "message":"This is working"
-                                    "product_id": "MFIN-5-OR",
-                                    "denomination" :500,
-                                    "send_sms" : True,
-                                    "sms_text" : "Congratulations hard!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"
-                                        }
+                                    test_recharge(user_num.username,'level_four',recharge_play_levonenum[0],500)
+
                                 else:
                                     print("Level four winner can only win once in 5 days")
-                                if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_levfournum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                                else:
-                                    print("No recharge url available yet")
+
                         else:
                             print("Level four is not yet ready")
                         
@@ -423,177 +295,50 @@ def airtime():
         now=datetime.now()
         now_time=now.time()
         if time(5,59) <= now.time() <= time(21,5) and weekday in current_day and easy_score_guage == True:
-            username = str(settings.ERC_USER)
-            password = (settings.ERC_PASS)
-            url =  settings.ERC_LOGIN_URL #'https://clients.primeairtime.com/api/topup/status/'    #settings.ERC_LOGIN_URL
-                # status = 'https://clients.primeairtime.com/api/topup/info/2347063419292/'
-                    
-                        
-            login_payload={
-            'action':'login',
-            'username':username,
-            'password':password
-            }
 
-            
 
-            
-            # print('My Recharge%s'%recharge_payload)
-            with session() as c:
-                
-                null = " "
-                false = " "
-                c.post(url,data=login_payload)
-                values = { 'username': username,'password': password }
-                data = urllib.parse.urlencode(values)
-                data = data.encode('utf-8') # data should be bytes
-                req = urllib.request.Request(url, data)	
-                resp = urllib.request.urlopen(req)
-                respData = resp.read()
-                get_token=json.loads(respData)
-                use_token=get_token['token']
-                print(use_token)
-                second_get={'Authorization':'Bearer {}'.format(use_token)}
-                print(second_get)
             if recharge_play_xmasnum and str(recharge_play_xmasnum[0]) in winner_arr and level_credit_xmas and time(18,00) <= now.time() <= time(19,00) and level_credit_xmas[0] == 'xmas':
                             user_num=MyUser.objects.get(username=recharge_xmas_user[0])
                             high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_xmasnum[0]).count()
                             if high_score == 0:
-                                recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_xmasnum[0]
-                                recharge_payload={"product_id": "MFIN-5-OR",
-                                "denomination" :1000,
-                                "send_sms" : True,
-                                "sms_text" : "Congratulations!!! Your high score on FreeAirtime just earned you N1000! Keep on Tapping,spread the word!!!"}
+                                        test_recharge(user_num.username,'xmas',recharge_play_levonenum[0],1000)
+
                             elif high_score > 0:
                                     print("Xmas winner can only win once in 5 days")
                             else:
                                 print("Xmas winner can only win once in 5 days")
-                            if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_levfivenum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                            else:
-                                    print("No recharge url available yet")
+
             else:
                             print('No winner for xmas')
-            # print("Its a boolean",type(easy_score_guage[0]))
+                            
             if time(9,00) <= now.time() <= time(9,2) or time(12,00) <= now.time() <= time(12,2) or time(15,00) <= now.time() <= time(15,9) or time(18,00) <= now.time() <= time(18,2) or time(21,00) <= now.time() <= time(21,2):
-                
-                    # print("My number %s"%user_num)
-                    
-                    username = str(settings.ERC_USER)
-                    password = (settings.ERC_PASS)
-                    url =  settings.ERC_LOGIN_URL #'https://clients.primeairtime.com/api/topup/status/'    #settings.ERC_LOGIN_URL
-                # status = 'https://clients.primeairtime.com/api/topup/info/2347063419292/'
-                    
-                        
-                    login_payload={
-                    'action':'login',
-                    'username':username,
-                    'password':password
-                    }
-
                    
-
-                   
-                    # print('My Recharge%s'%recharge_payload)
-                    with session() as c:
-                        
-                        null = " "
-                        false = " "
-                        c.post(url,data=login_payload)
-                        values = { 'username': username,'password': password }
-                        data = urllib.parse.urlencode(values)
-                        data = data.encode('utf-8') # data should be bytes
-                        req = urllib.request.Request(url, data)	
-                        resp = urllib.request.urlopen(req)
-                        respData = resp.read()
-                        get_token=json.loads(respData)
-                        use_token=get_token['token']
-                        print(use_token)
-                        second_get={'Authorization':'Bearer {}'.format(use_token)}
-                        print(second_get)
-                        # for recharge_payload in recharge_payload:
-                        # print("My recharge load number is %s"%user_num)
                         if recharge_play_levfivenum and str(recharge_play_levfivenum[0]) in winner_arr and level_credit_levfive and level_credit_levfive[0] == 'levelfive':
                             user_num=MyUser.objects.get(username=recharge_levfive_user[0])
                             high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_levfivenum[0]).count()
                             if high_score == 0:
-                                recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%recharge_play_levfivenum[0]
-                                recharge_payload={"product_id": "MFIN-5-OR",
-                                "denomination" :1000,
-                                "send_sms" : True,
-                                "sms_text" : "Congratulations!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"}
+                                test_recharge(user_num.username,'level_five',recharge_play_levonenum[0],1000)
+
                             elif high_score > 0:
                                     print("Levelfive winner can only win once in 5 days")
                             else:
                                 print("Levelfive winner can only win twice a day")
-                            if recharge:
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_levfivenum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed")
-                            else:
-                                    print("No recharge url available yet")
+
                         else:
                             print('No winner for levelfive')
-
-
 
                         
                         if  recharge_play_easynum and easy_score_guage[0] == True and  str(recharge_play_easynum[0]) in winner_arr and level_credit_easy and level_credit_easy[0] == 'easy':
                                 user_num=MyUser.objects.get(username=recharge_easy_user[0])
                                 high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_easynum[0]).count()
                                 if high_score == 0:
-                                    data={'easy':recharge_play_easynum[0]}
-                                    print(recharge_play_easynum)
-                                    recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%data['easy']   #recharge_play_easynum[0]
-                                    recharge_payload={
-                                    "product_id": "MFIN-5-OR",
-                                    "denomination" :200,
-                                    "send_sms" : True,
-                                    "sms_text" : "Congratulations easy!!! Your high score on TapTap just earned you! Keep on Tapping,spread the word!!!"
-                                    }
-                                    del data['easy']
+                                    test_recharge(user_num.username,'easy',recharge_play_levonenum[0],200)
+
                                 elif high_score > 0:
                                     print("Easy Winner can only win once in 5 days")
                                 else:
                                     print('Easy Winner can only win once in 5 days')
                                 
-                                if recharge:
-                                    recharge_times=0
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201 and recharge_times == 0:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_easynum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                        recharge_times=1
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed",phone_number=recharge_play_easynum[0])
-                                else:
-                                    print("No recharge url available yet")
                         else:
                             print('easy is not yet ready')
 
@@ -602,40 +347,13 @@ def airtime():
                                 high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_mednum[0]).count()
                                 print("medium%s"%high_score)
                                 if high_score == 0:
-                                    data={'medium':recharge_play_mednum[0]}
-                                    print("medium%s"%recharge_play_mednum)
-                                    recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%data['medium']
-                                    recharge_payload={
-                                    # "message":"This is working"
-                                    "product_id": "MFIN-5-OR",
-                                    "denomination" :500,
-                                    "send_sms" : True,
-                                    "sms_text" : "Congratulations medium!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"
-                                    }
-                                    del data['medium']
+                                    test_recharge(user_num.username,'medium',recharge_play_levonenum[0],10)
+
                                 elif high_score > 0:
                                     print("Medium winner can only win once in 5 days")
                                 else:
                                     print("Medium winner can only win once in 5 days")
                                 
-                               
-                                if recharge:
-                                    recharge_times=0
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201 and recharge_times == 0:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_mednum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                        recharge_times=1
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed",phone_number=recharge_play_mednum[0])
-                                else:
-                                    print("No recharge url available yet")
                         else:
                             print('medium not yet ready')
 
@@ -645,40 +363,13 @@ def airtime():
                                 user_num=MyUser.objects.get(username=recharge_hard_user[0])
                                 high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_hardnum[0]).count()
                                 if high_score == 0:
-                                    data={'hard':recharge_play_hardnum[0]}
-                                    print("Hard %s"%recharge_play_hardnum)
-                                    recharge='https://clients.primeairtime.com/api/topup/exec/%s/'%data['hard']
-                                    recharge_payload={
-                                # "message":"This is working"
-                                    "product_id": "MFIN-5-OR",
-                                    "denomination" :1000,
-                                    "send_sms" : True,
-                                    "sms_text" : "Congratulations hard!!! Your high score on TapTap just earned you N100! Keep on Tapping,spread the word!!!"
-                                        }
-                                    del data['hard']
+                                    test_recharge(user_num.username,'hard',recharge_play_levonenum[0],1000)
+
                                 elif high_score > 0:
                                     print("Hard winner can only win once in 5 days")
                                 else:
                                     print("Hard winner can only win twice a day")
                                 
-                            
-                                if recharge:
-                                    recharge_times=0
-                                    response = c.post(recharge,data=recharge_payload,headers=second_get)
-                                    print(recharge)
-                                    print(response.text)
-                                    retrieve=response.text
-                                    get_data=json.loads(retrieve)
-                                    if response.text and get_data['status'] == 201 and recharge_times == 0:
-                                        ERCTransaction.objects.create(target=user_num.username,status=get_data['status'],
-                                        product_id=get_data['product_id'],reference=get_data['reference'],phone_number=recharge_play_hardnum[0],
-                                        code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
-                                        paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
-                                        recharge_times=1
-                                    else:
-                                        ERCTransaction.objects.create(target=user_num,status="Failed",phone_number=recharge_play_hardnum[0])
-                                else:
-                                    print("No recharge url available yet")
                         else:
                             print("Hard is not yet ready")
                         

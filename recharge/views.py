@@ -28,6 +28,10 @@ import csv
 from utils.smsclient import SmsClient
 import requests
 import urllib
+from pyexcel_xls import get_data as xls_get
+from pyexcel_xlsx import get_data as xlsx_get
+from django.utils.datastructures import MultiValueDictKeyError
+
 
 sms_client = SmsClient()
 
@@ -970,165 +974,165 @@ def easy_submit(request,username):
                             if score > 0:
                                 # request.session['easycompleted']='easycomplete'
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="easy")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > score_point:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="easy")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             
                         elif get_medium in where_from:
                             if score > 0:
                                 # request.session['mediumcompleted']='mediumcomplete'
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="medium")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > score_point:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="medium")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time" 
                         elif get_hard in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="hard")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > score_point:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="hard")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                         elif get_akwa in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > score_point:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_xmas in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="xmas")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score == 100:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="xmas")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_jacct in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="account")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="account",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="account",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="account")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="account",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="account",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jbio in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="biology")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="biology",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="biology",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="biology")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="biology",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="biology",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             
                         elif get_jgeo in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="geography")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="geography",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="geography",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="geography")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="geography",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="geography",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jphy in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="Physics")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="Physics",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="Physics",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="Physics")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="Physics",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="Physics",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jchem in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="chemistry")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="chemistry",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="chemistry",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="chemistry")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="chemistry",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="chemistry",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
 
                         elif get_jict in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="ict")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="ict",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="ict",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="ict")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="ict",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="ict",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
 
                         elif get_jcomm in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="commerce")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="commerce",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="commerce",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="commerce")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="commerce",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="commerce",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jeng in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="english")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="english",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="english",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="english")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="english",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="english",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
 
                         elif get_jmath in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="mathematics")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="mathematics",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="mathematics",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="mathematics")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="mathematics",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="mathematics",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
 
                         elif get_jcrk in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="crk")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="crk",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="crk",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="crk")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="crk",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="crk",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
 
                         elif get_jlit in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="literature")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="literature",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="literature",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="literature")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="literature",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="literature",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
 
@@ -1146,11 +1150,11 @@ def easy_submit(request,username):
                         elif get_jgov in where_from:
                             if score > 0:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="government")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="government",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="government",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             elif score == 200:
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="government")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="government",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="government",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_level1 in where_from:
@@ -1159,13 +1163,13 @@ def easy_submit(request,username):
                                 request.session['onecompleted']="onecomplete"
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelone")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="levelone",score=score)
-                                HighestLevelScore.objects.create(player=request.user,difficulty="levelone",score=score,phone_number=request.user.phone_number)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="levelone",score=score,phone_number=request.user.phone_number)
+                                HighestLevelScore.objects.create(player=request.user,difficulty="levelone",score=score)
                                 HighestScoreStatistic.objects.create(user=request.user,difficulty="levelone",score=score)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelone")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="levelone",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="levelone",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time" 
 
                         elif get_level2 in where_from:
@@ -1174,13 +1178,13 @@ def easy_submit(request,username):
                                 request.session['twocompleted']="twocomplete"
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="leveltwo")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="leveltwo",score=score)
-                                HighestLevelScore.objects.create(player=request.user,difficulty="leveltwo",score=score,phone_number=request.user.phone_number)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="leveltwo",score=score,phone_number=request.user.phone_number)
+                                HighestLevelScore.objects.create(player=request.user,difficulty="leveltwo",score=score)
                                 HighestScoreStatistic.objects.create(user=request.user,difficulty="leveltwo",score=score)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="leveltwo")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="leveltwo",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="leveltwo",score=score,phone_number=request.user.phone_number)
                                 
                                 data["thanks"]="Thanks For playing See You Next Time"
 
@@ -1190,13 +1194,13 @@ def easy_submit(request,username):
                                 request.session['threecompleted']="threecomplete"
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelthree")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="levelthree",score=score)
-                                HighestLevelScore.objects.create(player=request.user,difficulty="levelthree",score=score,phone_number=request.user.phone_number)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="levelthree",score=score,phone_number=request.user.phone_number)
+                                HighestLevelScore.objects.create(player=request.user,difficulty="levelthree",score=score)
                                 HighestScoreStatistic.objects.create(userr=request.user,difficulty="levelthree",score=score)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelthree")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="levelthree",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="levelthree",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_level4 in where_from:
@@ -1205,19 +1209,19 @@ def easy_submit(request,username):
                                 request.session['fourcompleted']="fourcomplete"
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelfour")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="levelfour",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="levelfour",score=score,phone_number=request.user.phone_number)
                                 HighestLevelScore.objects.create(player=request.user,difficulty="levelfour",score=score,phone_number=request.user.phone_number)
                                 HighestScoreStatistic.objects.create(user=request.user,difficulty="levelfour",score=score)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelfour")
-                                PlayerStatistic.objects.create(player=request.user,difficulty="levelfour",score=score)
+                                PlayerStatistic.objects.create(player=request.user,difficulty="levelfour",score=score,phone_number=request.user.phone_number)
                                 
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_level5 in where_from:
                             UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelfive")
-                            PlayerStatistic.objects.create(player=request.user,difficulty="levelfive",score=score)
+                            PlayerStatistic.objects.create(player=request.user,difficulty="levelfive",score=score,phone_number=request.user.phone_number)
                             HighestScoreStatistic.objects.create(user=request.user,difficulty="levelfive",score=score)
                             data["thanks"]="Thanks For playing See You Next Time" 
 
@@ -1261,7 +1265,7 @@ def quiz(request,username):
     else: 
          ActivePlayer.objects.create(player_num=+1)
     weekday = datetime.datetime.now().strftime('%A') 
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
     user=get_object_or_404(MyUser,username=username)
     try:
         bonus=BonusPointAirtime.objects.get(player=request.user)
@@ -1744,7 +1748,7 @@ def download_exce_data(request):
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
     font_style =xlwt.XFStyle()
-    data = PlayerStatistic.objects.all()[9000:12000]
+    data = PlayerStatistic.objects.all()
     for my_row in data:
 
         row_num = row_num + 1
@@ -1758,77 +1762,97 @@ def download_exce_data(request):
 
 
 
-def UploadQuestion(request, format=None):
-        question_object_array = {
-                                'EasyQuestion':EasyQuestion,'MediumQuestion':MediumQuestion,'HardQuestion':HardQuestion,
-                                 'LevelOneQuestion':LevelOneQuestion,'LevelTwoQuestion':LevelTwoQuestion,
-                                 'LevelThreeQuestion':LevelThreeQuestion,'LevelFourQuestion':LevelFourQuestion,
-                                 'LevelFiveQuestion':LevelFiveQuestion
-                                 }
-        answer_object_array = {
-                        'EasyQuestion':EasyAnswer,'MediumQuestion':MediumAnswer,'HardQuestion':HardAnswer,
-                            'LevelOneQuestion':LevelOneAnswer,'LevelTwoQuestion':LevelTwoAnswer,
-                            'LevelThreeQuestion':LevelThreeAnswer,'LevelFourQuestion':LevelFourAnswer,
-                            'LevelFiveQuestion':LevelFiveAnswer
-                            }
-        print("Files",request.FILES['question_file'])
-        try:
-            excel_file = request.FILES['question_file']
-            print("excel",excel_file)
-        except MultiValueDictKeyError:
-            return HttpResponse({"error":"File is not valid"})
-        if (str(excel_file).split('.')[-1] == "xls"):
-            data = xls_get(excel_file, column_limit=6)
-        elif (str(excel_file).split('.')[-1] == "xlsx"):
-            data = xlsx_get(excel_file, column_limit=6)
-        else:
-            return HttpResponse({"error":"Columns limit exceed"})
-        question_detail = data["QuestionDetail"]
-        questions = data["Question"]
-        answers = data["Answer"]
-        del questions[0]
-        del answers[0]
-        del question_detail[0]
-        try:
-            if (len(question_detail) > 0): # We have question data
-                # for detail in question_detail:
-                    if (len(question_detail) > 0): # The row is not blank
-                        content = question_detail[0][1]
-                        # print("My Question Detail", content)
-                        c = QuestionDetail.objects.filter(question_name=content)
-                        if ( c.count() == 0):
-                            QuestionDetail.objects.create(
-                            poster = question_detail[0][0],
-                            question_name = question_detail[0][1],
-                                            )
-                            
-            if (len(questions) > 1): # We have question data
-                for num,question in enumerate(questions):
-                    if (len(questions) > 0): # The row is not blank
-                        content = question_detail[0][1]
-                        q_content = question[1]
-                        print("Qcontent",q_content)
-                        q_detail = QuestionDetail.objects.get(question_name=content)
-                        c = question_object_array.get(content).objects.filter(content=q_content)
-                        if q_detail and c.count() == 0:
-                            question_object_array.get(content).objects.create(
-                            lecturer= question[0],
-                            content= question[1],
-                            question_detail = q_detail
-                                            )
-                            question_instance = question_object_array.get(content).objects.get(content=q_content)
-                            
-                            print("Answers",answers[0])
-                            answer_object_array.get(content).objects.create(
-                                question=question_instance,
-                                choice1= answers[num][0],
-                                choice2= answers[num][1],
-                                choice3= answers[num][2],
-                                choice4= answers[num][3],
-                                    )
 
+
+def get_question_sheet(data):
+    sheet_list = ['Easy','Medium','Hard','Level 1','Level 2','Level 3','Level 4','Level 5']
+    sheet_list_with_data = [sheet for sheet in sheet_list if len(data[sheet]) > 1]
+    print("Sheet", sheet_list_with_data)
+    return sheet_list_with_data        
+    
+
+def UploadQuestion(request, format=None):
+        if not request.user.is_staff:
+            messages.error(request,"You don't have enough permissions to view this page")
+            return redirect('/')
+        
+        if request.method == 'POST' and request.FILES['question_file']:
+            context = {}
+            question_object_array = {
+                                    'EasyQuestion':EasyQuestion,'MediumQuestion':MediumQuestion,'HardQuestion':HardQuestion,
+                                    'LevelOneQuestion':LevelOneQuestion,'LevelTwoQuestion':LevelTwoQuestion,
+                                    'LevelThreeQuestion':LevelThreeQuestion,'LevelFourQuestion':LevelFourQuestion,
+                                    'LevelFiveQuestion':LevelFiveQuestion
+                                    }
+            answer_object_array = {
+                            'EasyQuestion':EasyAnswer,'MediumQuestion':MediumAnswer,'HardQuestion':HardAnswer,
+                                'LevelOneQuestion':LevelOneAnswer,'LevelTwoQuestion':LevelTwoAnswer,
+                                'LevelThreeQuestion':LevelThreeAnswer,'LevelFourQuestion':LevelFourAnswer,
+                                'LevelFiveQuestion':LevelFiveAnswer
+                                }
+            # print("Files",request.FILES['question_file'])
+            try:
+                excel_file = request.FILES['question_file']
+                print("excel",excel_file)
+            except MultiValueDictKeyError:
+                return HttpResponse({"error":"File is not valid"})
+            if (str(excel_file).split('.')[-1] == "xls"):
+                data = xls_get(excel_file, column_limit=6)
+            elif (str(excel_file).split('.')[-1] == "xlsx"):
+                data = xlsx_get(excel_file, column_limit=6)
+            else:
+                return HttpResponse({"error":"Columns limit exceed"})
             
-            return HttpResponse({"Message":"Questions uploaded successfully"})
-        except Exception as e:
-            print("Error",e)
-            HttpResponse({"Message":"Error uploading file. Check your file formats well."})
+            questions = get_question_sheet(data)
+
+            try:
+                question_detail = data["QuestionDetail"]
+                answers = data["Answer"]
+                del questions[0]
+                del answers[0]
+                del question_detail[0]
+                if (len(question_detail) > 0): # We have question data
+                    # for detail in question_detail:
+                        if (len(question_detail) > 0): # The row is not blank
+                            content = question_detail[0][1]
+                            print("My Question Detail", content)
+                            c = QuestionDetail.objects.filter(question_name=content)
+                            if ( c.count() == 0):
+                                QuestionDetail.objects.create(
+                                poster = question_detail[0][0],
+                                question_name = question_detail[0][1],
+                                                )
+                for questions in questions:                
+                    if (len(questions) > 1): # We have question data
+                        for num,question in enumerate(questions):
+                            if (len(questions) > 0): # The row is not blank
+                                content = question_detail[0][1]
+                                q_content = question[1]
+                                print("Qcontent",q_content)
+                                q_detail = QuestionDetail.objects.get(question_name=content)
+                                c = question_object_array.get(content).objects.filter(content=q_content)
+                                if q_detail and c.count() == 0:
+                                    question_object_array.get(content).objects.create(
+                                    poster= question[0],
+                                    content= question[1],
+                                    question_detail = q_detail
+                                                    )
+                                    question_instance = question_object_array.get(content)
+                                    
+                                    print("Answers",answers[0])
+                                    answer_object_array.get(content).objects.create(
+                                        question=question_instance,
+                                        choice1= answers[num][0],
+                                        choice2= answers[num][1],
+                                        choice3= answers[num][2],
+                                        choice4= answers[num][3],
+                                            )
+
+                    context['data'] = render_to_string("json.html", {"message":"Questions uploaded successfully"})
+
+                    return HttpResponse({"Message":"Questions uploaded successfully"})
+            except Exception as e:
+                print("Error",e)
+                context['data'] = {"message":"Error uploading file. Check your file formats well."}
+                return render(request,'recharge/upload_question.html',context)
+        return render(request,'recharge/upload_question.html')

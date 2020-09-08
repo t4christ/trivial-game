@@ -1,0 +1,76 @@
+{% extends "rechargebase.html" %}
+{% load static %}
+{% block head_extra %} 
+<title>Upload Question</title>
+{% endblock head_extra %}
+
+{% block javascript %}
+<script>
+// Add the following code if you want the name of the file appear on select
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+</script>
+{% endblock javascript %}
+
+{% block content %}
+
+<style>
+.custom-file-label{
+    height:41px!important;
+}
+.custom-file-label::after {
+line-height:2.0!important;
+height:41px!important;
+}
+</style>
+<div class="container-fluid recharge-wrap" style="min-height:100%;display:flex;align-items:center;background:white;flex-direction:column;">
+
+
+    
+<div class="container-fluid advert" style="padding:0;margin-top:150px;">
+    {% include 'headadvert.html' %}    
+</div>
+
+    <!-- <div class="container rec-wrap"> -->
+    <input type="hidden" id="start">
+    <input type="hidden" class="link" value="/recharge/easy_submit/{{request.user}}/">
+        <!-- <h2 class="text-center">Welcome to Free Airtime Questions and Answers Game</h2> -->
+<div class="col-md-6  resub-wrp" style="margin-top:40px;margin-bottom:30%;">
+        
+<div class="row">
+     <h1 class="text-center" style="width:100%;font-size:25px!important;">Upload Question</h1>
+
+ <form class="col-md-12" enctype="multipart/form-data" style="display:flex;" method='POST' action='/upload_question/'>
+  {% csrf_token %} 
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" name="question_file" style="height:41px;" id="customFile">
+    <label class="custom-file-label" for="question_file">Choose file</label>
+    <p class="text-danger text-center"  style="width:100%;">{{data.message}}</p>
+  </div>
+  
+  <button type="submit" style="color:white;height:41px;margin-left:2%;" class="btn btn-outline-primary">Submit</button>
+
+</form>
+
+
+
+</div>
+<!-- End of row -->
+
+
+</div>
+<!-- End of col-md-6 -->
+
+<div class="container-fluid advert" style="padding:0;"></div>
+{% include 'footadvert.html' %}
+</div>
+<!-- </div> -->
+</div>
+<!-- End of container fluid -->
+
+
+
+
+{% endblock content %}

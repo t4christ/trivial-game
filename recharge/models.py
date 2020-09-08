@@ -3,7 +3,7 @@ from accounts.models import MyUser
 # Create your models here.
 
 class QuestionDetail(models.Model):
-    lecturer = models.CharField(max_length=150)
+    poster = models.CharField(max_length=150)
     question_name= models.CharField(max_length=100)
     # duration_min = models.PositiveIntegerField(default=0)
     # level = models.CharField(max_length=10,default=100)

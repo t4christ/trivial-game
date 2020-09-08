@@ -13,6 +13,8 @@ dj-static
 boto3
 django-celery-beat
 django-celery-results
+elasticsearch
+elasticsearch-dsl
 redis
 honcho
 django-nose
