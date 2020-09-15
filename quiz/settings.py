@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 FIXTURE_DIRS = (
@@ -144,30 +144,30 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if  DEBUG:
+if not DEBUG:
 
-    DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gist',
-        'USER': 'temitayo',
-        'PASSWORD': 'gistpassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+#     DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'gist',
+#         'USER': 'temitayo',
+#         'PASSWORD': 'gistpassword',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
     # DATABASES = {'default': dj_database_url.config(default='postgres://temitayo:gistpassword@localhost/gist')}
 
 
 
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME':  os.path.join(BASE_DIR, 'db.sqlite3'),
-    #     }
-    # }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME':  os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 else:
 
     DATABASES = {
@@ -222,7 +222,7 @@ USE_TZ = True
 
 
 
-if DEBUG:
+if not DEBUG:
     CELERY_BROKER_URL = 'redis://localhost:6379'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 else:  
@@ -273,7 +273,7 @@ CELERY_BEAT_SCHEDULE = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-if DEBUG:
+if not DEBUG:
 
     STATIC_DIR = os.path.join(BASE_DIR, 'staticfiles')
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -312,7 +312,7 @@ else:
 
 
 
-if DEBUG:
+if not DEBUG:
      EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
      EMAIL_FILE_PATH = os.path.join(BASE_DIR, '.emails')
 else:
