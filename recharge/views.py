@@ -1791,7 +1791,7 @@ def UploadQuestion(request, format=None):
                             'Easy':EasyAnswer,'Medium':MediumAnswer,'Hard':HardAnswer,
                                 'LevelOne':LevelOneAnswer,'LevelTwo':LevelTwoAnswer,
                                 'LevelThree':LevelThreeAnswer,'LevelFour':LevelFourAnswer,
-                                'LevelFive':LevelFiveAnswer,'AkwaIbom':AkwaIbomQuestion
+                                'LevelFive':LevelFiveAnswer,'AkwaIbom':AkwaIbomAnswer
                                 }
             # print("Files",request.FILES['question_file'])
             try:
