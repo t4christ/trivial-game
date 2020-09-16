@@ -1766,7 +1766,6 @@ def download_exce_data(request):
 
 def get_question_sheet(data):
     sheet_list_array = ['Easy','Medium','Hard','LevelOne','LevelTwo','LevelThree','LevelFour','LevelFive','AkwaIbom']
-    sheet_list =['Easy']
     get_excel_sheet = {v:k for k,v in enumerate(data)}
     sheet_list = get_excel_sheet.keys()
     sheet_list_with_data =[sheet for sheet in sheet_list if sheet in sheet_list_array]
