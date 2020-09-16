@@ -1765,8 +1765,11 @@ def download_exce_data(request):
 
 
 def get_question_sheet(data):
-    sheet_list = ['Easy','Medium','Hard','Level 1','Level 2','Level 3','Level 4','Level 5']
-    sheet_list_with_data = [sheet for sheet in sheet_list if len(data[sheet]) > 1]
+    sheet_list_array = ['Easy','Medium','Hard','LevelOne','LevelTwo','LevelThree','LevelFour','LevelFive','AkwaIbom']
+    sheet_list =['Easy']
+    get_excel_sheet = {v:k for k,v in enumerate(data)}
+    sheet_list = get_excel_sheet.keys()
+    sheet_list_with_data =[sheet for sheet in sheet_list if sheet in sheet_list_array]
     print("Sheet", sheet_list_with_data)
     return sheet_list_with_data        
     
@@ -1778,17 +1781,18 @@ def UploadQuestion(request, format=None):
         
         if request.method == 'POST' and request.FILES['question_file']:
             context = {}
+            context['data'] = {"loading":"Uploading"}
             question_object_array = {
-                                    'EasyQuestion':EasyQuestion,'MediumQuestion':MediumQuestion,'HardQuestion':HardQuestion,
-                                    'LevelOneQuestion':LevelOneQuestion,'LevelTwoQuestion':LevelTwoQuestion,
-                                    'LevelThreeQuestion':LevelThreeQuestion,'LevelFourQuestion':LevelFourQuestion,
-                                    'LevelFiveQuestion':LevelFiveQuestion
+                                    'Easy':EasyQuestion,'Medium':MediumQuestion,'Hard':HardQuestion,
+                                    'LevelOne':LevelOneQuestion,'LevelTwo':LevelTwoQuestion,
+                                    'LevelThree':LevelThreeQuestion,'LevelFour':LevelFourQuestion,
+                                    'LevelFive':LevelFiveQuestion,'AkwaIbom':AkwaIbomQuestion
                                     }
             answer_object_array = {
-                            'EasyQuestion':EasyAnswer,'MediumQuestion':MediumAnswer,'HardQuestion':HardAnswer,
-                                'LevelOneQuestion':LevelOneAnswer,'LevelTwoQuestion':LevelTwoAnswer,
-                                'LevelThreeQuestion':LevelThreeAnswer,'LevelFourQuestion':LevelFourAnswer,
-                                'LevelFiveQuestion':LevelFiveAnswer
+                            'Easy':EasyAnswer,'Medium':MediumAnswer,'Hard':HardAnswer,
+                                'LevelOne':LevelOneAnswer,'LevelTwo':LevelTwoAnswer,
+                                'LevelThree':LevelThreeAnswer,'LevelFour':LevelFourAnswer,
+                                'LevelFive':LevelFiveAnswer,'AkwaIbom':AkwaIbomQuestion
                                 }
             # print("Files",request.FILES['question_file'])
             try:
@@ -1803,56 +1807,66 @@ def UploadQuestion(request, format=None):
             else:
                 return HttpResponse({"error":"Columns limit exceed"})
             
-            questions = get_question_sheet(data)
+            questions = data[get_question_sheet(data)[0]]
+            
+            print("Questions",questions)
 
             try:
+                print("data",data)
                 question_detail = data["QuestionDetail"]
-                answers = data["Answer"]
                 del questions[0]
-                del answers[0]
                 del question_detail[0]
                 if (len(question_detail) > 0): # We have question data
                     # for detail in question_detail:
                         if (len(question_detail) > 0): # The row is not blank
-                            content = question_detail[0][1]
+                            content = question_detail[0][0]
                             print("My Question Detail", content)
-                            c = QuestionDetail.objects.filter(question_name=content)
-                            if ( c.count() == 0):
+                            try:
+                                c = QuestionDetail.objects.get(question_name=content)
+                            except QuestionDetail.DoesNotExist:
+                                print("My question detail create")
                                 QuestionDetail.objects.create(
-                                poster = question_detail[0][0],
-                                question_name = question_detail[0][1],
+                                poster = question_detail[0][1],
+                                question_name = question_detail[0][0],
                                                 )
                 for questions in questions:                
-                    if (len(questions) > 1): # We have question data
-                        for num,question in enumerate(questions):
+                    print("Questions on count",questions)
+                    if (len(questions) > 0): # We have question data
+                        # for num,question in enumerate(questions):
                             if (len(questions) > 0): # The row is not blank
-                                content = question_detail[0][1]
-                                q_content = question[1]
-                                print("Qcontent",q_content)
+                                content = question_detail[0][0]
+                                q_content = questions[0]
+                                print("Qcontent",q_content,content)
                                 q_detail = QuestionDetail.objects.get(question_name=content)
-                                c = question_object_array.get(content).objects.filter(content=q_content)
-                                if q_detail and c.count() == 0:
-                                    question_object_array.get(content).objects.create(
-                                    poster= question[0],
-                                    content= question[1],
+                                # c = question_object_array.get(content).objects.filter(content=q_content)
+                                if q_detail:
+                                    q = question_object_array.get(content).objects.create(
+                                    poster= q_detail.poster,
+                                    content= questions[0],
                                     question_detail = q_detail
                                                     )
-                                    question_instance = question_object_array.get(content)
-                                    
-                                    print("Answers",answers[0])
+                                    print("My answer content",content)
+                                    question_instance = question_object_array.get(content).objects.get(id=q.id)
+
+                                    print("My instance content",question_instance)
                                     answer_object_array.get(content).objects.create(
-                                        question=question_instance,
-                                        choice1= answers[num][0],
-                                        choice2= answers[num][1],
-                                        choice3= answers[num][2],
-                                        choice4= answers[num][3],
+                                        questions=question_instance,
+                                        choice1= questions[1],
+                                        choice2= questions[2],
+                                        choice3= questions[3],
+                                        choice4= questions[4],
+                                        correct_answer = questions[5]
                                             )
-
-                    context['data'] = render_to_string("json.html", {"message":"Questions uploaded successfully"})
-
-                    return HttpResponse({"Message":"Questions uploaded successfully"})
+                
+                context['data'] = {"success":"Questions uploaded successfully"}
+                return render(request,'recharge/upload_question.html',context)
             except Exception as e:
                 print("Error",e)
-                context['data'] = {"message":"Error uploading file. Check your file formats well."}
+                context['data'] = {"error":"Error uploading file. Check your file formats well."}
                 return render(request,'recharge/upload_question.html',context)
         return render(request,'recharge/upload_question.html')
+
+
+
+
+

@@ -17,7 +17,7 @@ class QuestionDetail(models.Model):
         return "{} question".format(self.question_name)
 
 class EasyQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_easy")
+    poster = models.CharField(max_length=50,default='')
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="easy_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -27,7 +27,7 @@ class EasyQuestion(models.Model):
 
 
 class MediumQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_medium")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="medium_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -39,7 +39,7 @@ class MediumQuestion(models.Model):
 
 
 class HardQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_hard")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="hard_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -49,7 +49,7 @@ class HardQuestion(models.Model):
 
 
 class LevelOneQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_levelone")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelone_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -58,7 +58,7 @@ class LevelOneQuestion(models.Model):
         return "{}".format(self.content)
 
 class LevelTwoQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_leveltwo")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="leveltwo_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -68,7 +68,7 @@ class LevelTwoQuestion(models.Model):
 
 
 class LevelThreeQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_levelthree")
+    poster = models.CharField(max_length=50,default='')
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelthree_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -78,7 +78,7 @@ class LevelThreeQuestion(models.Model):
 
 
 class LevelFourQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_levelfour")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelfour_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -89,7 +89,7 @@ class LevelFourQuestion(models.Model):
 
 
 class LevelFiveQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="user_five")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="levelfive_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -98,7 +98,7 @@ class LevelFiveQuestion(models.Model):
         return "{}".format(self.content)
 
 class AkwaIbomQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="aksg_user")
+    poster = models.CharField(max_length=50,default='') 
     question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="akwaibom_question_detail")
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -337,7 +337,7 @@ class BonusPointAirtime(models.Model):
 ######################### JAMB Practice Questions and Answers #####################################
 
 class JAccountQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jact_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -345,7 +345,7 @@ class JAccountQuestion(models.Model):
         return "{}".format(self.content)
 
 class JGeoQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jgeo_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -354,7 +354,7 @@ class JGeoQuestion(models.Model):
 
 
 class JBioQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jbio_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -364,7 +364,7 @@ class JBioQuestion(models.Model):
 
 
 class JPhysicsQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jphy_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -374,7 +374,7 @@ class JPhysicsQuestion(models.Model):
 
 
 class JChemistryQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jchm_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -384,7 +384,7 @@ class JChemistryQuestion(models.Model):
 
 
 class JCommerceQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jcmm_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -394,7 +394,7 @@ class JCommerceQuestion(models.Model):
 
 
 class JIctQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jict_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -404,7 +404,7 @@ class JIctQuestion(models.Model):
 
 
 class JCrkQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jcrk_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -414,7 +414,7 @@ class JCrkQuestion(models.Model):
 
 
 class JLiteratureQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jlit_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -424,7 +424,7 @@ class JLiteratureQuestion(models.Model):
 
 
 class JEconomicsQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jeco_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -433,7 +433,7 @@ class JEconomicsQuestion(models.Model):
 
 
 class JGovQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jgov_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -441,7 +441,7 @@ class JGovQuestion(models.Model):
         return "{}".format(self.content)
 
 class JEngQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jeng_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -450,7 +450,7 @@ class JEngQuestion(models.Model):
 
 
 class JMathQuestion(models.Model):
-    poster = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="jmath_user")
+    poster = models.CharField(max_length=50,default='') 
     content= models.TextField()
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 

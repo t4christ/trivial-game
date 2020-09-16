@@ -1,0 +1,59 @@
+-- -- DO
+-- -- $do$
+-- -- BEGIN
+-- --    RAISE NOTICE '%', (
+-- -- -- EXECUTE (
+-- --    SELECT 'DROP TABLE ' || string_agg(format('%I.%I', schemaname, tablename), ', ')
+-- --    --  || ' CASCADE' -- optional
+-- --    FROM   pg_catalog.pg_tables t
+-- --    WHERE  schemaname NOT LIKE 'pg\_%'     -- exclude system schemas
+-- --    AND    tablename LIKE 'recharge' || '%'  -- your table name prefix
+-- --    );
+-- -- END
+-- -- $do$;
+
+-- DROP TABLE
+-- recharge_levelfivequestion,
+-- recharge_levelfourquestion,
+-- recharge_leveloneanswer,
+-- recharge_mediumanswer,
+-- recharge_levelthreequestion,
+-- recharge_levelthreeanswer,
+-- recharge_leveltwoquestion,
+-- recharge_leveltwoanswer,
+-- recharge_mediumquestion,
+-- recharge_usercorrectanswer,
+-- recharge_levelonequestion,
+-- recharge_hardquestion,
+-- recharge_levelfiveanswer,
+-- recharge_hardanswer,
+-- recharge_levelfouranswer,
+-- recharge_highestlevelscore,
+-- recharge_highestscorestatistic,
+-- recharge_playerstatistic,
+-- recharge_jgovanswer,
+-- recharge_jictanswer,
+-- recharge_jliteratureanswer,
+-- recharge_jphysicsquestion,
+-- recharge_jliteraturequestion,
+-- recharge_jphysicsanswer,
+-- recharge_jictquestion,
+-- recharge_jgovquestion,
+-- recharge_jgeoquestion,
+-- recharge_jeconomicsquestion,
+-- recharge_jcrkquestion,
+-- recharge_jcommercequestion,
+-- recharge_jchemistryquestion,
+-- recharge_jbioquestion,
+-- recharge_jaccountquestion,
+-- recharge_jaccountanswer,
+-- recharge_jbioanswer,
+-- recharge_jchemistryanswer,
+-- recharge_jmathquestion,
+-- recharge_jengquestion,
+-- recharge_jcommerceanswer,
+-- recharge_jcrkanswer,
+-- recharge_jeconomicsanswer,
+-- recharge_jenganswer,
+-- recharge_jgeoanswer,
+-- recharge_jmathanswer;

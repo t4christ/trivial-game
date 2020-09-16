@@ -6,11 +6,27 @@
 
 {% block javascript %}
 <script>
+let element = document.getElementById("loading_balls");
+let upload_success = document.querySelector(".upload_success");
+let upload_error = document.querySelector(".upload_error");
 // Add the following code if you want the name of the file appear on select
 $(".custom-file-input").on("change", function() {
   var fileName = $(this).val().split("\\").pop();
   $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 });
+
+$("form").on("submit",function(){
+alert("Am to submit")
+  element.classList.remove("hide");
+  element.classList.add("loading_balls");
+
+if($(upload_success).is(':visible') || $(upload_success).is(':visible')){
+alert("Am to remove upload status")
+  element.classList.remove("loading_balls");
+  element.classList.add("hide");
+} 
+
+})
 </script>
 {% endblock javascript %}
 
@@ -23,6 +39,23 @@ $(".custom-file-input").on("change", function() {
 .custom-file-label::after {
 line-height:2.0!important;
 height:41px!important;
+}
+
+.hide{
+  display:none;
+}
+.loading_balls{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.loading_balls div{
+  color:#e80068!important;
+}
+
+form{
+  margin-bottom:5%;
 }
 </style>
 <div class="container-fluid recharge-wrap" style="min-height:100%;display:flex;align-items:center;background:white;flex-direction:column;">
@@ -39,23 +72,48 @@ height:41px!important;
         <!-- <h2 class="text-center">Welcome to Free Airtime Questions and Answers Game</h2> -->
 <div class="col-md-6  resub-wrp" style="margin-top:40px;margin-bottom:30%;">
         
-<div class="row">
+<div class="row" style="justify-content:center;">
+    {%if data.success %}
+    <p  class="upload_success text-success text-center"  style="width:100%;font-size:25px!important;">{{data.success}}</p>
+    {%elif data.error %}
+    <p class="upload_error text-danger text-center"  style="width:100%;font-size:25px!important;">{{data.error}}</p>
+    {% endif %}
      <h1 class="text-center" style="width:100%;font-size:25px!important;">Upload Question</h1>
-
  <form class="col-md-12" enctype="multipart/form-data" style="display:flex;" method='POST' action='/upload_question/'>
   {% csrf_token %} 
   <div class="custom-file">
     <input type="file" class="custom-file-input" name="question_file" style="height:41px;" id="customFile">
     <label class="custom-file-label" for="question_file">Choose file</label>
-    <p class="text-danger text-center"  style="width:100%;">{{data.message}}</p>
+
   </div>
   
   <button type="submit" style="color:white;height:41px;margin-left:2%;" class="btn btn-outline-primary">Submit</button>
 
 </form>
 
+<div class="hide" id="loading_balls">
 
 
+<div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow "></div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow"></div>
+<div class="spinner-grow"></div>
+</div>
+
+
+<div style="display:flex;flex-direction:column;justify-content:center;">
+<p style="font-size:25px!important;color:#e80068!important;" class="text-center">Uploading Question</p>
+</div>
+
+
+
+</div>
 </div>
 <!-- End of row -->
 

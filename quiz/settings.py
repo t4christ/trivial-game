@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 FIXTURE_DIRS = (
@@ -144,7 +144,7 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if not DEBUG:
+if  DEBUG:
 
 #     DATABASES = {
 #     'default': {
@@ -222,7 +222,7 @@ USE_TZ = True
 
 
 
-if not DEBUG:
+if DEBUG:
     CELERY_BROKER_URL = 'redis://localhost:6379'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 else:  
@@ -273,7 +273,7 @@ CELERY_BEAT_SCHEDULE = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-if not DEBUG:
+if DEBUG:
 
     STATIC_DIR = os.path.join(BASE_DIR, 'staticfiles')
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -312,7 +312,7 @@ else:
 
 
 
-if not DEBUG:
+if DEBUG:
      EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
      EMAIL_FILE_PATH = os.path.join(BASE_DIR, '.emails')
 else:
