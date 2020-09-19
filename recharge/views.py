@@ -971,7 +971,7 @@ def easy_submit(request,username):
             
             end_timer=time.time()
             time_lapse_diff = request.session["get-timer"] - request.session["trivial_time"]
-            time_differ = math.floor(end_timer - time_lapse_diff)
+            time_differ = math.floor(end_timer - request.session["get-timer"])
             if time_differ in time_diff_arr or time_differ in time_diff_arr2:
                     
             # get_time_diff = int(time_end - time_start)
