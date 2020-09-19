@@ -37,7 +37,7 @@
       "command": [
         "./start_celery_worker.sh"
       ],
-      "name":"web",
+      "name":"celery_worker",
       "essential": true,
       "links": ["redis"],
       "memory": 256,
@@ -49,7 +49,7 @@
       "command": [
         "./start_celery_beat.sh"
       ],
-      "name":"web",
+      "name":"celery_beat",
       "essential": true,
       "links": ["redis"],
       "memory": 256,
