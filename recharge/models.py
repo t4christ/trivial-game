@@ -107,9 +107,15 @@ class AkwaIbomQuestion(models.Model):
         return "{}".format(self.content)
 
 
+class TempAnswer(models.Model):
+    answers = models.TextField()
+    question_name = models.CharField(max_length=50)
+    username = models.ForeignKey(MyUser,on_delete=models.CASCADE, related_name="temp_ans",default="")
+    def __str__(self):
+        return "Answers for {}".format(self.question_name)
 
 class EasyAnswer(models.Model):
-    questions = models.ForeignKey(EasyQuestion, on_delete=models.CASCADE,related_name="easy_answer")
+    questions = models.ForeignKey(EasyQuestion,on_delete=models.CASCADE,related_name="easy_answer")
     choice1 = models.CharField(max_length=500)
     choice2 = models.CharField(max_length=500)
     choice3 = models.CharField(max_length=500)

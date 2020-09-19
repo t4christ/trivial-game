@@ -28,6 +28,7 @@ import csv
 from utils.smsclient import SmsClient
 import requests
 import urllib
+import ast
 from pyexcel_xls import get_data as xls_get
 from pyexcel_xlsx import get_data as xlsx_get
 from django.utils.datastructures import MultiValueDictKeyError
@@ -673,8 +674,11 @@ def recharge(request):
 #         template="recharge/high-score-based/easy.html"
 #         return render(request,template)
 
+
+
 @login_required
 def easy_submit(request,username):
+        import time,math
         user=get_object_or_404(MyUser,username=username)
         level_progress=""
         data =dict()
@@ -721,179 +725,239 @@ def easy_submit(request,username):
         num_played = UserCorrectAnswer.objects.filter(user=request.user,timestamp__gte=time_diff).count()
         print("Print Played",num_played)
         # end_timer=0
-        if num_played < 20:
-            if weekday not in current_day:
-                data['weekday']="This Game is only opened from Mondays to Saturdays"
-                # return redirect("/")
-            if get_level1 in where_from:
-                easy=LevelOneAnswer.objects.all().order_by('?')[:10]
-                num_score=LevelOneAnswer.objects.all()[:10]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-            elif get_level2 in where_from:
-                # if "onecompleted" in request.session:
-                    # level_progress = "leveltwo"
-                    easy=LevelTwoAnswer.objects.all().order_by('?')[:10]
-                    num_score=LevelTwoAnswer.objects.all()[:10]
-                    context={"easy":easy}
-                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-                    # del request.session['onecompleted']
-                # else:
-                    # data['previous']="You need to complete the previous level to move to this level"
-                    # return redirect("/")
-            
-            elif get_level3 in where_from:
-                # if "twocompleted" in request.session:
-                    # level_progress = "levelthree"
-                    easy=LevelThreeAnswer.objects.all().order_by('?')[:10]
-                    num_score=LevelThreeAnswer.objects.all()[:10]
-                    context={"easy":easy}
-                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-                    # del request.session['twocompleted']
-                # else:
-                    # messages.error(request,"You need to complete the previous level to move to this level")
-                    # return redirect("/")
-            
-            elif get_level4 in where_from:
-                # if "threecompleted" in request.session:
-                    # level_progress = "levelfour"
-                    easy=LevelFourAnswer.objects.all().order_by('?')[:10]
-                    num_score=LevelFourAnswer.objects.all()[:10]
-                    context={"easy":easy}
-                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-                    # del request.session['threecompleted']
-                # else:
-                    # messages.error(request,"You need to complete the previous level to move to this level")
-                    # return redirect("/")
-            
-            elif get_level5 in where_from:
-                # if  "fourcompleted" in request.session:
-                    # level_progress = "levelfive"
-                    easy=LevelFiveAnswer.objects.all().order_by('?')[:10]
-                    num_score=LevelFiveAnswer.objects.all()[:10]
-                    context={"easy":easy}
-                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-                    # del request.session['fourcompleted']
-                # else:
-                    # data['previous']="You need to complete the previous level to move to this level"
-                    # return redirect("/")
-            
-            elif get_easy in where_from:
-                easy=EasyAnswer.objects.all().order_by('?')[:50]
-                num_score=EasyAnswer.objects.all()[:50]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-            elif get_medium in where_from:
-                easy=MediumAnswer.objects.all().order_by('?')[:50]
-                num_score=MediumAnswer.objects.all()[:50]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-            elif get_hard in where_from:
-                easy=HardAnswer.objects.all().order_by('?')[:50]
-                num_score=HardAnswer.objects.all()[:50]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_akwa in where_from:
-                akwa=AkwaIbomAnswer.objects.all().order_by('?')[:10]
-                num_score=AkwaIbomAnswer.objects.all()[:10]
-                context={"easy":akwa}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_xmas in where_from:
-                easy=HardAnswer.objects.all().order_by('?')[:10]
-                num_score=HardAnswer.objects.all()[:10]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            ######################## JAMB View Question ###########################
-            elif get_jacct in where_from:
-                easy=JAccountAnswer.objects.all().order_by('?')[:20]
-                num_score=JAccountAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jmath in where_from:
-                easy=JMathAnswer.objects.all().order_by('?')[:20]
-                num_score=JMathAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jeng in where_from:
-                easy=JEngAnswer.objects.all().order_by('?')[:20]
-                num_score=JEngAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jgeo in where_from:
-                easy=JGeoAnswer.objects.all().order_by('?')[:20]
-                num_score=JGeoAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jbio in where_from:
-                easy=JBioAnswer.objects.all().order_by('?')[:20]
-                num_score=JBioAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jphy in where_from:
-                easy=JPhysicsAnswer.objects.all().order_by('?')[:20]
-                num_score=JPhysicsAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jchem in where_from:
-                easy=JChemistryAnswer.objects.all().order_by('?')[:20]
-                num_score=JChemistryAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jcomm in where_from:
-                easy=JCommerceAnswer.objects.all().order_by('?')[:20]
-                num_score=JCommerceAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jict in where_from:
-                easy=JIctAnswer.objects.all().order_by('?')[:20]
-                num_score=JIctAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jcrk in where_from:
-                easy=JCrkAnswer.objects.all().order_by('?')[:20]
-                num_score=JCrkAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-
-            elif get_jlit in where_from:
-                easy=JLiteratureAnswer.objects.all().order_by('?')[:20]
-                num_score=JLiteratureAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jeco in where_from:
-                easy=JEconomicsAnswer.objects.all().order_by('?')[:20]
-                num_score=JEconomicsAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-
-            elif get_jgov in where_from:
-                easy=JGovAnswer.objects.all().order_by('?')[:20]
-                num_score=JGovAnswer.objects.all()[:20]
-                context={"easy":easy}
-                data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-        else:
-            data['limit'] = "You Have Played Your Limit For The Hour"
         time_start = request.POST.get('time_start',)
+        time_lapse = request.POST.get("trivial_started",)
+        print("Time Lapsed",time_lapse)
+
+        if time_lapse:
+                print("Time Lapse",time_lapse)
+                start_timer = time.time()
+                request.session["trivial_time"]=start_timer
+
         if time_start:
-            import time,math
+           
             start_timer = time.time()
             request.session["get-timer"]=start_timer
-            
-            
+            if num_played < 20:
+                if weekday not in current_day:
+                    data['weekday']="This Game is only opened from Mondays to Saturdays"
+                    # return redirect("/")
+                if get_level1 in where_from:
+                    easy=LevelOneAnswer.objects.all().order_by('?')[:10]
+                    # num_score=LevelOneAnswer.objects.all()[:10]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    print("Ans list",ans_list)
+                    TempAnswer.objects.create(answers=ans_list,question_name='levone_ans',username=request.user)
+
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                elif get_level2 in where_from:
+                    # if "onecompleted" in request.session:
+                        # level_progress = "leveltwo"
+                        easy=LevelTwoAnswer.objects.all().order_by('?')[:10]
+                        # num_score=LevelTwoAnswer.objects.all()[:10]
+                        ans_list = [ans.correct_answer for ans in easy]
+                        TempAnswer.objects.create(answers=ans_list,question_name='levtwo_ans',username=request.user)
+                        context={"easy":easy}
+                        data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                        # del request.session['onecompleted']
+                    # else:
+                        # data['previous']="You need to complete the previous level to move to this level"
+                        # return redirect("/")
+                
+                elif get_level3 in where_from:
+                    # if "twocompleted" in request.session:
+                        # level_progress = "levelthree"
+                        easy=LevelThreeAnswer.objects.all().order_by('?')[:10]
+                        # num_score=LevelThreeAnswer.objects.all()[:10]
+                        ans_list = [ans.correct_answer for ans in easy]
+                        TempAnswer.objects.create(answers=ans_list,question_name='levthree_ans',username=request.user)
+                        context={"easy":easy}
+                        data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                        # del request.session['twocompleted']
+                    # else:
+                        # messages.error(request,"You need to complete the previous level to move to this level")
+                        # return redirect("/")
+                
+                elif get_level4 in where_from:
+                    # if "threecompleted" in request.session:
+                        # level_progress = "levelfour"
+                        easy=LevelFourAnswer.objects.all().order_by('?')[:10]
+                        # num_score=LevelFourAnswer.objects.all()[:10]
+                        ans_list = [ans.correct_answer for ans in easy]
+                        TempAnswer.objects.create(answers=ans_list,question_name='levfour_ans',username=request.user)                        
+                        context={"easy":easy}
+                        data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                        # del request.session['threecompleted']
+                    # else:
+                        # messages.error(request,"You need to complete the previous level to move to this level")
+                        # return redirect("/")
+                
+                elif get_level5 in where_from:
+                    # if  "fourcompleted" in request.session:
+                        # level_progress = "levelfive"
+                        easy=LevelFiveAnswer.objects.all().order_by('?')[:10]
+                        # num_score=LevelFiveAnswer.objects.all()[:10]
+                        ans_list = [ans.correct_answer for ans in easy]
+                        TempAnswer.objects.create(answers=ans_list,question_name='levfive_ans',username=request.user)
+                        context={"easy":easy}
+                        data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                        # del request.session['fourcompleted']
+                    # else:
+                        # data['previous']="You need to complete the previous level to move to this level"
+                        # return redirect("/")
+                
+                elif get_easy in where_from:
+                    easy=EasyAnswer.objects.all().order_by('?')[:50]
+                    # num_score=EasyAnswer.objects.all()[:50]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='easy_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                elif get_medium in where_from:
+                    easy=MediumAnswer.objects.all().order_by('?')[:50]
+                    # num_score=MediumAnswer.objects.all()[:50]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='medium_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                elif get_hard in where_from:
+                    easy=HardAnswer.objects.all().order_by('?')[:50]
+                    # num_score=HardAnswer.objects.all()[:50]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='hard_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_akwa in where_from:
+                    akwa=AkwaIbomAnswer.objects.all().order_by('?')[:10]
+                    # num_score=AkwaIbomAnswer.objects.all()[:10]
+                    ans_list = [ans.correct_answer for ans in akwa]
+                    TempAnswer.objects.create(answers=ans_list,question_name='akwa_ans',username=request.user)
+                    context={"easy":akwa}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_xmas in where_from:
+                    easy=HardAnswer.objects.all().order_by('?')[:10]
+                    # num_score=HardAnswer.objects.all()[:10]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='hard_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                ######################## JAMB View Question ###########################
+                elif get_jacct in where_from:
+                    easy=JAccountAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JAccountAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jacct_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jmath in where_from:
+                    easy=JMathAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JMathAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jmath_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jeng in where_from:
+                    easy=JEngAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JEngAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jeng_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jgeo in where_from:
+                    easy=JGeoAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JGeoAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jgeo_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jbio in where_from:
+                    easy=JBioAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JBioAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jbio_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jphy in where_from:
+                    easy=JPhysicsAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JPhysicsAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jphy_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jchem in where_from:
+                    easy=JChemistryAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JChemistryAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jchem_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jcomm in where_from:
+                    easy=JCommerceAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JCommerceAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jcomm_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jict in where_from:
+                    easy=JIctAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JIctAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jict_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jcrk in where_from:
+                    easy=JCrkAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JCrkAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jcrk_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+
+                elif get_jlit in where_from:
+                    easy=JLiteratureAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JLiteratureAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jlit_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jeco in where_from:
+                    easy=JEconomicsAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JEconomicsAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jeco_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_jgov in where_from:
+                    easy=JGovAnswer.objects.all().order_by('?')[:20]
+                    # num_score=JGovAnswer.objects.all()[:20]
+                    ans_list = [ans.correct_answer for ans in easy]
+                    TempAnswer.objects.create(answers=ans_list,question_name='jgov_ans',username=request.user)
+                    context={"easy":easy}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+            else:
+                data['limit'] = "You Have Played Your Limit For The Hour"
+
+
+                
+    
+                
+                
             # def mycoverter(o):
             #     if isinstance(o,datetime.datetime):
             #         return o.__str__()
@@ -902,43 +966,25 @@ def easy_submit(request,username):
             print(start_timer)
          
         time_end = request.POST.get("end_time",)
+        
         if time_end:
-            import time,math
+            
             end_timer=time.time()
-            time_differ = math.floor(end_timer - request.session["get-timer"])
+            time_differ = math.floor(request.session["trivial_time"] - request.session["get-timer"])
             if time_differ in time_diff_arr or time_differ in time_diff_arr2:
                     
             # get_time_diff = int(time_end - time_start)
                 score=0
                 if request.method == 'POST':
-                    easy_ans=EasyAnswer.objects.all()
-                    medium_ans=MediumAnswer.objects.all()
-                    hard_ans=HardAnswer.objects.all()
-                    akwa_ans=AkwaIbomAnswer.objects.all()
-                    xmas_ans=HardAnswer.objects.all()
-                    levone_ans=LevelOneAnswer.objects.all()
-                    levtwo_ans=LevelTwoAnswer.objects.all()
-                    levthree_ans=LevelThreeAnswer.objects.all()
-                    levfour_ans=LevelFourAnswer.objects.all()
-                    levfive_ans=LevelFiveAnswer.objects.all()
-
-                    ################ JAMB Post View #############
-                    jacct_ans = JAccountAnswer.objects.all()
-                    jgeo_ans = JGeoAnswer.objects.all()
-                    jbio_ans = JBioAnswer.objects.all()
-                    jphy_ans = JPhysicsAnswer.objects.all()
-                    jchem_ans = JChemistryAnswer.objects.all()
-                    jcomm_ans = JCommerceAnswer.objects.all()
-                    jict_ans = JIctAnswer.objects.all()
-                    jcrk_ans = JCrkAnswer.objects.all()
-                    jlit_ans = JLiteratureAnswer.objects.all()
-                    jeco_ans = JEconomicsAnswer.objects.all()
-                    jgov_ans = JGovAnswer.objects.all()
-                    jeng_ans = JMathAnswer.objects.all()
-                    jmath_ans = JEngAnswer.objects.all()
+                    get_correct_answer_name = request.POST.get("correct_answers",None)
+                    print("Get correct answer",get_correct_answer_name)
+                    
+                    question_answers = TempAnswer.objects.get(question_name=get_correct_answer_name,username=request.user)
                     # jamb=jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans
-                    num_score=list(set(chain(easy_ans,medium_ans,hard_ans,akwa_ans,xmas_ans,levone_ans,levtwo_ans,levthree_ans,levfour_ans,levfive_ans)))
+                    num_score= ast.literal_eval(question_answers.answers) 
+                    print("Num score",num_score,type(num_score))
                     score_count=request.POST.getlist('answer[]',None)
+                    print("Score Count", score_count)
                     score_point=request.POST.getlist('ran_score',None)
                     if type(score_point) == "<class 'list'>" :
                         score_point=int(score_point[0])
@@ -946,9 +992,11 @@ def easy_submit(request,username):
                         score_point=0
                     
                     # print("ran score",score_point)
-                    correct_ans=[correct.correct_answer for correct in num_score]
+                    correct_ans=[correct for correct in num_score]
+                    print("Correct_ans",correct_ans,type(correct_ans))
                     if score_count:
                         contained=[a for a in score_count if a in correct_ans]
+                        print("Contanined",contained)
                         for scores in contained:
                             score+=10
                         # print(score)
@@ -965,53 +1013,53 @@ def easy_submit(request,username):
                     # correct_ans=[correct.correct_answer for correct in num_score]
                     # print(correct_ans)
 
-                    print(get_level1)
+                    # print(get_level1)
                     # print(request.META.get('HTTP_REFERER'))
                     
-                    
+                    TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user).delete()
                     if score > 0:
                         if get_easy in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 # request.session['easycompleted']='easycomplete'
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="easy")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
-                            elif score > score_point:
+                            elif score > int(score_point[0]):
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="easy")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             
                         elif get_medium in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 # request.session['mediumcompleted']='mediumcomplete'
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="medium")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
-                            elif score > score_point:
+                            elif score > int(score_point[0]):
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="medium")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time" 
                         elif get_hard in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="hard")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
-                            elif score > score_point:
+                            elif score > int(score_point[0]):
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="hard")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                         elif get_akwa in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
-                            elif score > score_point:
+                            elif score > int(score_point[0]): 
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_xmas in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="xmas")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
@@ -1021,7 +1069,7 @@ def easy_submit(request,username):
                                 data["thanks"]="Thanks For playing See You Next Time"
 
                         elif get_jacct in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="account")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="account",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1031,7 +1079,7 @@ def easy_submit(request,username):
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jbio in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="biology")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="biology",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1041,7 +1089,7 @@ def easy_submit(request,username):
                                 data["thanks"]="Thanks For Practicing See You Next Time"
                             
                         elif get_jgeo in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="geography")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="geography",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1051,7 +1099,7 @@ def easy_submit(request,username):
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jphy in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="Physics")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="Physics",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1061,7 +1109,7 @@ def easy_submit(request,username):
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jchem in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="chemistry")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="chemistry",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1072,7 +1120,7 @@ def easy_submit(request,username):
 
 
                         elif get_jict in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="ict")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="ict",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1083,7 +1131,7 @@ def easy_submit(request,username):
 
 
                         elif get_jcomm in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="commerce")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="commerce",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1093,7 +1141,7 @@ def easy_submit(request,username):
                                 data["thanks"]="Thanks For Practicing See You Next Time"
 
                         elif get_jeng in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="english")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="english",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1104,7 +1152,7 @@ def easy_submit(request,username):
 
 
                         elif get_jmath in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="mathematics")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="mathematics",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1115,7 +1163,7 @@ def easy_submit(request,username):
 
 
                         elif get_jcrk in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="crk")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="crk",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1126,7 +1174,7 @@ def easy_submit(request,username):
 
 
                         elif get_jlit in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="literature")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="literature",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1148,7 +1196,7 @@ def easy_submit(request,username):
 
 
                         elif get_jgov in where_from:
-                            if score > 0:
+                            if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="government")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="government",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For Practicing See You Next Time"
@@ -1265,7 +1313,7 @@ def quiz(request,username):
     else: 
          ActivePlayer.objects.create(player_num=+1)
     weekday = datetime.datetime.now().strftime('%A') 
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     user=get_object_or_404(MyUser,username=username)
     try:
         bonus=BonusPointAirtime.objects.get(player=request.user)
@@ -1549,9 +1597,11 @@ def quiz(request,username):
                     if eligible_user < 5:
                         messages.error(request,"You need to have attempted any of the other Earn Airtime modes to be eligible for the 10-seconds Offer")
                         return redirect("/")
-                    if not time(18,00) <= now_time <= time(19,00):
-                        messages.error(request,"This Game is only opened from 6 p.m to 7:00 p.m")
-                        return redirect("/")
+
+                    # if not time(18,00) <= now_time <= time(19,00):
+                    #     messages.error(request,"This Game is only opened from 6 p.m to 7:00 p.m")
+                    #     return redirect("/")
+
                 # if  "mediumcompleted" in request.session:
                     # pick=random.choice(hard_ran_score)
                     # ran_score=pick
@@ -1785,13 +1835,23 @@ def UploadQuestion(request, format=None):
                                     'Easy':EasyQuestion,'Medium':MediumQuestion,'Hard':HardQuestion,
                                     'LevelOne':LevelOneQuestion,'LevelTwo':LevelTwoQuestion,
                                     'LevelThree':LevelThreeQuestion,'LevelFour':LevelFourQuestion,
-                                    'LevelFive':LevelFiveQuestion,'AkwaIbom':AkwaIbomQuestion
+                                    'LevelFive':LevelFiveQuestion,'AkwaIbom':AkwaIbomQuestion,
+                                    'JAccount':JAccountQuestion,'JGeo':JGeoQuestion,'JBio':JBioQuestion,
+                                    'JPhysics':JPhysicsQuestion,'JChemistry':JChemistryQuestion,
+                                    'JCommerce':JCommerceQuestion,'JIct':JIctQuestion,'JCrk':JCrkQuestion,
+                                    'JLiterature':JLiteratureQuestion,'JEconomics':JEconomicsQuestion,
+                                    'JGov':JGovQuestion
                                     }
             answer_object_array = {
                             'Easy':EasyAnswer,'Medium':MediumAnswer,'Hard':HardAnswer,
                                 'LevelOne':LevelOneAnswer,'LevelTwo':LevelTwoAnswer,
                                 'LevelThree':LevelThreeAnswer,'LevelFour':LevelFourAnswer,
-                                'LevelFive':LevelFiveAnswer,'AkwaIbom':AkwaIbomAnswer
+                                'LevelFive':LevelFiveAnswer,'AkwaIbom':AkwaIbomAnswer,
+                                'JAccount':JAccountAnswer,'JGeo':JGeoAnswer,'JBio':JBioAnswer,
+                                'JPhysics':JPhysicsAnswer,'JChemistry':JChemistryAnswer,
+                                'JCommerce':JCommerceAnswer,'JIct':JIctAnswer,'JCrk':JCrkAnswer,
+                                'JLiterature':JLiteratureAnswer,'JEconomics':JEconomicsAnswer,
+                                'JGov':JGovAnswer
                                 }
             # print("Files",request.FILES['question_file'])
             try:

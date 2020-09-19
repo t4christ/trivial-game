@@ -37,4 +37,16 @@ if __name__ == "__main__":
 
 
 
+# def correct_answer_list():
+#     correct_answers_list = {"easy_ans": EasyAnswer, "medium_ans":MediumAnswer, "hard_ans":HardAnswer, "akwa_ans":AkwaIbomAnswer,
+#     "xmas_ans":HardAnswer, "levone_ans":LevelOneAnswer, "levtwo_ans":LevelTwoAnswer, "levthree_ans":LevelThreeAnswer, "levfour_ans":LevelFourAnswer,
+#     "levfive_ans":LevelFiveAnswer, "jacct_ans": JAccountAnswer, "jgeo_ans": JGeoAnswer, "jbio_ans": JBioAnswer,
+#     "jphy_ans": JPhysicsAnswer, "jchem_ans": JChemistryAnswer, "jcomm_ans": JCommerceAnswer, "jict_ans": JIctAnswer,
+#     "jcrk_ans": JCrkAnswer, "jlit_ans": JLiteratureAnswer, "jeco_ans": JEconomicsAnswer, "jgov_ans": JGovAnswer,
+#     "jeng_ans": JEngAnswer, "jmath_ans": JMathAnswer 
+#     }
+#     return correct_answers_list
 
+'JAccount':JAccountAnswer,'JGeo':JGeoAnswer,'JBio':JBioAnswer,'JPhysics':JPhysicsAnswer,'JChemistry':JChemistryAnswer,
+'JCommerce':JCommerceAnswer,'JIct':JIctAnswer,'JCrk':JCrkAnswer,'JLiterature':JLiteratureAnswer,'JEconomics':JEconomicsAnswer,
+'JGov':JGovAnswer

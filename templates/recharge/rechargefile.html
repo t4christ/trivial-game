@@ -2,7 +2,9 @@
 let arr_score = {};
 let final_score=[]
 let contain = null;
-var changed = false;
+let changed = false;
+let correct_answers;
+let element = document.getElementById("loading_balls");
 let link = document.querySelector(".link").value;
 let ran_score = document.querySelector(".ran_score").value;
 let t;
@@ -219,11 +221,13 @@ let get_ind;
 if(location.includes('level1')){
                 get_ind = location.indexOf('level1')
                 level = location[get_ind]
+                correct_answers = "levone_ans"
                 // alert(location[get_ind])
 
             }
 
 else if(location.includes('level2')){
+    correct_answers = "levtwo_ans"
     get_ind = location.indexOf('level2')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -232,6 +236,7 @@ else if(location.includes('level2')){
 
 
 else if(location.includes('level3')){
+    correct_answers = "levthree_ans"
     get_ind = location.indexOf('level3')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -239,6 +244,7 @@ else if(location.includes('level3')){
             }
 
 else if(location.includes('level4')){
+    correct_answers = "levfour_ans"
     get_ind = location.indexOf('level4')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -247,6 +253,7 @@ else if(location.includes('level4')){
 
 
 else if(location.includes('level5')){
+    correct_answers = "levfive_ans"
     get_ind = location.indexOf('level5')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -256,6 +263,7 @@ else if(location.includes('level5')){
 
 
 else if(location.includes('easy')){
+    correct_answers = "easy_ans"
     get_ind = location.indexOf('easy')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -264,6 +272,7 @@ else if(location.includes('easy')){
 
 
 else if(location.includes('medium')){
+    correct_answers = "medium_ans"
     get_ind = location.indexOf('medium')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -274,6 +283,7 @@ else if(location.includes('medium')){
 
 
 else if(location.includes('hard')){
+    correct_answers = "hard_ans"
     get_ind = location.indexOf('hard')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -281,6 +291,7 @@ else if(location.includes('hard')){
             }
 
 else if(location.includes('akwa')){
+    correct_answers = "akwa_ans"
     get_ind = location.indexOf('akwa')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -288,6 +299,7 @@ else if(location.includes('akwa')){
             }
 
 else if(location.includes('xmas')){
+    correct_answers = "xmas_ans"
     get_ind = location.indexOf('xmas')
     level = location[get_ind]
                 // alert(location[get_ind])
@@ -299,14 +311,13 @@ return level
 
 
 
-function started(){
-const time_start= "Player Started"
-const start = new Date().getTime();
-const start_time= Math.floor(start/1000 % 60);
 
+function started(parameters){
+const time_start= "Player Started"
+console.log("Parameters",parameters)
 $.ajax({
       url: link,
-      data: {'time_start':start_time,csrfmiddlewaretoken:'{{csrf_token}}'},
+      data: {...parameters,csrfmiddlewaretoken:'{{csrf_token}}'},
       type: "post",
       dataType: 'json',
       success: function (data) {
@@ -339,6 +350,7 @@ $.ajax({
 
 
 
+
 function getName(event){
 var targ= event.target
 var minutes = 0
@@ -367,7 +379,16 @@ else{
 
 }
 
-
+    function once(fn,context){
+            var result;
+            return function(){
+                if(fn){
+                    result = fn.apply(context || this, arguments);
+                    fn=null;
+                };
+                return result;
+            }
+        }
 
 
 function startTimer(duration, display) {
@@ -388,16 +409,7 @@ t =  setInterval(function () {
         display.textContent = minutes + ":" + seconds;
 
 
-        function once(fn,context){
-            var result;
-            return function(){
-                if(fn){
-                    result = fn.apply(context || this, arguments);
-                    fn=null;
-                };
-                return result;
-            }
-        }
+    
 
         if (--timer == 0 && fire == 0) {
             stopTimer()
@@ -433,7 +445,7 @@ const end = new Date().getTime();
 const end_time= Math.floor(end/1000 % 60);
     $.ajax({
       url: link,
-      data: {'answer':final_score,'ran_score':ran_score,'end_time':end_time,csrfmiddlewaretoken:'{{csrf_token}}'},
+      data: {'correct_answers':correct_answers,'answer':final_score,'ran_score':ran_score,'end_time':end_time,csrfmiddlewaretoken:'{{csrf_token}}'},
       type: "post",
       dataType: 'json',
       success: function (data) {
@@ -454,7 +466,7 @@ const end_time= Math.floor(end/1000 % 60);
        console.log(arr_score)
 
     if(data.thanks){
-        
+          let trivial_level = ['level1','level2','level3','level4']
           document.querySelector(".result").innerHTML=data.thanks
 
           var player_score=data.user_score
@@ -478,6 +490,13 @@ const end_time= Math.floor(end/1000 % 60);
 
         $(".easy-question").load(document.URL + ' .easy-question')
         document.querySelector("#recharge-time").innerHTML="Game Over"
+        }
+        else if(trivial_level.includes(level_locatefive)){
+        document.querySelector(".questionwrap").innerHTML="Your score is  "+ correct_ans + ". "
+        $(".easy-question").load(document.URL + ' .easy-question')
+        // $("#recharge-time").load(document.URL + ' #recharge-time')
+        document.querySelector("#recharge-time").innerHTML="Game Over"
+        document.querySelector(".respin").style.display="none"
         }
         else if(level_locatefive == "level5"){
         document.querySelector(".questionwrap").innerHTML="Congratulations For Making To The Top. You score is  "+ correct_ans + ""
@@ -605,7 +624,7 @@ const end_time= Math.floor(end/1000 % 60);
 scoreSaver(); 
 
 
-
+return
             
         }
 
@@ -613,6 +632,25 @@ scoreSaver();
 
 
     }, 1000);
+}
+
+
+let started_trivial = () =>{
+    const start_date = new Date().getTime();
+    const start_time= Math.floor(start_date/1000 % 60);
+    let parameters = {'trivial_started':start_time}
+    started(parameters)
+}
+
+function questionReady(started_trivial,start,minutes,display){
+    $("body").one('DOMSubtreeModified',".question_option",function(){
+
+    element.classList.remove("loading_balls");
+    element.classList.add("hide");
+    started_trivial()
+    start(minutes,display)
+
+})
 }
 
 
@@ -635,13 +673,17 @@ var start_level_five = document.querySelector('#start_level_five');
 /********************** JAMB Start Function **************************/
 if(start_jamb){
 start_jamb.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     removeDummy()
-    var minutes = 60 * 20,
+    let minutes = 60 * 20,
         display = document.querySelector('#recharge-time');
         $('.easy-question').show(1000);
         $("#start_jamb").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+    questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 /************************************************************/
@@ -652,21 +694,28 @@ start_jamb.onclick = function () {
 // start
 if(start){
 start.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
     removeDummy()
-    var minutes = 60 * 2,
+    let parameters = {'time_start':start_time}
+    started(parameters)
+    let minutes = 60 * 2,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+    questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 
 if(start_xmas){
 start_xmas.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     removeDummy()
     var minutes = 60 * 1/6,
         display = document.querySelector('#recharge-time');
@@ -674,22 +723,29 @@ start_xmas.onclick = function () {
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+    questionReady(started_trivial,startTimer,minutes,display);
 };
 }
 
 
 if(start_anniv){
 start_anniv.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     removeDummy()
-    var minutes = 60 * 1/2,
+    var minutes = 60 * 3/4,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+        
+
+    questionReady(started_trivial,startTimer,minutes,display);
+
+        
 };
 }
 
@@ -699,7 +755,10 @@ start_anniv.onclick = function () {
 // start_level_one
 if(start_level_one){
 start_level_one.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     removeDummy()
     var minutes = 60 * 10/12,
         display = document.querySelector('#recharge-time');
@@ -709,21 +768,26 @@ start_level_one.onclick = function () {
         $('.easy-question').show(1000);
 
         $("#start_level_one").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+        questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 
 // start_level_two
 if(start_level_two){
 start_level_two.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     var minutes = 60 * 10/15,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start_level_two").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+        questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 
@@ -731,42 +795,54 @@ start_level_two.onclick = function () {
 
 if(start_level_three){
 start_level_three.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     var minutes = 60 * 10/20,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start_level_three").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+        questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 // start_level_four
 if(start_level_four){
 
 start_level_four.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     var minutes = 60 * 1/3,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start_level_four").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+        questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 
 // start_level_five
 if(start_level_five){
 start_level_five.onclick = function () {
-    started()
+    const start = new Date().getTime();
+    const start_time= Math.floor(start/1000 % 60);
+    let parameters = {'time_start':start_time}
+    started(parameters)
     var minutes = 60 * 2/6,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start_level_five").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    startTimer(minutes, display);
+        questionReady(started_trivial,startTimer,minutes,display);
+
 };
 }
 
@@ -780,6 +856,9 @@ $(document).ready(function(){
 
 $(".start-btn").click(function() {
     
+  element.classList.remove("hide");
+  element.classList.add("loading_balls");
+
 });
 
 

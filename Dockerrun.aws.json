@@ -32,6 +32,30 @@
       "image": "texplode/free-airtime",
       "hostname": "web"
     },
+
+    {
+      "command": [
+        "./start_celery_worker.sh"
+      ],
+      "name":"web",
+      "essential": true,
+      "links": ["redis"],
+      "memory": 256,
+      "image": "texplode/free-airtime",
+      "hostname": "celery_worker"
+    },
+
+    {
+      "command": [
+        "./start_celery_beat.sh"
+      ],
+      "name":"web",
+      "essential": true,
+      "links": ["redis"],
+      "memory": 256,
+      "image": "texplode/free-airtime",
+      "hostname": "celery_beat"
+    },
     
     {
       "name":"nginx",
