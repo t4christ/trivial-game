@@ -37,24 +37,24 @@
       "command": [
         "./start_celery_worker.sh"
       ],
-      "name":"celery_worker",
+      "name":"celery-worker",
       "essential": true,
       "links": ["redis"],
       "memory": 256,
       "image": "texplode/free-airtime",
-      "hostname": "celery_worker"
+      "hostname": "celery-worker"
     },
 
     {
       "command": [
         "./start_celery_beat.sh"
       ],
-      "name":"celery_beat",
+      "name":"celery-beat",
       "essential": true,
       "links": ["redis"],
       "memory": 256,
       "image": "texplode/free-airtime",
-      "hostname": "celery_beat"
+      "hostname": "celery-beat"
     },
     
     {
