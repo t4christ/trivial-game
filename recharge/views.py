@@ -202,6 +202,10 @@ def statistics(request):
         high_hard_mn = HighestScoreStatistic.objects.filter(difficulty="hard",timestamp__month=time_mon).count()
         high_hard_yr = HighestScoreStatistic.objects.filter(difficulty="hard",timestamp__year=time_year).count()
 
+        high_akwa_hr = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_hour).count()
+        high_akwa_dy = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__startswith=time_day).count()
+        high_akwa_mn = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__month=time_mon).count()
+        high_akwa_yr = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__year=time_year).count()
 
         high_levone_hr = HighestScoreStatistic.objects.filter(difficulty="levelone",timestamp__gte=time_hour).count()
         high_levone_dy = HighestScoreStatistic.objects.filter(difficulty="levelone",timestamp__startswith=time_day).count()
@@ -238,6 +242,7 @@ def statistics(request):
         easy_players_hr=PlayerStatistic.objects.filter(difficulty="easy",timestamp__gte=time_hour).count()
         med_players_hr = PlayerStatistic.objects.filter(difficulty="medium",timestamp__gte=time_hour).count()
         hard_players_hr = PlayerStatistic.objects.filter(difficulty="hard",timestamp__gte=time_hour).count()
+        akwa_players_hr = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_hour).count()
         levone_players_hr = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__gte=time_hour).count()
         levtwo_players_hr = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__gte=time_hour).count()
         levthree_players_hr = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__gte=time_hour).count()
@@ -249,6 +254,7 @@ def statistics(request):
         easy_players_dy=PlayerStatistic.objects.filter(difficulty="easy",timestamp__startswith=time_day).count()
         med_players_dy = PlayerStatistic.objects.filter(difficulty="medium",timestamp__startswith=time_day).count()
         hard_players_dy = PlayerStatistic.objects.filter(difficulty="hard",timestamp__startswith=time_day).count()
+        akwa_players_dy = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__startswith=time_day).count()
         levone_players_dy = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__startswith=time_day).count()
         levtwo_players_dy = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__startswith=time_day).count()
         levthree_players_dy = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__startswith=time_day).count()
@@ -261,6 +267,7 @@ def statistics(request):
         easy_players_mn=PlayerStatistic.objects.filter(difficulty="easy",timestamp__month=time_mon).count()
         med_players_mn = PlayerStatistic.objects.filter(difficulty="medium",timestamp__month=time_mon).count()
         hard_players_mn = PlayerStatistic.objects.filter(difficulty="hard",timestamp__month=time_mon).count()
+        akwa_players_mn = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__month=time_mon).count()
         levone_players_mn = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__month=time_mon).count()
         levtwo_players_mn = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__month=time_mon).count()
         levthree_players_mn = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__month=time_mon).count()
@@ -274,6 +281,7 @@ def statistics(request):
         easy_players_yr=PlayerStatistic.objects.filter(difficulty="easy",timestamp__year=time_year).count()
         med_players_yr = PlayerStatistic.objects.filter(difficulty="medium",timestamp__year=time_year).count()
         hard_players_yr = PlayerStatistic.objects.filter(difficulty="hard",timestamp__year=time_year).count()
+        akwa_players_yr = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__year=time_year).count()
         levone_players_yr = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__year=time_year).count()
         levtwo_players_yr = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__year=time_year).count()
         levthree_players_yr = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__year=time_year).count()
@@ -284,6 +292,7 @@ def statistics(request):
 
 
         context={'count_play':count_play,'heyr':high_easy_yr,'hedy':high_easy_dy,'hemn':high_easy_mn,'hehr':high_easy_hr,
+        'hayr':high_akwa_yr,'hady':high_akwa_dy,'hamn':high_akwa_mn,'hahr':high_akwa_hr,
         'hmyr':high_med_yr,'hmdy':high_med_dy,'hmmn':high_med_mn,'hmhr':high_med_hr,
         'hhyr':high_hard_yr,'hhdy':high_hard_dy,'hhmn':high_hard_mn,'hhhr':high_hard_hr,
         'hl1yr':high_levone_yr,'hl1dy':high_levone_dy,'hl1mn':high_levone_mn,'hl1hr':high_levone_hr,
