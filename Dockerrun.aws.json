@@ -40,7 +40,7 @@
       "name":"celery-worker",
       "essential": true,
       "links": ["redis"],
-      "memory": 256,
+      "memory": 128,
       "image": "texplode/free-airtime",
       "hostname": "celery-worker"
     },
@@ -52,7 +52,7 @@
       "name":"celery-beat",
       "essential": true,
       "links": ["redis"],
-      "memory": 256,
+      "memory": 128,
       "image": "texplode/free-airtime",
       "hostname": "celery-beat"
     },
