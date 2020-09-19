@@ -33,17 +33,7 @@
       "hostname": "web"
     },
 
-    {
-      "command": [
-        "./start_celery_worker.sh"
-      ],
-      "name":"celery-worker",
-      "essential": true,
-      "links": ["redis"],
-      "memory": 128,
-      "image": "texplode/free-airtime",
-      "hostname": "celery-worker"
-    },
+
 
     {
       "command": [
