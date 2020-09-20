@@ -1007,7 +1007,7 @@ def easy_submit(request,username):
                     get_correct_answer_name = request.POST.get("correct_answers",None)
                     print("Get correct answer",get_correct_answer_name)
                     
-                    question_answers = TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user)[1]
+                    question_answers = TempAnswer.objects.get(question_name=get_correct_answer_name,username=request.user)
                     # jamb=jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans
                     num_score= ast.literal_eval(question_answers.answers) 
                     print("Num score",num_score,type(num_score))
@@ -1044,7 +1044,7 @@ def easy_submit(request,username):
                     # print(get_level1)
                     # print(request.META.get('HTTP_REFERER'))
                     
-                    TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user).delete()
+                    TempAnswer.objects.get(question_name=get_correct_answer_name,username=request.user).delete()
                     if score > 0:
                         if get_easy in where_from:
                             if score > 0 and score < int(score_point[0]):
