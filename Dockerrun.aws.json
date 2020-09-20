@@ -19,7 +19,7 @@
       "name":"celery-beat",
       "essential": true,
       "memory": 128,
-      "image": "texplode/free-airtime",
+      "image": "texplode/trivial-celery",
       "hostname": "celery-beat"
     },
     
