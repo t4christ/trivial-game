@@ -1003,7 +1003,7 @@ def easy_submit(request,username):
                     get_correct_answer_name = request.POST.get("correct_answers",None)
                     print("Get correct answer",get_correct_answer_name)
                     
-                    question_answers = TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user)[0]
+                    question_answers = TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user)[1]
                     # jamb=jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans
                     num_score= ast.literal_eval(question_answers.answers) 
                     print("Num score",num_score,type(num_score))
