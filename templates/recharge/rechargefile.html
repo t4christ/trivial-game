@@ -641,7 +641,7 @@ let started_trivial = () =>{
     const start_time= Math.floor(start_date/1000 % 60);
     let parameters = {'trivial_started':start_time}
     let user = document.querySelector(".trivial_user").value;
-    let trivial_link = `/recharge/time_lapse/${user}`
+    let trivial_link = `/recharge/time_lapse/${user}/`
     started(parameters,trivial_link)
 }
 

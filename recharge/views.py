@@ -707,7 +707,7 @@ def easy_submit(request,username):
         data =dict()
         start_timer=0
         time_differ=0
-        time_diff_arr= range(1,60)
+        time_diff_arr= range(1,61)
         time_diff_arr2=range(117,129)
         #[58,50,51,52,53,54,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,43,44,45,46,47,48,49,9,10,11,12,13,14,15,16,17,18,19,20,118,119,120,121,122,123,124,125,126,127,128,129,130]
         time_diff = timezone.now() - timezone.timedelta(hours=3)
@@ -747,6 +747,7 @@ def easy_submit(request,username):
         print("Print Played",num_played)
         # end_timer=0
         time_start = request.POST.get('time_start',)
+        time_end = request.POST.get("end_time",)
 
 
         if time_start:
@@ -760,7 +761,7 @@ def easy_submit(request,username):
                 
         
 
-        if num_played < 20:
+        if num_played < 20 and not time_end:
                 if weekday not in current_day:
                     data['weekday']="This Game is only opened from Mondays to Saturdays"
                     # return redirect("/")
@@ -988,7 +989,7 @@ def easy_submit(request,username):
             # b=start_timer
             # print(start_timer)
          
-        time_end = request.POST.get("end_time",)
+        
         
         if time_end:
             
@@ -1509,12 +1510,12 @@ def quiz(request,username):
             if weekday not in current_day:
                 messages.error(request,"This Game is only opened from Mondays to Saturdays")
                 return redirect("/")
-            if not time(6,00) <= now_time <= time(23,59):
-                messages.error(request,"This Game is only opened from 6a.m to 12 midnight")
-                return redirect("/")
-            if not time(6,00) <= now_time <= time(21,50) and weekday == 'Sunday':
-                messages.error(request,"This Game is only opened from 6 a.m to 9 p.m")
-                return redirect("/")
+            # if not time(6,00) <= now_time <= time(23,59):
+            #     messages.error(request,"This Game is only opened from 6a.m to 12 midnight")
+            #     return redirect("/")
+            # if not time(6,00) <= now_time <= time(21,50) and weekday == 'Sunday':
+            #     messages.error(request,"This Game is only opened from 6 a.m to 9 p.m")
+            #     return redirect("/")
 
             if get_level1 in where_from:
                 easy=LevelOneAnswer.objects.all().order_by('?')[:10]
