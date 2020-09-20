@@ -2,25 +2,11 @@
   "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
-      "name":"redis",
-      "essential": true,
-      "image": "redis:latest",
-      "memory": 128,
-      "hostname": "redis",
-      "portMappings": [
-        {
-          "containerPort": 6379,
-          "hostPort": 6379
-        }
-      ]
-    },
-    {
       "command": [
         "./start.sh"
       ],
       "name":"web",
       "essential": true,
-      "links": ["redis"],
       "memory": 256,
       "image": "texplode/free-airtime",
       "hostname": "web"
@@ -32,7 +18,6 @@
       ],
       "name":"celery-beat",
       "essential": true,
-      "links": ["redis"],
       "memory": 128,
       "image": "texplode/free-airtime",
       "hostname": "celery-beat"
