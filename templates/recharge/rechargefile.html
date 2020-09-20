@@ -705,7 +705,7 @@ start.onclick = function () {
         document.querySelector("#reg-details").style.display="none";
         $('.easy-question').show(1000);
         $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-    questionReady(started_trivial,startTimer,minutes,display);
+     return questionReady(started_trivial,startTimer,minutes,display);
 
 };
 }
@@ -743,7 +743,7 @@ start_anniv.onclick = function () {
         $("#start").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
         
 
-    questionReady(started_trivial,startTimer,minutes,display);
+    return questionReady(started_trivial,startTimer,minutes,display);
 
         
 };
@@ -768,7 +768,7 @@ start_level_one.onclick = function () {
         $('.easy-question').show(1000);
 
         $("#start_level_one").css({"transform":"scale(1.1)","transition":"all 0.8s ease-in-out","opacity":"0.9"})
-        questionReady(started_trivial,startTimer,minutes,display);
+       return  questionReady(started_trivial,startTimer,minutes,display);
 
 };
 }

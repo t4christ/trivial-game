@@ -693,7 +693,7 @@ def easy_submit(request,username):
         data =dict()
         start_timer=0
         time_differ=0
-        time_diff_arr= range(1,55)
+        time_diff_arr= range(1,60)
         time_diff_arr2=range(117,129)
         #[58,50,51,52,53,54,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,43,44,45,46,47,48,49,9,10,11,12,13,14,15,16,17,18,19,20,118,119,120,121,122,123,124,125,126,127,128,129,130]
         time_diff = timezone.now() - timezone.timedelta(hours=3)
@@ -702,7 +702,6 @@ def easy_submit(request,username):
         current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
         current_site = request.META['HTTP_HOST']
         where_from = request.META.get('HTTP_REFERER')
-
     
         get_easy = "%s/recharge/easy/%s/"%(current_site,request.user)
         get_medium = "%s/recharge/medium/%s/"%(current_site,request.user)
@@ -730,7 +729,6 @@ def easy_submit(request,username):
         get_jeco = "%s/jamb/economics/%s/"%(current_site,request.user)
         get_jgov = "%s/jamb/government/%s/"%(current_site,request.user)
 
-
         num_played = UserCorrectAnswer.objects.filter(user=request.user,timestamp__gte=time_diff).count()
         print("Print Played",num_played)
         # end_timer=0
@@ -738,18 +736,27 @@ def easy_submit(request,username):
         time_lapse = request.POST.get("trivial_started",)
         print("Time Lapsed",time_lapse)
 
-        if time_lapse:
-                print("Time Lapse",time_lapse)
-                lapse_timer = time.time()
-                request.session["trivial_time"]=lapse_timer
+
+
 
         if time_start:
            
             start_timer = time.time()
+            request.session['get-start'] = time_start
             request.session["get-timer"]=start_timer
-            print("Time Start",time_lapse)
+            print("Time Start",time_start)
+        
+        if time_lapse:
+            print("Time Lapse deduct",time_lapse, int(time_lapse) - int(request.session['get-start']))
+            time_lapse_diff = int(time_lapse) - int(request.session['get-start'])
+            if time_lapse_diff < 0:
+                time_lapse_diff = 60 + time_lapse - int(request.session['get-start'])
+            request.session["trivial_time"] = time_lapse_diff
+            print("Final time_lapse",time_lapse_diff)
+                
+        
 
-            if num_played < 20:
+        if num_played < 20:
                 if weekday not in current_day:
                     data['weekday']="This Game is only opened from Mondays to Saturdays"
                     # return redirect("/")
@@ -758,17 +765,18 @@ def easy_submit(request,username):
                     # num_score=LevelOneAnswer.objects.all()[:10]
                     ans_list = [ans.correct_answer for ans in easy]
                     print("Ans list",ans_list)
-                    TempAnswer.objects.create(answers=ans_list,question_name='levone_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='levone_ans',username=request.user)
 
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+                    pass
                 elif get_level2 in where_from:
                     # if "onecompleted" in request.session:
                         # level_progress = "leveltwo"
                         easy=LevelTwoAnswer.objects.all().order_by('?')[:10]
                         # num_score=LevelTwoAnswer.objects.all()[:10]
                         ans_list = [ans.correct_answer for ans in easy]
-                        TempAnswer.objects.create(answers=ans_list,question_name='levtwo_ans',username=request.user)
+                        TempAnswer.objects.get_or_create(answers=ans_list,question_name='levtwo_ans',username=request.user)
                         context={"easy":easy}
                         data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
                         # del request.session['onecompleted']
@@ -782,7 +790,7 @@ def easy_submit(request,username):
                         easy=LevelThreeAnswer.objects.all().order_by('?')[:10]
                         # num_score=LevelThreeAnswer.objects.all()[:10]
                         ans_list = [ans.correct_answer for ans in easy]
-                        TempAnswer.objects.create(answers=ans_list,question_name='levthree_ans',username=request.user)
+                        TempAnswer.objects.get_or_create(answers=ans_list,question_name='levthree_ans',username=request.user)
                         context={"easy":easy}
                         data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
                         # del request.session['twocompleted']
@@ -796,7 +804,7 @@ def easy_submit(request,username):
                         easy=LevelFourAnswer.objects.all().order_by('?')[:10]
                         # num_score=LevelFourAnswer.objects.all()[:10]
                         ans_list = [ans.correct_answer for ans in easy]
-                        TempAnswer.objects.create(answers=ans_list,question_name='levfour_ans',username=request.user)                        
+                        TempAnswer.objects.get_or_create(answers=ans_list,question_name='levfour_ans',username=request.user)                        
                         context={"easy":easy}
                         data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
                         # del request.session['threecompleted']
@@ -810,7 +818,7 @@ def easy_submit(request,username):
                         easy=LevelFiveAnswer.objects.all().order_by('?')[:10]
                         # num_score=LevelFiveAnswer.objects.all()[:10]
                         ans_list = [ans.correct_answer for ans in easy]
-                        TempAnswer.objects.create(answers=ans_list,question_name='levfive_ans',username=request.user)
+                        TempAnswer.objects.get_or_create(answers=ans_list,question_name='levfive_ans',username=request.user)
                         context={"easy":easy}
                         data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
                         # del request.session['fourcompleted']
@@ -822,21 +830,21 @@ def easy_submit(request,username):
                     easy=EasyAnswer.objects.all().order_by('?')[:50]
                     # num_score=EasyAnswer.objects.all()[:50]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='easy_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='easy_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
                 elif get_medium in where_from:
                     easy=MediumAnswer.objects.all().order_by('?')[:50]
                     # num_score=MediumAnswer.objects.all()[:50]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='medium_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='medium_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
                 elif get_hard in where_from:
                     easy=HardAnswer.objects.all().order_by('?')[:50]
                     # num_score=HardAnswer.objects.all()[:50]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='hard_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='hard_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -844,7 +852,7 @@ def easy_submit(request,username):
                     akwa=AkwaIbomAnswer.objects.all().order_by('?')[:10]
                     # num_score=AkwaIbomAnswer.objects.all()[:10]
                     ans_list = [ans.correct_answer for ans in akwa]
-                    TempAnswer.objects.create(answers=ans_list,question_name='akwa_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='akwa_ans',username=request.user)
                     context={"easy":akwa}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -852,7 +860,7 @@ def easy_submit(request,username):
                     easy=HardAnswer.objects.all().order_by('?')[:10]
                     # num_score=HardAnswer.objects.all()[:10]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='hard_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='hard_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -861,7 +869,7 @@ def easy_submit(request,username):
                     easy=JAccountAnswer.objects.all().order_by('?')[:20]
                     # num_score=JAccountAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jacct_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jacct_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -869,7 +877,7 @@ def easy_submit(request,username):
                     easy=JMathAnswer.objects.all().order_by('?')[:20]
                     # num_score=JMathAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jmath_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jmath_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -877,7 +885,7 @@ def easy_submit(request,username):
                     easy=JEngAnswer.objects.all().order_by('?')[:20]
                     # num_score=JEngAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jeng_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jeng_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -885,7 +893,7 @@ def easy_submit(request,username):
                     easy=JGeoAnswer.objects.all().order_by('?')[:20]
                     # num_score=JGeoAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jgeo_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jgeo_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -893,7 +901,7 @@ def easy_submit(request,username):
                     easy=JBioAnswer.objects.all().order_by('?')[:20]
                     # num_score=JBioAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jbio_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jbio_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -901,7 +909,7 @@ def easy_submit(request,username):
                     easy=JPhysicsAnswer.objects.all().order_by('?')[:20]
                     # num_score=JPhysicsAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jphy_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jphy_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -909,7 +917,7 @@ def easy_submit(request,username):
                     easy=JChemistryAnswer.objects.all().order_by('?')[:20]
                     # num_score=JChemistryAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jchem_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jchem_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -917,7 +925,7 @@ def easy_submit(request,username):
                     easy=JCommerceAnswer.objects.all().order_by('?')[:20]
                     # num_score=JCommerceAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jcomm_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jcomm_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -925,7 +933,7 @@ def easy_submit(request,username):
                     easy=JIctAnswer.objects.all().order_by('?')[:20]
                     # num_score=JIctAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jict_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jict_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -933,7 +941,7 @@ def easy_submit(request,username):
                     easy=JCrkAnswer.objects.all().order_by('?')[:20]
                     # num_score=JCrkAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jcrk_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jcrk_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -942,7 +950,7 @@ def easy_submit(request,username):
                     easy=JLiteratureAnswer.objects.all().order_by('?')[:20]
                     # num_score=JLiteratureAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jlit_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jlit_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -950,7 +958,7 @@ def easy_submit(request,username):
                     easy=JEconomicsAnswer.objects.all().order_by('?')[:20]
                     # num_score=JEconomicsAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jeco_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jeco_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
@@ -958,10 +966,10 @@ def easy_submit(request,username):
                     easy=JGovAnswer.objects.all().order_by('?')[:20]
                     # num_score=JGovAnswer.objects.all()[:20]
                     ans_list = [ans.correct_answer for ans in easy]
-                    TempAnswer.objects.create(answers=ans_list,question_name='jgov_ans',username=request.user)
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='jgov_ans',username=request.user)
                     context={"easy":easy}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
-            else:
+        else:
                 data['limit'] = "You Have Played Your Limit For The Hour"
 
 
@@ -974,25 +982,28 @@ def easy_submit(request,username):
             #         return o.__str__()
             # json.dumps(request.session,default=mycoverter)
             # b=start_timer
-            print(start_timer)
+            # print(start_timer)
          
         time_end = request.POST.get("end_time",)
         
         if time_end:
             
             end_timer=time.time()
-            time_lapse_diff = request.session["trivial_time"] - request.session["get-timer"]
-            time_differ = math.floor(end_timer - time_lapse_diff)
-            print("Lapse difference", time-differ , time_lapse_diff, end_timer,request.session["trivial_time"],request.session["get-timer"])
+            time_lapse_diff = request.session["trivial_time"] 
+
+            time_differ = math.floor(end_timer - request.session["get-timer"]) 
+            time_differ = time_differ - time_lapse_diff
+            print("Lapse difference", time_differ,time_lapse_diff,end_timer,request.session["trivial_time"],request.session["get-timer"])
             if time_differ in time_diff_arr or time_differ in time_diff_arr2:
-                    
+                del request.session['trivial_time']
+                del request.session['get-timer']
             # get_time_diff = int(time_end - time_start)
                 score=0
                 if request.method == 'POST':
                     get_correct_answer_name = request.POST.get("correct_answers",None)
                     print("Get correct answer",get_correct_answer_name)
                     
-                    question_answers = TempAnswer.objects.get(question_name=get_correct_answer_name,username=request.user)
+                    question_answers = TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user)[0]
                     # jamb=jacct_ans,jgeo_ans,jbio_ans,jphy_ans,jchem_ans,jcomm_ans,jict_ans,jcrk_ans,jlit_ans,jeco_ans,jgov_ans,jeng_ans,jmath_ans
                     num_score= ast.literal_eval(question_answers.answers) 
                     print("Num score",num_score,type(num_score))
