@@ -273,7 +273,7 @@ CELERY_BEAT_SCHEDULE = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-if DEBUG:
+if not DEBUG:
 
     STATIC_DIR = os.path.join(BASE_DIR, 'staticfiles')
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
