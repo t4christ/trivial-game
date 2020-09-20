@@ -11,6 +11,7 @@ script:
 
 after_success:
   - docker build -t texplode/free-airtime  .
+  - docker build -t texplode/trivial-celery  .
   - docker build -t texplode/trivia-nginx  ./nginx
 
 
@@ -21,6 +22,7 @@ after_success:
 # Take images and push them to dockerhub
 
   - docker push texplode/free-airtime
+  - docker push texplode/trivial-celery
   - docker push texplode/trivia-nginx
 
 
