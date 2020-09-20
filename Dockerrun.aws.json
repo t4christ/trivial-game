@@ -2,13 +2,6 @@
   "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
-      "name":"postgres",
-      "essential": true,
-      "image": "postgres:alpine",
-      "memory": 256,
-      "hostname": "db"
-    },
-    {
       "name":"redis",
       "essential": true,
       "image": "redis:latest",
@@ -32,8 +25,6 @@
       "image": "texplode/free-airtime",
       "hostname": "web"
     },
-
-
 
     {
       "command": [
