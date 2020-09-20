@@ -313,7 +313,7 @@ return level
 
 
 
-function started(parameters){
+function started(parameters,link){
 const time_start= "Player Started"
 console.log("Parameters",parameters)
 $.ajax({
@@ -641,8 +641,8 @@ let started_trivial = () =>{
     const start_time= Math.floor(start_date/1000 % 60);
     let parameters = {'trivial_started':start_time}
     let user = document.querySelector(".trivial_user").value;
-    link = `/recharge/time_lapse/${user}`
-    started(parameters)
+    let trivial_link = `/recharge/time_lapse/${user}`
+    started(parameters,trivial_link)
 }
 
 function questionReady(started_trivial,start,minutes,display){
@@ -679,7 +679,7 @@ start_jamb.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     removeDummy()
     let minutes = 60 * 20,
         display = document.querySelector('#recharge-time');
@@ -701,7 +701,7 @@ start.onclick = function () {
     const start_time= Math.floor(start/1000 % 60);
     removeDummy()
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     let minutes = 60 * 2,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
@@ -718,7 +718,7 @@ start_xmas.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     removeDummy()
     var minutes = 60 * 1/6,
         display = document.querySelector('#recharge-time');
@@ -736,7 +736,7 @@ start_anniv.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     removeDummy()
     var minutes = 60 * 3/4,
         display = document.querySelector('#recharge-time');
@@ -761,7 +761,7 @@ start_level_one.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     removeDummy()
     var minutes = 60 * 10/12,
         display = document.querySelector('#recharge-time');
@@ -782,7 +782,7 @@ start_level_two.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     var minutes = 60 * 10/15,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
@@ -801,7 +801,7 @@ start_level_three.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     var minutes = 60 * 10/20,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
@@ -819,7 +819,7 @@ start_level_four.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     var minutes = 60 * 1/3,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
@@ -837,7 +837,7 @@ start_level_five.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
-    started(parameters)
+    started(parameters,link)
     var minutes = 60 * 2/6,
         display = document.querySelector('#recharge-time');
         document.querySelector(".wel-quest").style.display="none";
