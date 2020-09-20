@@ -740,13 +740,15 @@ def easy_submit(request,username):
 
         if time_lapse:
                 print("Time Lapse",time_lapse)
-                start_timer = time.time()
-                request.session["trivial_time"]=start_timer
+                lapse_timer = time.time()
+                request.session["trivial_time"]=lapse_timer
 
         if time_start:
            
             start_timer = time.time()
             request.session["get-timer"]=start_timer
+            print("Time Start",time_lapse)
+
             if num_played < 20:
                 if weekday not in current_day:
                     data['weekday']="This Game is only opened from Mondays to Saturdays"
@@ -979,8 +981,9 @@ def easy_submit(request,username):
         if time_end:
             
             end_timer=time.time()
-            time_lapse_diff = request.session["get-timer"] - request.session["trivial_time"]
-            time_differ = math.floor(end_timer - request.session["get-timer"])
+            time_lapse_diff = request.session["trivial_time"] - request.session["get-timer"]
+            time_differ = math.floor(end_timer - time_lapse_diff)
+            print("Lapse difference", time-differ , time_lapse_diff, end_timer,request.session["trivial_time"],request.session["get-timer"])
             if time_differ in time_diff_arr or time_differ in time_diff_arr2:
                     
             # get_time_diff = int(time_end - time_start)
