@@ -15,6 +15,7 @@ from .views import (
     get_winners,
     del_question,
     load_question,
+    time_lapse
 	# post_create,
 	# post_detail,
 	# post_update,
@@ -34,6 +35,7 @@ urlpatterns = [
      path('generate_winners/', download_exce_data, name='get_winners'),
     path('stats_excel/', statistics_excel, name='get_stats_excel'),
     path('recharge/easy_submit/<str:username>/', easy_submit, name='easy_submit'),
+    path('recharge/time_lapse/<str:username>/', time_lapse, name='time_lapse'),
     path('recharge/easy/<str:username>/', quiz, name='easy'),
     path('recharge/medium/<str:username>/', quiz, name='medium'),
     path('recharge/hard/<str:username>/', quiz, name='hard'),

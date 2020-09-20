@@ -684,6 +684,20 @@ def recharge(request):
 #         return render(request,template)
 
 
+def time_lapse(request,username):
+    if request.user:
+        data = dict()
+        time_lapse = request.POST.get("trivial_started",)
+        print("Time Lapsed",time_lapse)
+        if time_lapse:
+            print("Time Lapse deduct",time_lapse, int(time_lapse) - int(request.session['get-start']))
+            time_lapse_diff = int(time_lapse) - int(request.session['get-start'])
+            if time_lapse_diff < 0:
+                time_lapse_diff = 60 + time_lapse - int(request.session['get-start'])
+            request.session["trivial_time"] = time_lapse_diff
+            print("Final time_lapse",time_lapse_diff)
+            data['success'] = "Data successfully stored in session"
+    return JsonResponse(data)
 
 @login_required
 def easy_submit(request,username):
@@ -733,10 +747,6 @@ def easy_submit(request,username):
         print("Print Played",num_played)
         # end_timer=0
         time_start = request.POST.get('time_start',)
-        time_lapse = request.POST.get("trivial_started",)
-        print("Time Lapsed",time_lapse)
-
-
 
 
         if time_start:
@@ -746,13 +756,7 @@ def easy_submit(request,username):
             request.session["get-timer"]=start_timer
             print("Time Start",time_start)
         
-        if time_lapse:
-            print("Time Lapse deduct",time_lapse, int(time_lapse) - int(request.session['get-start']))
-            time_lapse_diff = int(time_lapse) - int(request.session['get-start'])
-            if time_lapse_diff < 0:
-                time_lapse_diff = 60 + time_lapse - int(request.session['get-start'])
-            request.session["trivial_time"] = time_lapse_diff
-            print("Final time_lapse",time_lapse_diff)
+
                 
         
 
@@ -993,7 +997,7 @@ def easy_submit(request,username):
 
             time_differ = math.floor(end_timer - request.session["get-timer"]) 
             time_differ = time_differ - time_lapse_diff
-            print("Lapse difference", time_differ,time_lapse_diff,end_timer,request.session["trivial_time"],request.session["get-timer"])
+            # print("Lapse difference", time_differ,time_lapse_diff,end_timer,request.session["trivial_time"],request.session["get-timer"])
             if time_differ in time_diff_arr or time_differ in time_diff_arr2:
                 del request.session['trivial_time']
                 del request.session['get-timer']

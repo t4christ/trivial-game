@@ -6,6 +6,7 @@ let changed = false;
 let correct_answers;
 let element = document.getElementById("loading_balls");
 let link = document.querySelector(".link").value;
+{% comment %} let time_lapse_link = document.querySelector(".lapse_link").value; {% endcomment %}
 let ran_score = document.querySelector(".ran_score").value;
 let t;
 
@@ -639,6 +640,8 @@ let started_trivial = () =>{
     const start_date = new Date().getTime();
     const start_time= Math.floor(start_date/1000 % 60);
     let parameters = {'trivial_started':start_time}
+    let user = document.querySelector(".trivial_user").value;
+    link = `/recharge/time_lapse/${user}`
     started(parameters)
 }
 

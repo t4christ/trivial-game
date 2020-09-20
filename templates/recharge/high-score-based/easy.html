@@ -64,6 +64,7 @@
     <input value="{% url 'recharge:bonus' %}" type="hidden" class="bonus-url">
     <input value="{{bonus_point.bonus_points}}" type="hidden" class="bonus">
     <input value="{{loyalty.loyalty_point}}" type="hidden" class="loyalty">
+    <input value="{{request.user}}" type="hidden" class="trivial_user">
 
     {% if request.path == '/jamb/account/'|add:request.user.username|add:'/' or request.path == '/jamb/geography/'|add:request.user.username|add:'/' or request.path == '/jamb/biology/'|add:request.user.username|add:'/' or request.path == '/jamb/physics/'|add:request.user.username|add:'/' or request.path == '/jamb/chemistry/'|add:request.user.username|add:'/' or request.path == '/jamb/commerce/'|add:request.user.username|add:'/' or request.path == '/jamb/ict/'|add:request.user.username|add:'/' or request.path == '/jamb/crk/'|add:request.user.username|add:'/' or request.path == '/jamb/literature/'|add:request.user.username|add:'/' or request.path == '/jamb/economics/'|add:request.user.username|add:'/' or request.path == '/jamb/government/'|add:request.user.username|add:'/' or request.path == '/jamb/english/'|add:request.user.username|add:'/' or request.path == '/jamb/mathematics/'|add:request.user.username|add:'/'%}
     <a></a>
