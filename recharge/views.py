@@ -301,13 +301,13 @@ def statistics(request):
         'hl4yr':high_levfour_yr,'hl4dy':high_levfour_dy,'hl4mn':high_levfour_mn,'hl4hr':high_levfour_hr,
         'hl5yr':high_levfive_yr,'hl5dy':high_levfive_dy,'hl5mn':high_levfive_mn,'hl5hr':high_levfive_hr,
         'dat':addedDate,'easy_yr':easy_players_yr,
-        'med_yr':med_players_yr,'hard_yr':hard_players_yr,'levelone_yr':levone_players_yr,'leveltwo_yr':levtwo_players_yr,
+        'med_yr':med_players_yr,'hard_yr':hard_players_yr,'akwa_yr':akwa_players_yr,'levelone_yr':levone_players_yr,'leveltwo_yr':levtwo_players_yr,
         'levelthree_yr':levthree_players_yr,'levelfour_yr':levfour_players_yr,'levelfive_yr':levfive_players_yr,'easy_mn':easy_players_mn,
-        'med_mn':med_players_mn,'hard_mn':hard_players_mn,'levelone_mn':levone_players_mn,'leveltwo_mn':levtwo_players_mn,
+        'med_mn':med_players_mn,'hard_mn':hard_players_mn,'akwa_mn':akwa_players_mn,'levelone_mn':levone_players_mn,'leveltwo_mn':levtwo_players_mn,
         'levelthree_mn':levthree_players_mn,'levelfour_mn':levfour_players_mn,'levelfive_mn':levfive_players_mn,'easy_dy':easy_players_dy,
-        'med_dy':med_players_dy,'hard_dy':hard_players_dy,'levelone_dy':levone_players_dy,'leveltwo_dy':levtwo_players_dy,
+        'med_dy':med_players_dy,'hard_dy':hard_players_dy,'akwa_dy':akwa_players_dy,'levelone_dy':levone_players_dy,'leveltwo_dy':levtwo_players_dy,
         'levelthree_dy':levthree_players_dy,'levelfour_dy':levfour_players_dy,'levelfive_dy':levfive_players_dy,'easy_hr':easy_players_hr,
-        'med_hr':med_players_hr,'hard_hr':hard_players_hr,'levelone_hr':levone_players_hr,'leveltwo_hr':levtwo_players_hr,
+        'med_hr':med_players_hr,'hard_hr':hard_players_hr,'akwa_hr':akwa_players_hr,'levelone_hr':levone_players_hr,'leveltwo_hr':levtwo_players_hr,
         'levelthree_hr':levthree_players_hr,'levelfour_hr':levfour_players_hr,'levelfive_hr':levfive_players_hr
         }
         if request.user.is_authenticated:
