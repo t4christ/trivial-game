@@ -344,16 +344,16 @@ def statistics_excel(request):
         font_style.font.bold = True
 
         #column header names, you can use your own headers here
-        columns = ['Players for  The Year(Easy)', 'Players  for The Year(Medium)', 'Players for The Year(Hard)', 'Players for  The Year (LevelOne)','Players for The Year (LevelTwo)','Players for The Year (LevelThree)',
-        'Players for  The Year (LevelFour)','Players for  The Year (LevelFive)'
+        columns = ['Players for  The Year(Easy)', 'Players  for The Year(Medium)', 'Players for The Year(Hard)', 'Players for The Year(Akwa Ibom)', 'Players for  The Year (LevelOne)','Players for The Year (LevelTwo)','Players for The Year (LevelThree)',
+        'Players for  The Year (LevelFour)','Players for  The Year (LevelFive)',
         'Players for  The Month(Easy)', 'Players  for The Month(Medium)', 'Players for The Month(Hard)', 'Players for  The Month (LevelOne)','Players for The Month (LevelTwo)',
         'Players for The Month (LevelThree)','Players for  The Month (LevelFour)','Players for The Month(LevelFive)',
         'Players for  The Day(Easy)', 'Players  for The Day(Medium)', 'Players for The Day(Hard)', 'Players for  The Day (LevelOne)','Players for The Day (LevelTwo)',
         'Players for The Day (LevelThree)','Players for  The Day (LevelFour)','Players for the Day(LevelFive)'
         ]
 
-        column = ['Highest Score for  The Year(Easy)', 'Highest Score  for The Year(Medium)', 'Highest Score for The Year(Hard)', 'Highest Score for  The Year (LevelOne)','Highest Score for The Year (LevelTwo)','Highest Score for The Year (LevelThree)',
-        'Highest Score for  The Year (LevelFour)','Highest Score for  The Year (LevelFive)'
+        column = ['Highest Score for  The Year(Easy)', 'Highest Score  for The Year(Medium)', 'Highest Score for The Year(Hard)', 'Highest Score for The Year(Akwa Ibom)', 'Highest Score for  The Year (LevelOne)','Highest Score for The Year (LevelTwo)','Highest Score for The Year (LevelThree)',
+        'Highest Score for  The Year (LevelFour)','Highest Score for  The Year (LevelFive)',
         'Highest Score for  The Month(Easy)', 'Highest Score  for The Month(Medium)', 'Highest Score for The Month(Hard)', 'Highest Score for  The Month (LevelOne)','Highest Score for The Month (LevelTwo)',
         'Highest Score for The Month (LevelThree)','Highest Score for  The Month (LevelFour)','Highest Score for The Month(LevelFive)',
         'Highest Score for  The Day(Easy)', 'Highest Score  for The Day(Medium)', 'Highest Score for The Day(Hard)', 'Highest Score for  The Day (LevelOne)','Highest Score for The Day (LevelTwo)',
@@ -383,6 +383,11 @@ def statistics_excel(request):
         high_hard_dy = HighestScoreStatistic.objects.filter(difficulty="hard",timestamp__gte=time_day).count()
         high_hard_mn = HighestScoreStatistic.objects.filter(difficulty="hard",timestamp__gte=time_mon).count()
         high_hard_yr = HighestScoreStatistic.objects.filter(difficulty="hard",timestamp__year=time_year).count()
+
+        high_akwa_hr = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_hour).count()
+        high_akwa_dy = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_day).count()
+        high_akwa_mn = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_mon).count()
+        high_akwa_yr = HighestScoreStatistic.objects.filter(difficulty="akwa",timestamp__year=time_year).count()
 
 
         high_levone_hr = HighestScoreStatistic.objects.filter(difficulty="levelone",timestamp__gte=time_hour).count()
@@ -420,6 +425,7 @@ def statistics_excel(request):
         easy_players_hr=PlayerStatistic.objects.filter(difficulty="easy",timestamp__gte=time_hour).count()
         med_players_hr = PlayerStatistic.objects.filter(difficulty="medium",timestamp__gte=time_hour).count()
         hard_players_hr = PlayerStatistic.objects.filter(difficulty="hard",timestamp__gte=time_hour).count()
+        akwa_players_hr = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_hour).count()
         levone_players_hr = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__gte=time_hour).count()
         levtwo_players_hr = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__gte=time_hour).count()
         levthree_players_hr = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__gte=time_hour).count()
@@ -431,6 +437,7 @@ def statistics_excel(request):
         easy_players_dy=PlayerStatistic.objects.filter(difficulty="easy",timestamp__gte=time_day).count()
         med_players_dy = PlayerStatistic.objects.filter(difficulty="medium",timestamp__gte=time_day).count()
         hard_players_dy = PlayerStatistic.objects.filter(difficulty="hard",timestamp__gte=time_day).count()
+        akwa_players_dy = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_day).count()
         levone_players_dy = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__gte=time_day).count()
         levtwo_players_dy = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__gte=time_day).count()
         levthree_players_dy = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__gte=time_day).count()
@@ -443,6 +450,7 @@ def statistics_excel(request):
         easy_players_mn=PlayerStatistic.objects.filter(difficulty="easy",timestamp__gte=time_mon).count()
         med_players_mn = PlayerStatistic.objects.filter(difficulty="medium",timestamp__gte=time_mon).count()
         hard_players_mn = PlayerStatistic.objects.filter(difficulty="hard",timestamp__gte=time_mon).count()
+        akwa_players_mn = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__gte=time_mon).count()
         levone_players_mn = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__gte=time_mon).count()
         levtwo_players_mn = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__gte=time_mon).count()
         levthree_players_mn = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__gte=time_mon).count()
@@ -456,6 +464,7 @@ def statistics_excel(request):
         easy_players_yr=PlayerStatistic.objects.filter(difficulty="easy",timestamp__year=time_year).count()
         med_players_yr = PlayerStatistic.objects.filter(difficulty="medium",timestamp__year=time_year).count()
         hard_players_yr = PlayerStatistic.objects.filter(difficulty="hard",timestamp__year=time_year).count()
+        akwa_players_yr = PlayerStatistic.objects.filter(difficulty="akwa",timestamp__year=time_year).count()
         levone_players_yr = PlayerStatistic.objects.filter(difficulty="levelone",timestamp__year=time_year).count()
         levtwo_players_yr = PlayerStatistic.objects.filter(difficulty="leveltwo",timestamp__year=time_year).count()
         levthree_players_yr = PlayerStatistic.objects.filter(difficulty="levelthree",timestamp__year=time_year).count()
@@ -468,36 +477,39 @@ def statistics_excel(request):
         ws.write(row_num, 0, easy_players_yr, font_style)
         ws.write(row_num, 1, med_players_yr, font_style)
         ws.write(row_num, 2, hard_players_yr, font_style)
+        ws.write(row_num, 3, akwa_players_yr, font_style)
 
-        ws.write(row_num, 3, easy_players_mn, font_style)
-        ws.write(row_num, 4, med_players_mn, font_style)
-        ws.write(row_num, 5, hard_players_mn, font_style)
+        ws.write(row_num, 4, easy_players_mn, font_style)
+        ws.write(row_num, 5, med_players_mn, font_style)
+        ws.write(row_num, 6, hard_players_mn, font_style)
+        ws.write(row_num, 7, akwa_players_mn, font_style)
 
 
-        ws.write(row_num, 6, easy_players_dy, font_style)
-        ws.write(row_num, 7, med_players_dy, font_style)
-        ws.write(row_num, 8, hard_players_dy, font_style)
+        ws.write(row_num, 8, easy_players_dy, font_style)
+        ws.write(row_num, 9, med_players_dy, font_style)
+        ws.write(row_num, 10, hard_players_dy, font_style)
+        ws.write(row_num, 11, akwa_players_dy, font_style)
 
         # Level Based
-        ws.write(row_num, 9, levone_players_yr, font_style)
-        ws.write(row_num, 10, levtwo_players_yr, font_style)
-        ws.write(row_num, 11, levthree_players_yr, font_style)
-        ws.write(row_num, 12, levfour_players_yr, font_style)
-        ws.write(row_num, 13, levfive_players_yr, font_style)
+        ws.write(row_num, 12, levone_players_yr, font_style)
+        ws.write(row_num, 13, levtwo_players_yr, font_style)
+        ws.write(row_num, 14, levthree_players_yr, font_style)
+        ws.write(row_num, 15, levfour_players_yr, font_style)
+        ws.write(row_num, 16, levfive_players_yr, font_style)
 
 
-        ws.write(row_num, 14, levone_players_mn, font_style)
-        ws.write(row_num, 15, levtwo_players_mn, font_style)
-        ws.write(row_num, 16, levthree_players_mn, font_style)
-        ws.write(row_num, 17, levfour_players_mn, font_style)
-        ws.write(row_num, 18, levfive_players_mn, font_style)
+        ws.write(row_num, 17, levone_players_mn, font_style)
+        ws.write(row_num, 18, levtwo_players_mn, font_style)
+        ws.write(row_num, 19, levthree_players_mn, font_style)
+        ws.write(row_num, 20, levfour_players_mn, font_style)
+        ws.write(row_num, 21, levfive_players_mn, font_style)
 
 
-        ws.write(row_num, 19, levone_players_dy, font_style)
-        ws.write(row_num, 20, levtwo_players_dy, font_style)
-        ws.write(row_num, 21, levthree_players_dy, font_style)
-        ws.write(row_num, 22, levfour_players_dy, font_style)
-        ws.write(row_num, 23, levfive_players_dy, font_style)
+        ws.write(row_num, 22, levone_players_dy, font_style)
+        ws.write(row_num, 23, levtwo_players_dy, font_style)
+        ws.write(row_num, 24, levthree_players_dy, font_style)
+        ws.write(row_num, 25, levfour_players_dy, font_style)
+        ws.write(row_num, 26, levfive_players_dy, font_style)
         
 
         # ws.write(row_num1, 0, easy_players_yr, font_style)
