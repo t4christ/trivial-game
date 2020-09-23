@@ -37,7 +37,7 @@
       "name":"nginx",
       "essential": true,
       "image": "texplode/trivia-nginx",
-      "memory": 256,
+      "memory": 128,
       "links": ["web"],
       "hostname": "nginx",
       "portMappings": [
