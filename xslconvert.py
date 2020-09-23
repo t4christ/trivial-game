@@ -47,6 +47,9 @@ if __name__ == "__main__":
 #     }
 #     return correct_answers_list
 
-'JAccount':JAccountAnswer,'JGeo':JGeoAnswer,'JBio':JBioAnswer,'JPhysics':JPhysicsAnswer,'JChemistry':JChemistryAnswer,
-'JCommerce':JCommerceAnswer,'JIct':JIctAnswer,'JCrk':JCrkAnswer,'JLiterature':JLiteratureAnswer,'JEconomics':JEconomicsAnswer,
-'JGov':JGovAnswer
+# 'JAccount':JAccountAnswer,'JGeo':JGeoAnswer,'JBio':JBioAnswer,'JPhysics':JPhysicsAnswer,'JChemistry':JChemistryAnswer,
+# 'JCommerce':JCommerceAnswer,'JIct':JIctAnswer,'JCrk':JCrkAnswer,'JLiterature':JLiteratureAnswer,'JEconomics':JEconomicsAnswer,
+# 'JGov':JGovAnswer
+
+def double(n):
+       return n*2

@@ -1057,7 +1057,7 @@ def easy_submit(request,username):
                     # print(get_level1)
                     # print(request.META.get('HTTP_REFERER'))
                     
-                    TempAnswer.objects.get(question_name=get_correct_answer_name,username=request.user).delete()
+                    TempAnswer.objects.filter(question_name=get_correct_answer_name,username=request.user).delete()
                     if score > 0:
                         if get_easy in where_from:
                             if score > 0 and score < int(score_point[0]):
