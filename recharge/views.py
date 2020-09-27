@@ -734,6 +734,7 @@ def easy_submit(request,username):
         get_hard = "%s/recharge/hard/%s/"%(current_site,request.user)
         get_akwa = "%s/recharge/akwa/%s/"%(current_site,request.user)
         get_xmas = "%s/recharge/xmas/%s/"%(current_site,request.user)
+        get_nanniv = "%s/recharge/nanniv/%s/"%(current_site,request.user)
         get_level1 = "%s/recharge/level1/%s/"%(current_site,request.user)
         get_level2 = "%s/recharge/level2/%s/"%(current_site,request.user)
         get_level3 = "%s/recharge/level3/%s/"%(current_site,request.user)
@@ -871,6 +872,14 @@ def easy_submit(request,username):
                     ans_list = [ans.correct_answer for ans in akwa]
                     TempAnswer.objects.get_or_create(answers=ans_list,question_name='akwa_ans',username=request.user)
                     context={"easy":akwa}
+                    data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
+
+                elif get_nanniv in where_from:
+                    nanniv=NigeriaAnniversaryAnswer.objects.all().order_by('?')[:10]
+                    # num_score=AkwaIbomAnswer.objects.all()[:10]
+                    ans_list = [ans.correct_answer for ans in nanniv]
+                    TempAnswer.objects.get_or_create(answers=ans_list,question_name='nanniv_ans',username=request.user)
+                    context={"easy":nanniv}
                     data['questions'] = render_to_string('recharge/high-score-based/easy_partial.html', context)
 
                 elif get_xmas in where_from:
@@ -1098,7 +1107,16 @@ def easy_submit(request,username):
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
-
+                        elif get_nanniv in where_from:
+                            if score > 0 and score < int(score_point[0]):
+                                UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="nanniv")
+                                PlayerStatistic.objects.create(player=request.user,difficulty="nanniv",score=score,phone_number=request.user.phone_number)
+                                data["thanks"]="Thanks For playing See You Next Time"
+                            elif score > int(score_point[0]): 
+                                UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="nanniv")
+                                PlayerStatistic.objects.create(player=request.user,difficulty="nanniv",score=score,phone_number=request.user.phone_number)
+                                data["thanks"]="Thanks For playing See You Next Time"
+                        
                         elif get_xmas in where_from:
                             if score > 0 and score < int(score_point[0]):
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="xmas")
@@ -1375,6 +1393,7 @@ def quiz(request,username):
     get_hard = "%s/recharge/hard/%s/"%(current_site,request.user)
     get_akwa = "%s/recharge/akwa/%s/"%(current_site,request.user)
     get_xmas = "%s/recharge/xmas/%s/"%(current_site,request.user)
+    get_nanniv = "%s/recharge/nanniv/%s/"%(current_site,request.user)
     
     ##############Level Based Score Url Check ##########################
 
@@ -1422,6 +1441,8 @@ def quiz(request,username):
         all_score=UserCorrectAnswer.objects.filter(difficulty='akwa').order_by('-score','-timestamp')[:1]
     elif get_xmas in where_from:
         all_score=UserCorrectAnswer.objects.filter(difficulty='xmas').order_by('-score','-timestamp')[:1]
+    elif get_nanniv in where_from:
+        all_score=UserCorrectAnswer.objects.filter(difficulty='nanniv').order_by('-score','-timestamp')[:1]
 
     #################################################JAMB View ##############################################
     elif get_jacct in where_from:
@@ -1619,7 +1640,13 @@ def quiz(request,username):
                     num_score=AkwaIbomAnswer.objects.all()[:50]
                     user_score=UserCorrectAnswer.objects.filter(user=request.user,difficulty="akwa").order_by('-timestamp')[:1]
 
-
+            elif get_nanniv in where_from:
+    
+                    pick=random.choice(akwa_ran_score)
+                    ran_score=pick
+                    easy=NigeriaAnniversaryAnswer.objects.all().order_by('?')[:50]
+                    num_score=NigeriaAnniversaryAnswer.objects.all()[:50]
+                    user_score=UserCorrectAnswer.objects.filter(user=request.user,difficulty="nanniv").order_by('-timestamp')[:1]
      
 
    
@@ -1857,7 +1884,7 @@ def download_exce_data(request):
 
 def get_question_sheet(data):
     sheet_list_array = ['Easy','Medium','Hard','LevelOne','LevelTwo','LevelThree','LevelFour','LevelFive','AkwaIbom',
-    'JAccount','JGeo','JBio','JPhysics','JChemistry','JCommerce','JIct','JCrk','JLiterature','JGov'
+    'NigeriaAnniversary','JAccount','JGeo','JBio','JPhysics','JChemistry','JCommerce','JIct','JCrk','JLiterature','JGov'
     ]
     get_excel_sheet = {v:k for k,v in enumerate(data)}
     sheet_list = get_excel_sheet.keys()
@@ -1879,6 +1906,7 @@ def UploadQuestion(request, format=None):
                                     'LevelOne':LevelOneQuestion,'LevelTwo':LevelTwoQuestion,
                                     'LevelThree':LevelThreeQuestion,'LevelFour':LevelFourQuestion,
                                     'LevelFive':LevelFiveQuestion,'AkwaIbom':AkwaIbomQuestion,
+                                    'NigeriaAnniversary':NigeriaAnniversaryQuestion,
                                     'JAccount':JAccountQuestion,'JGeo':JGeoQuestion,'JBio':JBioQuestion,
                                     'JPhysics':JPhysicsQuestion,'JChemistry':JChemistryQuestion,
                                     'JCommerce':JCommerceQuestion,'JIct':JIctQuestion,'JCrk':JCrkQuestion,
@@ -1890,6 +1918,7 @@ def UploadQuestion(request, format=None):
                                 'LevelOne':LevelOneAnswer,'LevelTwo':LevelTwoAnswer,
                                 'LevelThree':LevelThreeAnswer,'LevelFour':LevelFourAnswer,
                                 'LevelFive':LevelFiveAnswer,'AkwaIbom':AkwaIbomAnswer,
+                                'NigeriaAnniversary':NigeriaAnniversaryAnswer,
                                 'JAccount':JAccountAnswer,'JGeo':JGeoAnswer,'JBio':JBioAnswer,
                                 'JPhysics':JPhysicsAnswer,'JChemistry':JChemistryAnswer,
                                 'JCommerce':JCommerceAnswer,'JIct':JIctAnswer,'JCrk':JCrkAnswer,

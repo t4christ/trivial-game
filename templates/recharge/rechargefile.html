@@ -299,9 +299,9 @@ else if(location.includes('akwa')){
 
             }
 
-else if(location.includes('xmas')){
-    correct_answers = "xmas_ans"
-    get_ind = location.indexOf('xmas')
+else if(location.includes('nanniv')){
+    correct_answers = "nanniv_ans"
+    get_ind = location.indexOf('nanniv')
     level = location[get_ind]
                 // alert(location[get_ind])
 
@@ -542,7 +542,7 @@ const end_time= Math.floor(end/1000 % 60);
         }
 
 
-        else if(level_locatefive == "xmas"){
+        else if(level_locatefive == "nanniv"){
         document.querySelector(".questionwrap").innerHTML="Sorry! Your score is  "+ correct_ans + "."
         $(".easy-question").load(document.URL + ' .easy-question')
         // $("#recharge-time").load(document.URL + ' #recharge-time')
@@ -576,8 +576,10 @@ const end_time= Math.floor(end/1000 % 60);
         }
 
       else{
+        document.querySelector(".respin").style.display="none"
         document.querySelector(".result").innerHTML="Sorry No Score Recorded"
         document.querySelector(".questionwrap").innerHTML="Your Score is 0" 
+        
       }
 
       },
@@ -663,7 +665,7 @@ var start_jamb = document.querySelector('#start_jamb');
 
 var start = document.querySelector('#start');
 var start_anniv = document.querySelector('#start_anniv');
-var start_xmas = document.querySelector('#start_xmas');
+var start_nanniv = document.querySelector('#start_nanniv');
 var start_level_one = document.querySelector('#start_level_one');
 var start_level_two = document.querySelector('#start_level_two');
 var start_level_three = document.querySelector('#start_level_three');
@@ -713,8 +715,8 @@ start.onclick = function () {
 };
 }
 
-if(start_xmas){
-start_xmas.onclick = function () {
+if(start_nanniv){
+start_nanniv.onclick = function () {
     const start = new Date().getTime();
     const start_time= Math.floor(start/1000 % 60);
     let parameters = {'time_start':start_time}
@@ -868,15 +870,15 @@ $(".start-btn").click(function() {
         var location = window.location.href.split("/")
                 get_location(location)
 
-           $('.high-score .level-up .xmas-score .jamb-score').show() 
+           $('.high-score .level-up .nanniv-score .jamb-score').show() 
         $('.high-score').click(() => {
         $('.high-div button').toggle(1000,'linear')    
         })
 
 
 
-   $('.xmas-score').click(() => {
-        $('.xmas-div button').toggle(1000,'linear')    
+   $('.nanniv-score').click(() => {
+        $('.nanniv-div button').toggle(1000,'linear')    
         })
 
          $('.level-up').click(() => {

@@ -107,6 +107,16 @@ class AkwaIbomQuestion(models.Model):
         return "{}".format(self.content)
 
 
+class NigeriaAnniversaryQuestion(models.Model):
+    poster = models.CharField(max_length=50,default='') 
+    question_detail = models.ForeignKey(QuestionDetail, on_delete=models.CASCADE,default='',related_name="nigeria_anniversary_question_detail")
+    content= models.TextField()
+    timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    def __str__(self):
+        return "{}".format(self.content)
+
+
 class TempAnswer(models.Model):
     answers = models.TextField()
     question_name = models.CharField(max_length=50)
@@ -275,7 +285,21 @@ class AkwaIbomAnswer(models.Model):
         return "{}".format(self.correct_answer)
 
 
-
+class NigeriaAnniversaryAnswer(models.Model):
+    questions = models.ForeignKey(NigeriaAnniversaryQuestion, on_delete=models.CASCADE,related_name="nigeria_anniversary_answer")
+    choice1 = models.CharField(max_length=500)
+    choice2 = models.CharField(max_length=500)
+    choice3 = models.CharField(max_length=500)
+    choice4 = models.CharField(max_length=500)
+    correct_answer = models.CharField(max_length=500)
+    
+    class Meta:
+        unique_together = [
+            # no duplicated content per question
+            ("questions","choice1","choice2","choice3","choice4"),  
+        ]
+    def __str__(self):
+        return "{}".format(self.correct_answer)
 
 class UserCorrectAnswer(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE,related_name="user_answer")

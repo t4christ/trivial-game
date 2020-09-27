@@ -32,6 +32,7 @@
 
    <div class="container high-div" style="padding:0;padding-left:15px;padding-right:15px;margin-bottom:2%;">
     <div style="display:none;" class="btn btn-alert high-score col-md-12 wow bounceInDown">High Score</div>
+
         <a href="{% url 'recharge:akwa' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Akwa Ibom 33rd Anniversary</button></a>
     <a href="{% url 'recharge:easy' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Easy</button></a>
     <a href="{% url 'recharge:medium' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Medium</button></a>
@@ -59,12 +60,12 @@
 
 
 
-<!--<div class="container xmas-div" style="margin-top:2%;">
-        <div style="display:none;" class="btn btn-alert xmas-score col-md-12 wow bounceInDown">10-Seconds Offer</div>
-        <a href="{% url 'recharge:xmas' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">10-Seconds Offer</button></a>
+<div class="container nanniv-div" style="margin-top:2%;">
+        <div style="display:none;" class="btn btn-alert nanniv-score col-md-12 wow bounceInDown">Nigerian Anniversary</div>
+                <a href="{% url 'recharge:nanniv' request.user %}"><button style="display:none;" class="btn btn-alert col-md-10 col-md-offset-1">Nigeria 60th Anniversary</button></a>
         
             </div>
--->
+
 
 <!-- JAMB Section -->
 <div class="container jamb-div" style="margin-top:2%;">
