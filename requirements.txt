@@ -1,6 +1,6 @@
 Django
 django-crispy-forms
-celery
+celery==4.4.7
 python-dotenv
 gunicorn
 google-cloud-storage
