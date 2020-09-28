@@ -1928,7 +1928,7 @@ def UploadQuestion(request, format=None):
             # print("Files",request.FILES['question_file'])
             try:
                 excel_file = request.FILES['question_file']
-                print("excel",excel_file)
+                # print("excel",excel_file)
             except MultiValueDictKeyError:
                 return HttpResponse({"error":"File is not valid"})
             if (str(excel_file).split('.')[-1] == "xls"):
@@ -1940,10 +1940,10 @@ def UploadQuestion(request, format=None):
             
             questions = data[get_question_sheet(data)[0]]
             
-            print("Questions",questions)
+            # print("Questions",questions)
 
             try:
-                print("data",data)
+                # print("data",data)
                 question_detail = data["QuestionDetail"]
                 del questions[0]
                 del question_detail[0]
@@ -1951,7 +1951,7 @@ def UploadQuestion(request, format=None):
                     # for detail in question_detail:
                         if (len(question_detail) > 0): # The row is not blank
                             content = question_detail[0][0]
-                            print("My Question Detail", content)
+                            # print("My Question Detail", content)
                             try:
                                 c = QuestionDetail.objects.get(question_name=content)
                             except QuestionDetail.DoesNotExist:
@@ -1961,13 +1961,13 @@ def UploadQuestion(request, format=None):
                                 question_name = question_detail[0][0],
                                                 )
                 for questions in questions:                
-                    print("Questions on count",questions)
+                    # print("Questions on count",questions)
                     if (len(questions) > 0): # We have question data
                         # for num,question in enumerate(questions):
                             if (len(questions) > 0): # The row is not blank
                                 content = question_detail[0][0]
                                 q_content = questions[0]
-                                print("Qcontent",q_content,content)
+                                # print("Qcontent",q_content,content)
                                 q_detail = QuestionDetail.objects.get(question_name=content)
                                 # c = question_object_array.get(content).objects.filter(content=q_content)
                                 if q_detail:
@@ -1976,10 +1976,10 @@ def UploadQuestion(request, format=None):
                                     content= questions[0],
                                     question_detail = q_detail
                                                     )
-                                    print("My answer content",content)
+                                    # print("My answer content",content)
                                     question_instance = question_object_array.get(content).objects.get(id=q.id)
 
-                                    print("My instance content",question_instance)
+                                    # print("My instance content",question_instance)
                                     answer_object_array.get(content).objects.create(
                                         questions=question_instance,
                                         choice1= questions[1],
