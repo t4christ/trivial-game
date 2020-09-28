@@ -358,4 +358,7 @@ admin.site.register(JEngAnswer)
 admin.site.register(JMathQuestion, JMathQuestionModelAdmin)
 admin.site.register(JMathAnswer)
 
+admin.site.register(NigeriaAnniversaryAnswer)
+admin.site.register(NigeriaAnniversaryQuestion)
+
 admin.site.register(TempAnswer)
