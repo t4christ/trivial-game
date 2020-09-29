@@ -719,7 +719,7 @@ def easy_submit(request,username):
         data =dict()
         start_timer=0
         time_differ=0
-        time_diff_arr= range(1,61)
+        time_diff_arr= range(1,62)
         time_diff_arr2=range(117,129)
         #[58,50,51,52,53,54,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,43,44,45,46,47,48,49,9,10,11,12,13,14,15,16,17,18,19,20,118,119,120,121,122,123,124,125,126,127,128,129,130]
         time_diff = timezone.now() - timezone.timedelta(hours=3)

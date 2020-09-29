@@ -480,6 +480,7 @@ const end_time= Math.floor(end/1000 % 60);
             level_location = get_location(location)
             get_num = level_location.match(/\d+/)[0] 
             add_up =parseInt(get_num) + 1 
+            document.querySelector(".respin").style.display="none"
             document.querySelector(".questionwrap").innerHTML="Congratulations! Your score is  " + correct_ans + " . Move on to level " + add_up
         
         
@@ -572,6 +573,8 @@ const end_time= Math.floor(end/1000 % 60);
       }
 
       else if(data.busted){
+            document.querySelector(".respin").style.display="none"
+
             document.querySelector(".result").innerHTML=data.busted
         }
 
