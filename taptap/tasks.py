@@ -17,7 +17,7 @@ os.environ['http_proxy']=''
 
 import logging
 from django.core.mail import send_mail
-from blog.celery import app
+from quiz.celery import app
 from posts.models import Post
 from datetime import datetime
 from django.utils import timezone
