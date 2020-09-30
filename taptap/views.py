@@ -255,7 +255,7 @@ def welcome_tap(request,username):
 			messages.error(request,"You Have Played Your Limit For The 3 Hour Slot.")
 			return redirect("/")
 	else:
-		return redirect('tap-tap')
+		return redirect('/understand')
 
 
 def understand_tap(request):
@@ -266,7 +266,7 @@ def understand_tap(request):
 	request.session['understand']=True
 	if request.user.is_authenticated:
 		# del request.session['understand']
-		return redirect("taptap:welcome_tap",username=request.user)
+		return redirect("play/{}".format(request.user))
 	else:
 		return render(request,"taptap/understand.html")	
 	
