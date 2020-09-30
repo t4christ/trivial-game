@@ -232,30 +232,33 @@ def welcome_tap(request,username):
 	# 	create=created.second
 	 	TapActivePlayer.objects.create(player_tap=request.user,player_num=+1)
 	# 	print(hr_time - create)
-	if  request.session and request.user.is_authenticated:
-		# tap_time=now.hour
-		# tap_time=now.strftime("%Y-%m-%d %H:%M")
-		tap_time=now.strftime("%H:%M:%S")
-		# time=['9:00:00','12:00:00','15:00:00','18:00:00','00:00:00']
-		
-          
-		if num_played < 20:
-			play_left=20 - num_played
-			if weekday not in current_day:
-				messages.error(request,"This Game is only opened from Mondays to Saturdays")
+	try:
+		if  request.session and request.user.is_authenticated:
+			# tap_time=now.hour
+			# tap_time=now.strftime("%Y-%m-%d %H:%M")
+			tap_time=now.strftime("%H:%M:%S")
+			# time=['9:00:00','12:00:00','15:00:00','18:00:00','00:00:00']
+			
+			
+			if num_played < 20:
+				play_left=20 - num_played
+				if weekday not in current_day:
+					messages.error(request,"This Game is only opened from Mondays to Saturdays")
+					return redirect("/")
+				if not time(1,00) <= now_time <= time(23,59):
+					messages.error(request,"This Game is only opened from 6 a.m to 12 midnight")
+					return redirect("/")
+				tap_score=Taptap.objects.all().order_by("-score")[:1]
+				context={"winner":winner,"tap_score":tap_score,"bonus_point":bonus,"loyalty":loyalty}
+				messages.success(request,"Welcome Let the Game Begin. You have %s times left to play"%play_left)
+				return render(request,"taptap/welcome.html",context)
+			else:
+				messages.error(request,"You Have Played Your Limit For The 3 Hour Slot.")
 				return redirect("/")
-			if not time(1,00) <= now_time <= time(23,59):
-				messages.error(request,"This Game is only opened from 6 a.m to 12 midnight")
-				return redirect("/")
-			tap_score=Taptap.objects.all().order_by("-score")[:1]
-			context={"winner":winner,"tap_score":tap_score,"bonus_point":bonus,"loyalty":loyalty}
-			messages.success(request,"Welcome Let the Game Begin. You have %s times left to play"%play_left)
-			return render(request,"taptap/welcome.html",context)
 		else:
-			messages.error(request,"You Have Played Your Limit For The 3 Hour Slot.")
-			return redirect("/")
-	else:
-		return redirect('taptap:understand_tap')
+			return redirect('taptap:understand_tap')
+	except Exception as e:
+		print("Error message",e)
 
 
 def understand_tap(request):

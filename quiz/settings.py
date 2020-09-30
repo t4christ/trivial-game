@@ -145,7 +145,7 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if  DEBUG:
+if DEBUG:
 
 #     DATABASES = {
 #     'default': {
@@ -274,7 +274,7 @@ CELERY_BEAT_SCHEDULE = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-if  DEBUG:
+if DEBUG:
 
     STATIC_DIR = os.path.join(BASE_DIR, 'staticfiles')
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
