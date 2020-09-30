@@ -10,7 +10,7 @@ urlpatterns = [
     path('bonus/',add_bonus, name='bonus'),
     path('play/<str:username>/',welcome_tap, name='welcome_tap'),
 	path('tap_and_tap/<str:username>/',tap_score, name='tap_tap'),
-    path('',understand_tap, name='understand_tap'),
+    path('understand/',understand_tap, name='understand_tap'),
     
     
 ]
