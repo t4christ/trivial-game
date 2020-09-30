@@ -51,7 +51,7 @@ def recharge_session(username,difficulty,login_payload,url,phone_number,amount):
                             code=get_data['code'],time=['time'],paid_amount=get_data['paid_amount'],
                             paid_currency=get_data['paid_currency'],topup_amount=get_data['topup_amount'],topup_currency=get_data['topup_currency'],country=get_data['country'],operator_name=get_data['operator_name'])
                         else:
-                            ERCTransaction.objects.create(target='Temitayo',status="Failed")
+                            ERCTransaction.objects.create(target=username,status="Failed")
             return ("Recharge Successful")
     except Exception as e:
         print("Recharge Error",e)
@@ -165,7 +165,7 @@ def airtime_level():
                             user_num=MyUser.objects.get(username=recharge_levone_user[0])
                             high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levonenum[0]).count()
                             if high_score == 0:
-                               test_recharge(user_num.username,'levelone',recharge_play_levonenum[0],10)
+                               test_recharge(user_num.username,'levelone',recharge_play_levonenum[0],100)
                             else:
                                 print("Level one winner can only win once  in 5 days")
   

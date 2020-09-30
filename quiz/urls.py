@@ -28,7 +28,8 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('', include("recharge.urls",namespace="recharge")),
-    
+    path('tap-tap/', include("taptap.urls",namespace="taptap")),
+
     #path('posts/$', "<appname>.views.<function_name>"),
 ]
 

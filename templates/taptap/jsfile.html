@@ -1,0 +1,354 @@
+<script>
+  const user= document.querySelector(".user").value
+  const link ="/tap-tap/tap_and_tap/" + user + "/"
+    let t;
+
+
+function send_invite(){
+    let number= document.querySelector(".number").value
+    let invite= document.querySelector(".invite-url").value
+    // alert(number)
+    if (number){
+    $.ajax({
+      url: invite,
+      data: {'number':number,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        $(".respin").show()
+        if(data.onlyOnce){
+            $(".respin").hide()
+        document.querySelector(".invalid-result").innerHTML=data.onlyOnce   
+        document.querySelector(".valid-result").innerHTML=''}
+        else if(data.sent){
+        $(".respin").hide()
+        document.querySelector(".valid-result").innerHTML="Your Sms Was Sent Successfully."
+        document.querySelector(".invalid-result").innerHTML=''}
+      },
+}).fail(function() {
+    $(".respin").hide()
+    document.querySelector(".invalid-result").innerHTML="Sending Failed Please Try Again Later."
+    document.querySelector(".valid-result").innerHTML=''
+ })
+//     .done(function(response) {
+//     console.log("success");
+//     console.log(response);
+// })
+// .fail(function() {
+//     console.log("error");
+// })
+// .always(function() {
+//     console.log("complete");
+// })
+  
+}else{
+    document.querySelector(".invalid-result").innerHTML="Field Cannot Be Empty."
+}
+}
+
+
+
+
+
+
+
+function add_bonus(point){
+    let bonus= document.querySelector(".bonus").value
+    let loyalty= document.querySelector(".loyalty").value
+    let bonus_url= document.querySelector(".bonus-url").value
+    // alert(point)
+    if (bonus > 0 && point === 'bonus'){
+       
+    $.ajax({
+      url: bonus_url,
+      data: {'bonus':bonus,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        if (data.tapscore_added){
+        $(".valid-bonus").html(data.tapscore_added).show(1000,()=>{
+            setTimeout(()=>{$(".valid-bonus").hide(1000)},3000)
+        }).css("display","block")
+        document.querySelector(".bonus_status").innerHTML=" Bonus Points " + data.bonus_left
+        document.querySelector(".bonus").value=0 
+      
+}
+      },
+}).fail(function() {
+    $(".invalid-bonus").html("You currently don't have any boost points!")
+    .show(1000,()=>{
+            setTimeout(()=>{$(".invalid-bonus").hide(1000)},3000)
+        }).css("display","block")
+    document.querySelector(".valid-bonus").innerHTML=''
+ })
+//     .done(function(response) {
+//     console.log("success");
+//     console.log(response);
+// })
+// .fail(function() {
+//     console.log("error");
+// })
+// .always(function() {
+//     console.log("complete");
+// })
+  
+}
+
+   else if (loyalty > 0 && point === 'loyalty'){
+    $.ajax({
+      url: bonus_url,
+      data: {'loyalty':loyalty,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        if (data.tapscore_added){
+        $(".valid-loyalty").html(data.tapscore_added).show(1000,()=>{
+            setTimeout(()=>{$(".valid-loyalty").hide(1000)},3000)
+        }).css("display","block")
+        document.querySelector(".loyalty_status").innerHTML=" Loyalty Points " + data.bonus_left
+        document.querySelector(".loyalty").value=0 
+      
+}
+      },
+}).fail(function() {
+    $(".invalid-loyalty").html("You currently don't have any loyalty points!")
+    .show(1000,()=>{
+            setTimeout(()=>{$(".invalid-loyalty").hide(1000)},3000)
+        }).css("display","block")
+    document.querySelector(".valid-loyalty").innerHTML=''
+ })
+//     .done(function(response) {
+//     console.log("success");
+//     console.log(response);
+// })
+// .fail(function() {
+//     console.log("error");
+// })
+// .always(function() {
+//     console.log("complete");
+// })
+  
+}
+
+
+else{
+    
+    $(".invalid-bonus").html("You currently don't have boost or loyalty points or refresh page to reactivate boost points")
+    .show(1000,()=>{
+            setTimeout(()=>{$(".invalid-bonus").hide(1000)},3000)
+        }).css("display","block")
+      }
+}
+
+
+
+function get_score(content){
+
+if (content == 'faceshare'){
+    let tot = document.querySelector(".total").innerHTML
+    let get_attr = document.querySelector('.face-share > a').getAttribute("href");
+    let get_attr_one = document.querySelector('.face-share > a').getAttribute("data-one");
+    let set_attr = get_attr + tot + " " + get_attr_one 
+    let final_attr = document.querySelector('.face-share > a').setAttribute("href",set_attr);
+    // alert(final_attr)
+}
+
+
+else if (content == 'twishare'){
+    let tot = document.querySelector(".total").innerHTML
+    let get_attr_one = document.querySelector('.twi-share > a').getAttribute("data-one");
+    let get_attr_two = document.querySelector('.twi-share > a').getAttribute("data-two");
+    let set_attr_total = get_attr_one + " " + tot + " "
+    let set_total = set_attr_total + get_attr_two
+    // alert(set_total)
+    let final_attr = document.querySelector('.twi-share > a').setAttribute("href",set_total);
+    // alert(final_attr)
+}
+
+
+else if (content == 'whatshare'){
+    let tot = document.querySelector(".total").innerHTML
+    let get_attr_one = document.querySelector('.what-share > a').getAttribute("data-one");
+    let get_attr_two = document.querySelector('.what-share > a').getAttribute("data-two");
+    let set_attr_total = get_attr_one + ' ' + tot + " "
+    let set_total = set_attr_total + get_attr_two
+    // alert(set_total)
+    let final_attr = document.querySelector('.what-share > a').setAttribute("href",set_total);
+    // alert(final_attr)
+}
+
+
+}
+function stopTimer(){
+    clearInterval(t)
+}
+
+function started(){
+const time_start= "Player Started"
+
+const start = new Date().getTime();
+const start_time= Math.floor(start/1000 % 60);
+$.ajax({
+      url: link,
+      data: {'time_start':start_time,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+      dataType: 'json',
+      success: function (data) {
+        
+
+
+      },
+
+    });
+}
+
+
+
+
+function startTimer(duration, display) {
+    stopTimer()
+    var timer = duration, minutes, seconds;
+    var get_total= document.querySelector(".total").innerHTML
+    var fire = 0
+   t = setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+
+        function once(fn,context){
+            var result;
+            return function(){
+                if(fn){
+                    result = fn.apply(context || this, arguments);
+                    fn=null;
+                };
+                return result;
+            }
+        }
+
+        if (--timer < 0 && fire == 0) {
+            
+            timer = duration;
+            document.querySelector(".row-game").style.display="none"
+            document.querySelector("#time-box").style.display="none"
+            document.querySelector(".play").style.display="block"
+            document.querySelector(".comp").style.display="block"
+            // document.querySelector(".begin").style.display="none"
+            document.querySelector(".notify").style.display="block"
+            
+            
+            var token= document.getElementsByName("csrfmiddlewaretoken").innerText
+            fire = 1
+            // console.log(user)
+            // Save Scores For Recharging The Highest Scorer
+         
+
+    const end = new Date().getTime();
+    var total_sc= document.querySelector(".total").innerText
+    const end_time= Math.floor(end/1000 % 60);
+    // alert(total_sc)
+    $.ajax({
+      url: link,
+      data: {total_sc,end_time,csrfmiddlewaretoken:'{{csrf_token}}'},
+      type: "post",
+    //   dataType: 'json',
+      success: function (data) {
+        //   console.log(data)
+        
+        document.querySelector(".framewrap").style.display = "block"
+          if(data.thanks){
+          document.querySelector(".result").innerText=data.thanks
+          document.querySelector(".wrapper").style.height="100%"
+  
+          document.querySelector(".wrapper").style.marginTop="7%"
+          $(".high").load("/play_tap_tap/tap_and_tap/"+ user + "/", " .high")
+          }
+          else if(data.busted){
+            document.querySelector(".result").innerText=data.busted
+        document.querySelector(".notify").style.display = "none"
+         
+          }
+
+
+
+
+      }
+    });
+
+
+// scoreSaver();
+
+
+
+            
+        }
+
+
+
+    }, 1000);
+}
+
+window.onload = function () {
+    started()
+    var fiveMinutes = 60 * 1,
+        display = document.querySelector('#time-box');
+
+    startTimer(fiveMinutes, display);
+};
+
+        </script>
+
+
+<script>
+    $(function(){
+    $('.inner-img').click(function(){
+    
+    $(".row-game").find("img.show").show(1500);
+    
+    $(this).hide(1500);
+    $(this).addClass("show")
+    
+    
+    });
+    })
+    </script>
+    
+    
+    
+
+ <script>
+        
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+     
+    
+    
+    function ran_num(count){
+        
+        var rand_array=["count1","count2","count3","count4","count5","count6","count7","count8","count9","count10","count11","count12","count13","count14","count15","count16"]
+       var ctrl= getRandomInt(-100,100)
+       var total = 0
+       var arr=[]
+       
+
+
+
+if (rand_array.includes(count)){  
+
+        var view_num = document.querySelector("."+count).innerHTML=ctrl
+        total_sum=total+view_num
+        var total_score = document.querySelector(".total").innerText
+        var Total_Score = document.querySelector(".total").innerText=parseInt(total_score) + parseInt(view_num)
+        // console.log(Total_Score)
+
+       }    
+    }
+    
+     
+            </script>

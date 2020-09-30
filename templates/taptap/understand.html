@@ -1,0 +1,56 @@
+
+{% extends "rechargebase.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container under-wrapper" style="padding-top:79px;margin-top:0px;">
+    {% include 'montageadvert.html' %}
+<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2" style="border:1.5px solid black;top:21%;">
+       
+    {% if "understand" in request.session %}
+        <h2></h2>
+        {% else %}
+<h3>You are yet to read and understand how tap tap works. Kindly understand it before you Start Playing</h3>
+{% endif %}
+
+<h4 style="text-decoration:underline;"> Read The Instructions Carefully and How You Can Win By Playing Tap Tap</h4>
+<ul>
+    <li>1. Tap-TAP rewards your boredom with free airtime!</li>
+    <li>2. REGISTRATION is required so your line can be automatically recharged with free airtime!</li>
+    <li class="center">3. Airtime is won when there are 20 or more players playing within the 3hour slot.</li>
+    <li>4. Tap each box to reveal the number underneath</li>
+    <li>5. Your total score is calculated automatically</li>
+    <li>6. Each round lasts for 3 hours</li>
+    <li>7. The highest score to beat is clearly displayed</li>
+    <li>8. At the end of the third hour, the winner is credited with N500</li>
+    <li>9. Games last from 6 a.m. Nigerian time to 9 p.m, Mondays to Saturdays</li>
+    <li>10. Each player can Tap-TAP up to 20 times within each 3 hour slot</li>
+</ul>
+
+
+
+<div class="row">
+<button style="padding:0;border:none;"class="btn btn-primary text-center col-md-4 und"><a style="color:white;">I understand</a></button>
+
+<button style="display:none;position:absolute;right:0;" id="continue" class="btn cont btn-success col-md-8">
+    {% if request.user.is_authenticated %}
+    <a style="text-decoration:none;color:white;font-size:2opx;"  href="{% url 'taptap:welcome_tap' request.user %}">
+        Start Playing</a> 
+    {% else %}
+    <div class="col-md-12 reg-log" style="display:flex;margin:-4px;">
+    <a style="text-decoration:none;color:white;"  href="/register">
+            Register to Play</a><a style="text-decoration:none;color:white;"  href="/login">
+                Or Login to Play</a></div>
+{%endif%}
+    </button>
+</div>
+
+</div> 
+{% include 'footadvert.html' %}
+
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,687 @@
+
+{% extends "rechargebase.html" %}
+{% load static %}
+
+{% block javascript %}
+{% include './undfile.html'%}
+{% include './jsfile.html'%}
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/5c2f63f482491369baa07ca5/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+{% endblock javascript%}
+
+
+{% block content %}
+
+
+<div class="container wrapper" style="margin-top:90px;min-height:100%;display:flow-root;background:white;">
+    
+    <marquee style="font-weight:bold;background:#e80068;color:#fff;"> Our Top Ten Winners Are {% for winner in winner%} {{winner.target}} {% endfor %}</marquee>
+        {% include 'montageadvert.html' %}
+    <input type="hidden" class="user" value="{{request.user}}">
+    <div class="col-md-12  col-sm-12  score-area" style="padding:0;">
+           
+        <audio id="audio"   src="{% static '/audio/tapsound.mp3' %}" autoplay="autoplay" >
+            
+        
+        </audio>
+        
+
+        <div class="container invite" style="display:none;">
+			<div class="row main">
+				<div class="main-login main-center">
+                        <button  class="close" id="close" style="color:white;">X</button>
+                <h5 style="color:white;text-align:center;align-self:flex-end;">Invite Friends To Play</h5>
+                <h5 class="valid-result" style="color:white;">
+                    <i class="fa fa-spinner fa-4x respin text-center" style="display:none;"></i>
+                </h5>
+                <h5 class="invalid-result text-center" style="color:white;">
+                    <i class="fa fa-spinner fa-4x respin text-center" style="display:none;color:white;"></i>
+                </h5>
+             
+					<form class="">
+						
+						<div class="form-group">
+							<label for="name" style="color:white;margin-left:34%;" class="cols-sm-2 control-label text-center">Friend's Numbers</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control number" name="number" id="name"  placeholder="Enter Numbers in this format 2347063445670,2348097654321"/>
+                                    
+                                </div>
+                                <p style="font-size:10px;line-height:22px;color:white;">Enter Numbers in this format 2347063445670,2348097654321</p>
+							</div>
+						</div>
+
+						
+						<div class="" style="background:transparent;" >
+							<a style="background:#e80068;color:white;width:100%;"onclick="send_invite()" id="button" class="btn btn-primary btn-lg btn-block login-button">Invite by SMS (FREE)</a>
+						</div>
+						<div><p class="text-center" style="color:white;">5 BOOST Points Per Invited Friend</p></div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+    
+
+<div style="display:flex;flex-direction:column;">
+    <h5 class="valid-bonus text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+
+    <h5 class="valid-loyalty text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+                <h5 class="invalid-bonus text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+
+                <h5 class="invalid-loyalty text-center" style="display:none;color:#e80068;font-weight:bold;border:0.5px solid #e80068;"></h5>
+
+    <div class="col-md-3 col-sm-4 pop-up" style="margin-bottom:2%;display:none;height:50px;"><p style="color:#e80068;font-weight:bold;border:0.5px solid #e80068;margin:4%;" class="text-center">5 TapTAP Points per invited friend </p> 
+    </div>
+    <input value="{% url 'taptap:invite' %}" type="hidden" class="invite-url">
+    <input value="{% url 'taptap:bonus' %}" type="hidden" class="bonus-url">
+    <input value="{{bonus_point.bonus_points}}" type="hidden" class="bonus">
+    <input value="{{loyalty.loyalty_point}}" type="hidden" class="loyalty">
+        <button class="inv col-md-3 col-sm-6" style="padding:0;margin-bottom:5%;align-self:flex-start;background:#e80068;color:white;font-weight:bold;">Invite Friends By SMS (FREE) <br> <i style="color:white;" class="bonus_status" >Boost Points {{bonus_point.bonus_points}}</i>
+            <i style="color:white;" class="loyalty_status" >Loyalty Points {{loyalty.loyalty_point}}</i>
+        
+        </button>
+            <h4 class="text-right">Most Recent Winner: 
+                
+                {% for tap_score in tap_score %}
+                <strong style="color:black!important" class="high_score" >
+                    
+                    {{tap_score.player.phone_number}} </strong><br>
+                    <p>Highest Score: <strong style="color:black!important;">{{tap_score.score}}</strong>
+                    </p>
+
+                    
+            {% endfor %}
+            </h4>
+        <h4 class="total_score text-right">Total Score <strong style="color:black!important" class="total" >0</strong></h4>
+        <h4 class="time-box text-right" id="time-box"></h4>
+    </div>
+
+
+
+        <ul class="unordered" style="flex-direction:column;margin-top:35px;">
+            <h4 class="text-center share-score" style="margin-bottom:-7px;">Share Your Score</h4><br>
+            <div class="col-md-12 share-box" style="display:flex;padding-left:0;">
+            <li class="face-share" onclick="get_score('faceshare')"><a href="https://www.facebook.com/sharer/sharer.php?u={{request.get_host}}/tap-tap&quote=Can you beat my score of" data-one="I just earned N500 airtime for FREE by playing TapTap.Join the fun and Click the link to play ({{request.get_host}}/tap-tap) to play"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            <li class="twi-share" onclick="get_score('twishare')"><a data-one="https://twitter.com/home?status=My score is" data-two="I just earned N500 airtime for FREE by playing TapTap.Join the fun and Click the link to play ({{request.get_host}}/tap-tap) to play" href=""><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+            <!-- <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li> --> 
+            
+
+            <li class="what-share" onclick="get_score('whatshare')"><a data-one="https://api.whatsapp.com/send?&text=" data-two="I just earned N500 airtime for FREE by playing TapTap.Join the fun and Click the link to play ({{request.get_host}}/tap-tap) to play" href=""><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
+<!-- 
+            <li class="link-share" onclick="get_score('linkshare')"><a data-one="http://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title=My taptap score is " data-two="&summary=can you beat me join me and play on&source={{ request.build_absolute_uri }}" href=""><i class="fa fa-linkedin" aria-hidden="true"></i></a></li> -->
+
+
+           
+
+
+
+        </div> 
+            <!-- <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li> -->
+            </ul>
+
+           </div>
+           <input type="hidden" class="user" value="{{request.user}}">
+    <div class="col-md-12 col-sm-12">
+  
+
+        <h4 class="text-center notify" style="display:none;margin-top:5%;"> Game Over !!!</h4>
+
+        <a style="display:none;background:#e80068;margin-top:5%;" class="btn btn-success play text-center" href="{% url 'taptap:welcome_tap' request.user%}"><h4 style="color:white;" >Play Again</h4></a>
+
+
+<h4 style="display:none;" class="comp text-center">Highest Score, didn't get credited? Send an SMS to 08099988057 with text "Not Credited"</h4>
+<h4 class="result text-center"></h4>
+
+
+
+
+<!-- <h4 class="text-center begin"> Let The Game Begin</h4> -->
+
+<!-- Row Game Start -->
+<div class="row">
+<div onClick="add_bonus('bonus')" class="col-md-3 col-sm-4 activate" style="cursor:pointer;padding:4px;height:50px;background:#e80068;margin-left:auto;margin-right:0px;"><p class="text-center" style="margin:4%;color:white;font-weight:bold;">Activate Boost Point</p></div>
+<div onClick="add_bonus('loyalty')" class="col-md-3 col-sm-4 activate" style="cursor:pointer;padding:4px;height:50px;background:#e80068;margin-left:auto;margin-right:0px;"><p class="text-center" style="margin:4%;color:white;font-weight:bold;">Activate Loyalty Point</p></div>
+<div onClick="javascript:playSound()" style="padding:0;margin:auto;" class="row col-md-12 col-sm-12 col-xs-12 row-game">
+<!-- 
+<div class="col-xs-3 count1" onclick="ran_num('count1')">
+<h2 id="count1" class="count text-center" >1</h2>
+</div>
+
+<div class="col-xs-3 count2" onclick="ran_num('count2')">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div> -->
+
+
+<div class="col-md-3 col-xs-3 show_hide" id="wraper" onclick="ran_num('count1')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+
+    <h2 id="count"  data-count="4" class="count1 rv inner count text-center">0</h2>
+</div>
+
+<div class="col-md-3 col-xs-3 show_hide" id="wraper" onclick="ran_num('count2')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count"  data-count="2" class="count2 rv inner count text-center">0</h2>
+    
+</div>
+
+
+
+
+<div class="col-md-3 col-xs-3" onclick="ran_num('count3')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count"  data-count="2" class="count3 rv inner count text-center">0</h2>
+</div>
+
+<div class="col-md-3 col-xs-3" onclick="ran_num('count4')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count"  data-count="2" class="count4 rv inner count text-center">0</h2>
+</div>
+
+<div class="col-md-3 col-xs-3" onclick="ran_num('count5')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count"  data-count="2" class="count5 rv inner count text-center">0</h2>
+</div>
+
+
+
+<div class="col-md-3 col-xs-3" onclick="ran_num('count6')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count"  data-count="6" class="count6 rv inner count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count7')">
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count"  data-count="6" class="count7 rv inner count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count8')">
+    
+    <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+    <h2 id="count2"   class="count8 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count9')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count9 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count10')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count10 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count11')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count11 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count12')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count12 count text-center">0</h2>
+</div>
+
+
+
+<div class="col-md-3 col-xs-3" onclick="ran_num('count13')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count13 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count14')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count14 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count15')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count15 count text-center">0</h2>
+</div>
+<div class="col-md-3 col-xs-3" onclick="ran_num('count16')">
+    
+        <img src="{% static 'img/tap.jpg' %}"  class="inner inner-img" style="width:auto;height:auto;display:block;" alt="">
+        <h2 id="count2"   class="count16 count text-center">0</h2>
+</div>
+</div>
+<!-- 
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div>
+
+
+
+<div class="col-xs-3">
+    <h2 id="count2"  class="count2 text-center">2</h2>
+</div> -->
+
+
+
+
+</div>
+<!-- End Row game -->
+
+
+</div> 
+{% include 'footadvert.html' %}
+
+</div>
+
+
+<style>
+.invite{
+    width:60%;
+    margin-left:20%;
+    padding:0!important;
+}
+
+.main-login{
+    width:100%;
+}
+
+
+body{
+    overflow-y:scroll;
+}
+    .row-game div{
+        height:100px;
+        border:1.5px solid #ccc;
+        display:table;
+        padding:0;
+    }
+
+
+
+.row-game .inner-img{
+    height:100px!important;
+    width:100%!important;
+    z-index:5;
+}
+
+.row-game h2{
+    position: absolute;
+    left:0;
+    right:0;
+    z-index:1;
+    top:30px;
+    vertical-align: middle;
+}
+
+.wrapper{
+    margin-top:-2px;
+}
+.count{
+    z-index:1;
+}
+@media screen and (max-width:570px){
+.wrapper{
+    margin-top:58px!important;
+}
+}
+
+
+/* Social Button Css */
+.unordered{
+position: absolute;
+top: 50%;
+left: 123px;
+transform: translate(-50%, -50%);
+margin: 0;
+padding: 0;
+display: flex;
+
+}
+.unordered li{
+list-style: none;
+margin: 0 20px;
+
+}
+/* .unordered li .fa{
+font-size: 40px;
+color: #262626;
+line-height: 80px;
+transition: .5s;
+
+} */
+
+
+.unordered li .fa {
+    font-size: 26px;
+    color: #262626;
+    line-height: 42px;
+    transition: .5s;
+}
+
+
+/* .unordered li a{
+position: relative;
+display: block;
+width: 80px;
+height: 80px;
+background-color: #fff;
+text-align: center;
+transform: perspective(100px) rotate(-30deg) skew(25deg) translate(0,0);
+transition: .5s;
+box-shadow: -20px 20px 10px rgb(0, 0, 0, 0.5);
+} */
+
+
+.unordered li a {
+    position: relative;
+    display: block;
+    width: 43px;
+    height: 35px;
+    background-color: #fff;
+    text-align: center;
+    transform: perspective(100px) rotate(-30deg) skew(25deg) translate(0,0);
+    transition: .5s;
+    box-shadow: -20px 21px 10px rgb(0, 0, 0, 0.5);
+}
+
+
+.unordered li a::before{
+content: "";
+position: absolute;
+top: 10px;
+left: -20px;
+height: 100%;
+width: 20px;
+background: #b1b1b1;
+transition: .5s;
+transform: rotate(0deg) skewY(-45deg);
+}
+
+.unordered li a::after{
+content: "";
+position: absolute;
+top: 35px;
+left: -11px;
+height: 20px;
+width: 100%;
+background: #b1b1b1;
+transition: .5s;
+transform: rotate(0deg) skewX(-45deg);
+}
+.unordered li a:hover{
+transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(20px, -20px);
+box-shadow: -50px 50px 50px rgb(0, 0, 0, 0.5);
+}
+.unordered li:hover .fa{
+color: #fff;
+}
+.unordered li a:hover{
+transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(20px, -20px);
+box-shadow: -50px 50px 50px rgb(0, 0, 0, 0.5);
+}
+.unordered li:hover:nth-child(1) a{
+background: #3b5999;
+}
+
+.unordered li:hover:nth-child(1) a:before{
+background: #2e4a86;
+}
+.unordered li:hover:nth-child(1) a:after{
+background: #4a69ad;
+}
+.unordered li:hover:nth-child(2) a{
+background: #55acee;
+}
+.unordered li:hover:nth-child(2) a:before{
+background: #4184b7;
+}
+.unordered li:hover:nth-child(2) a:after{
+background: #4d9fde;
+}
+.unordered li:hover:nth-child(3) a{
+background:#25d366;
+}
+
+.unordered li:hover:nth-child(3) a:before{
+background: #25d366;
+}
+.unordered li:hover:nth-child(3) a:after{
+background:#25d366;
+}
+
+.unordered li:hover:nth-child(4) a{
+background: #0077B5;
+}
+
+.unordered li:hover:nth-child(4) a:before{
+background: #036aa0;
+}
+.unordered li:hover:nth-child(4) a:after{
+background: #0d82bf;
+}
+
+.unordered li:hover:nth-child(5) a{
+background: linear-gradient(#400080, transparent), linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
+}
+
+.unordered li:hover:nth-child(5) a:before{
+background: linear-gradient(#400080, transparent), linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
+}
+.unordered li:hover:nth-child(5) a:after{
+background: linear-gradient(#400080, transparent), linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
+}
+
+@media screen and (max-width:990px){
+    .unordered li a {
+    position: relative;
+    display: block;
+    width: 23px;
+    height: 35px;
+    background-color: #fff;
+    text-align: center;
+    transform: perspective(100px) rotate(-30deg) skew(25deg) translate(0,0);
+    transition: .5s;
+    box-shadow: -20px 21px 10px rgb(0, 0, 0, 0.5);
+
+}  
+
+.unordered li .fa {
+    font-size: 20px;
+    color: #262626;
+    line-height: 38px;
+    transition: .5s;
+}
+.score-area h4{
+    font-size:1.2em!important;
+    
+}
+
+.share-score{
+    margin-bottom:-19px!important;
+    text-align:left!important;
+}
+
+.share-box{
+    left: 3px!important;    
+}
+
+}
+
+/* End Button For Social Css */
+
+
+
+/* Invite Form  */
+
+.invite{
+    position:absolute;
+    z-index:8;
+    /* background:linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)); */
+}
+
+
+.form-group{
+	margin-bottom: 15px;
+}
+
+label{
+	margin-bottom: 15px;
+}
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 11px;
+    padding-top: 3px;
+}
+
+.main-login{
+ 	background-color: #fff;
+    /* shadows and rounded borders */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
+}
+.form-control {
+    height: auto!important;
+padding: 8px 12px !important;
+}
+.input-group {
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+}
+#button {
+    border: 1px solid #ccc;
+    margin-top: 28px;
+    padding: 6px 12px;
+    color: #666;
+    text-shadow: 0 1px #fff;
+    cursor: pointer;
+    -moz-border-radius: 3px 3px;
+    -webkit-border-radius: 3px 3px;
+    border-radius: 3px 3px;
+    -moz-box-shadow: 0 1px #fff inset, 0 1px #ddd;
+    -webkit-box-shadow: 0 1px #fff inset, 0 1px #ddd;
+    box-shadow: 0 1px #fff inset, 0 1px #ddd;
+    background: #f5f5f5;
+    background: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #eeeeee));
+    background: -webkit-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
+    background: -o-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
+    background: -ms-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
+    background: linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#eeeeee', GradientType=0);
+}
+.main-center{
+ 	margin-top: 30px;
+ 	margin: 0 auto;
+ 	max-width: 400px;
+    padding: 10px 40px;
+	background:#009edf;
+	    color: #FFF;
+    text-shadow: none;
+	-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+
+}
+span.input-group-addon i {
+    color: #009edf;
+    font-size: 17px;
+}
+
+.login-button{
+	margin-top: 5px;
+}
+
+.login-register{
+	font-size: 11px;
+	text-align: center;
+}
+
+
+@media screen and (max-width:570px){
+
+.main-login{
+    width:100%
+}
+
+.invite{
+    width:100%!important;
+    margin-left:0!important;
+}
+
+.share-score{
+    margin-bottom:-26px!important;
+}
+
+}
+/* End Invite Form */
+
+
+
+@media (max-width: 575.98px) { 
+.row-game div{
+    width:25%;
+}
+
+
+ }
+
+
+
+
+
+</style>
+
+
+
+
+
+{% endblock %}

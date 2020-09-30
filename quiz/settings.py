@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 FIXTURE_DIRS = (
@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'django_celery_results',
     'erc',
+    'taptap',
     'recharge',    
 ]
 

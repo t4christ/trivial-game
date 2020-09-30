@@ -50,6 +50,31 @@ app.conf.beat_schedule = {
         'task': 'delete_airtime_level',
         'schedule': 110.0,
         # 'args': (16, 16)
+    },   'send_post_mail': {
+        'task': 'Schedule Mail',
+        'schedule': 240.0,
+        # 'args': (16, 16)
+    },
+
+    'remove': {
+        'task': 'delete_game',
+        'schedule': 240.0,
+        # 'args': (16, 16)
+    },
+    'recharge': {
+        'task': 'recharge_time',
+        'schedule': 120.0,
+        # 'args': (16, 16)
+    },
+
+
+      'tap_sms': {
+        'task': 'taptap_sms',
+        'schedule': 60.0,
+        # 'args': (16, 16)
     }
 
+
 }
+
+
