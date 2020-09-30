@@ -266,7 +266,7 @@ def understand_tap(request):
 	request.session['understand']=True
 	if request.user.is_authenticated:
 		# del request.session['understand']
-		return redirect(f"/play/{request.user}")
+		return redirect("taptap:welcome_tap")
 	else:
 		return render(request,"taptap/understand.html")	
 	
