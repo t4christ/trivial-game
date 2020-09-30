@@ -16,6 +16,7 @@ from django.db.models.aggregates import Max
 from django.core import serializers
 from django.utils import timezone
 from utils.smsclient import SmsClient
+from django.utils.http import is_safe_url
 # from posts.models import Messaging
 sms_client = SmsClient()
 
@@ -255,7 +256,7 @@ def welcome_tap(request,username):
 			messages.error(request,"You Have Played Your Limit For The 3 Hour Slot.")
 			return redirect("/")
 	else:
-		return redirect('taptap:understand_tap')
+		return is_safe_url('taptap:understand_tap')
 
 
 def understand_tap(request):
@@ -266,7 +267,7 @@ def understand_tap(request):
 	request.session['understand']=True
 	if request.user.is_authenticated:
 		# del request.session['understand']
-		return redirect("taptap:welcome_tap")
+		return is_safe_url("taptap:welcome_tap"username=request.user)
 	else:
 		return render(request,"taptap/understand.html")	
 	
