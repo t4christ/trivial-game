@@ -18,7 +18,7 @@ os.environ['http_proxy']=''
 import logging
 from django.core.mail import send_mail
 from quiz.celery import app
-from posts.models import Post
+# from posts.models import Post
 from datetime import datetime
 from django.utils import timezone
 from utils.smsclient import SmsClient
@@ -84,16 +84,16 @@ def test_recharge(username,difficulty,phone_number,amount):
             return recharge_session(username,difficulty,login_payload,url,phone_number,amount)
 
 
-@task(name="Schedule Mail")
-def send_post_email():
-        time_diff = timezone.now() - timezone.timedelta(minutes=2)
-        post= Post.objects.filter(timestamp__gte=time_diff)
-        if post:
+# @task(name="Schedule Mail")
+# def send_post_email():
+#         time_diff = timezone.now() - timezone.timedelta(minutes=2)
+#         post= Post.objects.filter(timestamp__gte=time_diff)
+#         if post:
             
-            for post in post:
-                send_mail('New Post on Gist','%s by %s was posted.'%(post.title,post.user),'postmaster@mg.wstreams.com',['amapelete@gmail.com'],fail_silently=False,)
-        else:
-            return("No new Posts Yet")
+#             for post in post:
+#                 send_mail('New Post on Gist','%s by %s was posted.'%(post.title,post.user),'postmaster@mg.wstreams.com',['amapelete@gmail.com'],fail_silently=False,)
+#         else:
+#             return("No new Posts Yet")
 
 # @task(name="taptap_sms")
 # def tap_sms():
