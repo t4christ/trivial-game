@@ -259,6 +259,7 @@ def welcome_tap(request,username):
 			return redirect('taptap:understand_tap')
 	except Exception as e:
 		print("Error message",e)
+		return redirect("/")
 
 
 def understand_tap(request):
