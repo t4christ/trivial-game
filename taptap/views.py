@@ -232,8 +232,8 @@ def welcome_tap(request,username):
 	# 	create=created.second
 	 	TapActivePlayer.objects.create(player_tap=request.user,player_num=+1)
 	# 	print(hr_time - create)
-	try:
-		if  request.session and request.user.is_authenticated:
+	# try:
+	if  request.session and request.user.is_authenticated:
 			# tap_time=now.hour
 			# tap_time=now.strftime("%Y-%m-%d %H:%M")
 			tap_time=now.strftime("%H:%M:%S")
@@ -255,11 +255,11 @@ def welcome_tap(request,username):
 			else:
 				messages.error(request,"You Have Played Your Limit For The 3 Hour Slot.")
 				return redirect("/")
-		else:
+	else:
 			return redirect('taptap:understand_tap')
-	except Exception as e:
-		print("Error message",e)
-		return HttpResponse("Error message",e)
+	# except Exception as e:
+	# 	print("Error message",e)
+	# 	return HttpResponse("Error message",e)
 
 
 def understand_tap(request):
