@@ -1075,6 +1075,7 @@ def easy_submit(request,username):
                                 PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > int(score_point[0]):
+                                HighestScoreStatistic.objects.create(winner=True,user=request.user,difficulty="easy",score=score)
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="easy")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="easy",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
@@ -1086,6 +1087,7 @@ def easy_submit(request,username):
                                 PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > int(score_point[0]):
+                                HighestScoreStatistic.objects.create(winner=True,user=request.user,difficulty="medium",score=score)
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="medium")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="medium",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time" 
@@ -1095,6 +1097,7 @@ def easy_submit(request,username):
                                 PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > int(score_point[0]):
+                                HighestScoreStatistic.objects.create(winner=True,user=request.user,difficulty="hard",score=score)
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="hard")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="hard",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
@@ -1104,6 +1107,7 @@ def easy_submit(request,username):
                                 PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > int(score_point[0]): 
+                                HighestScoreStatistic.objects.create(winner=True,user=request.user,difficulty="akwa",score=score)
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="akwa")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="akwa",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
@@ -1113,16 +1117,19 @@ def easy_submit(request,username):
                                 PlayerStatistic.objects.create(player=request.user,difficulty="nanniv",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score > int(score_point[0]): 
+                                HighestScoreStatistic.objects.create(winner=True,user=request.user,difficulty="nanniv",score=score)
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="nanniv")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="nanniv",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                         
                         elif get_xmas in where_from:
                             if score > 0 and score < int(score_point[0]):
+                                
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="xmas")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             elif score == 100:
+                                HighestScoreStatistic.objects.create(winner=True,user=request.user,difficulty="levelone",score=score)
                                 UserCorrectAnswer.objects.create(winner=True,phone_number=request.user.phone_number,user=request.user,score=score,difficulty="xmas")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="xmas",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
@@ -1271,8 +1278,8 @@ def easy_submit(request,username):
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelone")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="levelone",score=score,phone_number=request.user.phone_number)
-                                HighestLevelScore.objects.create(player=request.user,difficulty="levelone",score=score)
-                                HighestScoreStatistic.objects.create(user=request.user,difficulty="levelone",score=score)
+                                HighestLevelScore.objects.create(player=request.user,difficulty="levelone",score=score,phone_number=request.user.phone_number)
+                                HighestScoreStatistic.objects.create(user=request.user,difficulty="levelone",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelone")
@@ -1286,8 +1293,8 @@ def easy_submit(request,username):
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="leveltwo")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="leveltwo",score=score,phone_number=request.user.phone_number)
-                                HighestLevelScore.objects.create(player=request.user,difficulty="leveltwo",score=score)
-                                HighestScoreStatistic.objects.create(user=request.user,difficulty="leveltwo",score=score)
+                                HighestLevelScore.objects.create(player=request.user,difficulty="leveltwo",score=score,phone_number=request.user.phone_number)
+                                HighestScoreStatistic.objects.create(user=request.user,difficulty="leveltwo",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="leveltwo")
@@ -1302,8 +1309,8 @@ def easy_submit(request,username):
                                 
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelthree")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="levelthree",score=score,phone_number=request.user.phone_number)
-                                HighestLevelScore.objects.create(player=request.user,difficulty="levelthree",score=score)
-                                HighestScoreStatistic.objects.create(userr=request.user,difficulty="levelthree",score=score)
+                                HighestLevelScore.objects.create(player=request.user,difficulty="levelthree",score=score,phone_number=request.user.phone_number)
+                                HighestScoreStatistic.objects.create(user=request.user,difficulty="levelthree",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelthree")
@@ -1318,7 +1325,7 @@ def easy_submit(request,username):
                                 # UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelfour")
                                 PlayerStatistic.objects.create(player=request.user,difficulty="levelfour",score=score,phone_number=request.user.phone_number)
                                 HighestLevelScore.objects.create(player=request.user,difficulty="levelfour",score=score,phone_number=request.user.phone_number)
-                                HighestScoreStatistic.objects.create(user=request.user,difficulty="levelfour",score=score)
+                                HighestScoreStatistic.objects.create(user=request.user,difficulty="levelfour",score=score,phone_number=request.user.phone_number)
                                 data["thanks"]="Thanks For playing See You Next Time"
                             else:
                                 UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelfour")
@@ -1329,7 +1336,7 @@ def easy_submit(request,username):
                         elif get_level5 in where_from:
                             UserCorrectAnswer.objects.create(phone_number=request.user.phone_number,user=request.user,score=score,difficulty="levelfive")
                             PlayerStatistic.objects.create(player=request.user,difficulty="levelfive",score=score,phone_number=request.user.phone_number)
-                            HighestScoreStatistic.objects.create(user=request.user,difficulty="levelfive",score=score)
+                            HighestScoreStatistic.objects.create(user=request.user,difficulty="levelfive",score=score,phone_number=request.user.phone_number)
                             data["thanks"]="Thanks For playing See You Next Time" 
 
 

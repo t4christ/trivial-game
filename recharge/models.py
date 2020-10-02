@@ -325,9 +325,10 @@ class PlayerStatistic(models.Model):
 
 
 class HighestScoreStatistic(models.Model):
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE,related_name="player_stats")
+    user = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="highest_score")
     difficulty=models.CharField(max_length=10)
     score = models.IntegerField(default=0)
+    winner=models.BooleanField(default=False)
     phone_number=models.CharField(max_length=15,default='',null=True,blank=True)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     def __str__(self):
@@ -335,7 +336,7 @@ class HighestScoreStatistic(models.Model):
 
 
 class HighestLevelScore(models.Model):
-    player = models.CharField(max_length=100)
+    player = models.ForeignKey(MyUser,default="", on_delete=models.CASCADE,related_name="highest_level_score")
     difficulty=models.CharField(max_length=10)
     score = models.IntegerField(default=0)
     phone_number=models.CharField(max_length=13)

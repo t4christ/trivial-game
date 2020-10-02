@@ -208,7 +208,7 @@ def remove():
 
 import ast
 import json
-@task(name="recharge_time")
+@task(name="recharge_taptap")
 def recharge():
     time_diff = timezone.now() - timezone.timedelta(days=5)
     tap_score=Taptap.objects.all().order_by("-score")
@@ -224,7 +224,7 @@ def recharge():
             if time(9,00) <= now.time() <= time(9,2) or time(12,00) <= now.time() <= time(12,2) or time(15,00) <= now.time() <= time(15,2) or time(18,00) <= now.time() <= time(18,2) or time(21,00) <= now.time() <= time(21,2) or time(23,55) <= now.time() <= time(23,57):
                 test_recharge(user_num.username,'taptap',user_num.phone_number,500)
             else:
-                    print("Not yet time")
+                    print("Not yet time for taptap winning")
         else:
             return("You can only win once in a day")        #     )
     else:

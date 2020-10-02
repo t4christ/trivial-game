@@ -128,12 +128,12 @@ class AkwaIbomQuestionModelAdmin(admin.ModelAdmin):
 
 
 class HighestScoreModelAdmin(admin.ModelAdmin):
-	list_display = ["phone_number", "timestamp"]
+	list_display = ["user","phone_number", "timestamp"]
 	# list_display_links = ["content"]
 	# list_editable = ["content"]
 	# list_filter = ["content","timestamp"]
 
-	search_fields = ["phone_number"]
+	search_fields = ["user","phone_number"]
 	class Meta:
 		model = HighestScoreStatistic
 

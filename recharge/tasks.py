@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 import random
 from django.conf import settings
 from celery.decorators import task
-from datetime import datetime, time
+from datetime import datetime, time,date
 from recharge.models import UserCorrectAnswer,HighestScoreStatistic,PlayerStatistic,HighestLevelScore
 from accounts.models import MyUser
 from erc.models import ERCTransaction
@@ -63,7 +63,7 @@ def test_recharge(username,difficulty,phone_number,amount):
             username = str(settings.ERC_USER)
             password = (settings.ERC_PASS)
             url =  settings.ERC_LOGIN_URL 
-            print("User and pass",username,password,url)
+            # print("User and pass",username,password,url)
                         
             login_payload={
                     'action':'login',
@@ -81,11 +81,12 @@ def remove_airtime():
     recharge_score=UserCorrectAnswer.objects.filter(timestamp__gte=time_diff).order_by("-score")
     if time(9,10) <= now.time() <= time(9,15) or time(12,10) <= now.time() <= time(12,15) or time(15,10) <= now.time() <= time(15,15) or time(18,10) <= now.time() <= time(18,15) or time(21,10) <= now.time() <= time(21,15):
             if recharge_score:
-                highest=[str(highest.user) for highest in recharge_score][:1]
-                player=MyUser.objects.get(username=highest[0])
-                highest_diff=[str(highest.difficulty) for highest in recharge_score][:1]
-                highest_score=[int(highest.score) for highest in recharge_score][:1]
-                high_create=HighestScoreStatistic.objects.create(user=player,phone_number=player.phone_number,difficulty=highest_diff[0],score=highest_score[0])
+                print("Recharge Score",score)
+                # highest=[str(highest.user) for highest in recharge_score][:1]
+                # player=MyUser.objects.get(username=highest[0])
+                # highest_diff=[str(highest.difficulty) for highest in recharge_score][:1]
+                # highest_score=[int(highest.score) for highest in recharge_score][:1]
+                # high_create=HighestScoreStatistic.objects.create(user=player,phone_number=player.phone_number,difficulty=highest_diff[0],score=highest_score[0])
             else:
                 print("Not Data Available For This Hour")
             for recharge in recharge_score: 
@@ -95,19 +96,19 @@ def remove_airtime():
             
 
 
-@task(name="delete_airtime_level")
-def remove_airtime_level():
-    now=datetime.now()
-    recharge_score=HighestLevelScore.objects.all()
-    if time(6,5) <= now.time() <= time(21,2):
-            if recharge_score:
-                for recharge in recharge_score: 
-                    HighestLevelScore.objects.all().delete()[:1]
-            else:
-                print("No Level Data Available For This Hour")
+# @task(name="delete_airtime_level")
+# def remove_airtime_level():
+#     now=datetime.now()
+#     recharge_score=HighestLevelScore.objects.all()
+#     if time(6,5) <= now.time() <= time(21,2):
+#             if recharge_score:
+#                 for recharge in recharge_score: 
+#                     HighestLevelScore.objects.all().delete()[:1]
+#             else:
+#                 print("No Level Data Available For This Hour")
             
-    else:
-        print("Not yet time to delete")
+#     else:
+#         print("Not yet time to delete")
 
 
 
@@ -115,81 +116,78 @@ def remove_airtime_level():
 
 @task(name="recharge_airtime_level")
 def airtime_level():
-    winner_arr=[]
-    recharge_payload=[]
-    recharge=''
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-    weekday = datetime.now().strftime('%A') 
-    time_diff = timezone.now() - timezone.timedelta(days=5)
-    airtime_score_akwa=HighestLevelScore.objects.filter(difficulty='akwa').order_by("-score","-timestamp")
-    airtime_score_levone=HighestLevelScore.objects.filter(difficulty='levelone').order_by("-score","-timestamp")
-    airtime_score_levtwo=HighestLevelScore.objects.filter(difficulty='leveltwo').order_by("-score","-timestamp")
-    airtime_score_levthree=HighestLevelScore.objects.filter(difficulty='levelthree').order_by("-score","-timestamp")
-    airtime_score_levfour=HighestLevelScore.objects.filter(difficulty='levelfour').order_by("-score","-timestamp")
-    level_credit_levone=[recharge.difficulty for recharge in airtime_score_levone][:1]
-    level_credit_akwa=[recharge.difficulty for recharge in airtime_score_akwa][:1]
-    level_credit_levtwo=[recharge.difficulty for recharge in airtime_score_levtwo][:1]
-    level_credit_levthree=[recharge.difficulty for recharge in airtime_score_levthree][:1]
-    level_credit_levfour=[recharge.difficulty for recharge in airtime_score_levfour][:1]
-    # recharge=[recharge.score for recharge in airtime_score_easy][:1]
-    recharge_player_levone=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levone][:1]
-    recharge_player_akwa=[winner_arr.append(str(air.phone_number)) for air in airtime_score_akwa][:1]
-    recharge_player_levtwo=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levtwo][:1]
-    recharge_player_levthree=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levthree][:1]
-    recharge_player_levfour=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levfour][:1]
+        winner_arr=[]
+        recharge_payload=[]
+        recharge=''
+        current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+        weekday = datetime.now().strftime('%A') 
+        time_diff = timezone.now() - timezone.timedelta(days=5)
+        
+        airtime_score_nanniv=HighestScoreStatistic.objects.filter(difficulty='nanniv',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_easy=HighestScoreStatistic.objects.filter(difficulty='easy',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_medium=HighestScoreStatistic.objects.filter(difficulty='medium',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_hard=HighestScoreStatistic.objects.filter(difficulty='hard',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
 
-    recharge_play_levonenum=[str(air.phone_number) for air in airtime_score_levone][:1]
-    recharge_play_akwanum=[str(air.phone_number) for air in airtime_score_akwa][:1]
-    recharge_play_levtwonum=[str(air.phone_number) for air in airtime_score_levtwo][:1]
-    recharge_play_levthreenum=[str(air.phone_number) for air in airtime_score_levthree][:1]
-    recharge_play_levfournum=[str(air.phone_number) for air in airtime_score_levfour][:1]
+        airtime_score_levone=HighestLevelScore.objects.filter(difficulty='levelone').order_by("-score","-timestamp")[:1]
+        airtime_score_levtwo=HighestLevelScore.objects.filter(difficulty='leveltwo').order_by("-score","-timestamp")[:1]
+        airtime_score_levthree=HighestLevelScore.objects.filter(difficulty='levelthree').order_by("-score","-timestamp")[:1]
+        airtime_score_levfour=HighestLevelScore.objects.filter(difficulty='levelfour').order_by("-score","-timestamp")[:1]
+        airtime_score_levfive=HighestLevelScore.objects.filter(difficulty='levelfive').order_by("-score","-timestamp")[:1]
+
+    # level_credit_levone=[recharge.difficulty for recharge in airtime_score_levone][:1]
+    # level_credit_akwa=[recharge.difficulty for recharge in airtime_score_akwa][:1]
+    # level_credit_levtwo=[recharge.difficulty for recharge in airtime_score_levtwo][:1]
+    # level_credit_levthree=[recharge.difficulty for recharge in airtime_score_levthree][:1]
+    # level_credit_levfour=[recharge.difficulty for recharge in airtime_score_levfour][:1]
+    # # recharge=[recharge.score for recharge in airtime_score_easy][:1]
+    # recharge_player_levone=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levone][:1]
+    # recharge_player_akwa=[winner_arr.append(str(air.phone_number)) for air in airtime_score_akwa][:1]
+    # recharge_player_levtwo=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levtwo][:1]
+    # recharge_player_levthree=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levthree][:1]
+    # recharge_player_levfour=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levfour][:1]
+
+    # recharge_play_levonenum=[str(air.phone_number) for air in airtime_score_levone][:1]
+    # recharge_play_akwanum=[str(air.phone_number) for air in airtime_score_akwa][:1]
+    # recharge_play_levtwonum=[str(air.phone_number) for air in airtime_score_levtwo][:1]
+    # recharge_play_levthreenum=[str(air.phone_number) for air in airtime_score_levthree][:1]
+    # recharge_play_levfournum=[str(air.phone_number) for air in airtime_score_levfour][:1]
 
 
 
-    recharge_levone_user=[str(air.player) for air in airtime_score_levone][:1]
-    recharge_akwa_user=[str(air.player) for air in airtime_score_akwa][:1]
-    recharge_levtwo_user=[str(air.player) for air in airtime_score_levtwo][:1]
-    recharge_levthree_user=[str(air.player) for air in airtime_score_levthree][:1]
-    recharge_levfour_user=[str(air.player) for air in airtime_score_levfour][:1]
+    # recharge_levone_user=[str(air.player) for air in airtime_score_levone][:1]
+    # recharge_akwa_user=[str(air.player) for air in airtime_score_akwa][:1]
+    # recharge_levtwo_user=[str(air.player) for air in airtime_score_levtwo][:1]
+    # recharge_levthree_user=[str(air.player) for air in airtime_score_levthree][:1]
+    # recharge_levfour_user=[str(air.player) for air in airtime_score_levfour][:1]
 
     # print(str(recharge_play_easynum[0]),recharge_play_mednum,recharge_play_hardnum)
     # print(winner_arr)
-    if winner_arr:
+    # if winner_arr:
         # user_num=MyUser.objects.get(username=recharge_player_easy[0])
         
         now=datetime.now()
         now_time=now.time()
         if time(5,59) <= now.time() <= time(21,5)  and weekday in current_day:
 
-                        if recharge_play_levonenum and str(recharge_play_levonenum[0]) in winner_arr and level_credit_levone and level_credit_levone[0] == 'levelone':
-                            user_num=MyUser.objects.get(username=recharge_levone_user[0])
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levonenum[0]).count()
+                        if airtime_score_levone.count() > 1:
+                            user_num=MyUser.objects.get(username=airtime_score_levone[0].player)
+                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
                             if high_score == 0:
-                               test_recharge(user_num.username,'levelone',recharge_play_levonenum[0],100)
+                               test_recharge(user_num.username,'levelone',user_num.phone_number,100)
+                               HighestLevelScore.objects.get(player=user_num).delete()
                             else:
                                 print("Level one winner can only win once  in 5 days")
   
                         else:
                             print('No winner for leveleone')
 
-                        if recharge_play_akwanum and str(recharge_play_akwanum[0]) in winner_arr and level_credit_akwa and level_credit_akwa[0] == 'akwa':
-                            user_num=MyUser.objects.get(username=recharge_levone_user[0])
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_akwanum[0]).count()
-                            if high_score == 0:
-                                    test_recharge('akwa',user_num.username,recharge_play_levonenum[0],100)
-
-                            else:
-                                print("Level one winner can only win once  in 5 days")
-
-                        else:
-                             print('No winner for akwa')
 
                         
-                        if  recharge_play_levtwonum and str(recharge_play_levtwonum[0]) in winner_arr and level_credit_levtwo and level_credit_levtwo[0] == 'leveltwo':
-                                user_num=MyUser.objects.get(username=recharge_levtwo_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levtwonum[0]).count()
+                        if  airtime_score_levtwo.count() > 1:
+                                user_num=MyUser.objects.get(username=airtime_score_levtwo[0].player)
+                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
-                                    test_recharge(user_num.username,'leveltwo',recharge_play_levonenum[0],200)
+                                    test_recharge(user_num.username,'leveltwo',user_num.phone_number,200)
 
                                 else:
                                     print("Level two Winner can only win once in 5 days")
@@ -197,11 +195,11 @@ def airtime_level():
                         else:
                             print('level two is not yet ready')
 
-                        if recharge_play_levthreenum and str(recharge_play_levthreenum[0]) in winner_arr and level_credit_levthree and level_credit_levthree[0] == 'levelthree':
-                                user_num=MyUser.objects.get(username=recharge_levthree_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levthreenum[0]).count()
+                        if airtime_score_levthree.count() > 1:
+                                user_num=MyUser.objects.get(username=airtime_score_levone.player)
+                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
-                                    test_recharge(user_num.username,'level_three',recharge_play_levonenum[0],300)
+                                    test_recharge(user_num.username,'level_three',user_num.phone_number,300)
 
                                 else:
                                     print("Level three winner can only win once in 5 days")
@@ -211,11 +209,11 @@ def airtime_level():
 
 
 
-                        if recharge_play_levfournum and str(recharge_play_levfournum[0]) in winner_arr and level_credit_levfour and level_credit_levfour[0] == 'levelfour':
+                        if airtime_score_levfour.count() > 1:
                                 user_num=MyUser.objects.get(username=recharge_levfour_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=recharge_play_levfournum[0]).count()
+                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
-                                    test_recharge(user_num.username,'level_four',recharge_play_levonenum[0],500)
+                                    test_recharge(user_num.username,'level_four',user_num.phone_number,500)
 
                                 else:
                                     print("Level four winner can only win once in 5 days")
@@ -238,70 +236,101 @@ def airtime_level():
 
 @task(name="recharge_airtime")
 def airtime():
-    current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',]
-    weekday = datetime.now().strftime('%A') 
-    winner_arr=[]
-    recharge_payload=[]
-    recharge=''
-    data={}
-    easy_ran_num=[250,260,270,280,290,300]
-    med_ran_num=[200,210,220,230,240,250]
-    hard_ran_num=[230,240,250,260,270,280]
-    easy_ran_choice=random.choice(easy_ran_num)
-    med_ran_choice=random.choice(med_ran_num)
-    hard_ran_choice=random.choice(hard_ran_num)
-    time_diff = timezone.now() - timezone.timedelta(days=5)
-    airtime_score_levfive=UserCorrectAnswer.objects.filter(difficulty='levelfive').order_by("-score","-timestamp")
-    airtime_score_easy=UserCorrectAnswer.objects.filter(difficulty='easy').order_by("-score","-timestamp")
-    airtime_score_medium=UserCorrectAnswer.objects.filter(difficulty='medium').order_by("-score","-timestamp")
-    airtime_score_hard=UserCorrectAnswer.objects.filter(difficulty='hard').order_by("-score","-timestamp")
-    airtime_score_xmas=UserCorrectAnswer.objects.filter(difficulty='xmas',winner=True).order_by("-score","-timestamp")
-    level_credit_levfive=[recharge.difficulty for recharge in airtime_score_levfive][:1]
-    level_credit_easy=[recharge.difficulty for recharge in airtime_score_easy][:1]
-    level_credit_medium=[recharge.difficulty for recharge in airtime_score_medium][:1]
-    level_credit_hard=[recharge.difficulty for recharge in airtime_score_hard][:1]
-    level_credit_xmas=[recharge.difficulty for recharge in airtime_score_xmas][:1]
-    # recharge=[recharge.score for recharge in airtime_score_easy][:1]
-    recharge_player_easy=[winner_arr.append(str(air.phone_number)) for air in airtime_score_easy][:1]
-    recharge_player_medium=[winner_arr.append(str(air.phone_number)) for air in airtime_score_medium][:1]
-    recharge_player_hard=[winner_arr.append(str(air.phone_number)) for air in airtime_score_hard][:1]
-    recharge_player_xmas=[winner_arr.append(str(air.phone_number)) for air in airtime_score_xmas][:1]
-    recharge_player_levfive=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levfive][:1]
+        current_day=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',]
+        weekday = datetime.now().strftime('%A') 
+        winner_arr=[]
+        recharge_payload=[]
+        recharge=''
+        data={}
+        easy_ran_num=[250,260,270,280,290,300]
+        med_ran_num=[200,210,220,230,240,250]
+        hard_ran_num=[230,240,250,260,270,280]
+        easy_ran_choice=random.choice(easy_ran_num)
+        med_ran_choice=random.choice(med_ran_num)
+        hard_ran_choice=random.choice(hard_ran_num)
+        time_diff = timezone.now() - timezone.timedelta(days=5)
 
-    recharge_play_easynum=[str(air.phone_number) for air in airtime_score_easy][:1]
-    recharge_play_mednum=[str(air.phone_number) for air in airtime_score_medium][:1]
-    recharge_play_hardnum=[str(air.phone_number) for air in airtime_score_hard][:1]
-    recharge_play_xmasnum=[str(air.phone_number) for air in airtime_score_xmas][:1]
-    recharge_play_levfivenum=[str(air.phone_number) for air in airtime_score_levfive][:1]
+        airtime_score_nanniv=HighestScoreStatistic.objects.filter(difficulty='nanniv',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_easy=HighestScoreStatistic.objects.filter(difficulty='easy',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_medium=HighestScoreStatistic.objects.filter(difficulty='medium',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_hard=HighestScoreStatistic.objects.filter(difficulty='hard',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_akwa=HighestScoreStatistic.objects.filter(difficulty='akwa',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_xmas=HighestScoreStatistic.objects.filter(difficulty='xmas',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        airtime_score_levfive=HighestScoreStatistic.objects.filter(difficulty='levelfive',timestamp__date=date.today()).order_by("-score","-timestamp")[:1]
+        # airtime_score_levfive=UserCorrectAnswer.objects.filter(difficulty='levelfive').order_by("-score","-timestamp")
+        # airtime_score_easy=UserCorrectAnswer.objects.filter(difficulty='easy').order_by("-score","-timestamp")
+        # airtime_score_medium=UserCorrectAnswer.objects.filter(difficulty='medium').order_by("-score","-timestamp")
+        # airtime_score_hard=UserCorrectAnswer.objects.filter(difficulty='hard').order_by("-score","-timestamp")
+        # airtime_score_xmas=UserCorrectAnswer.objects.filter(difficulty='xmas',winner=True).order_by("-score","-timestamp")
+        # level_credit_levfive=[recharge.difficulty for recharge in airtime_score_levfive][:1]
+        # level_credit_easy=[recharge.difficulty for recharge in airtime_score_easy][:1]
+        # level_credit_medium=[recharge.difficulty for recharge in airtime_score_medium][:1]
+        # level_credit_hard=[recharge.difficulty for recharge in airtime_score_hard][:1]
+        # level_credit_xmas=[recharge.difficulty for recharge in airtime_score_xmas][:1]
+        # # recharge=[recharge.score for recharge in airtime_score_easy][:1]
+        # recharge_player_easy=[winner_arr.append(str(air.phone_number)) for air in airtime_score_easy][:1]
+        # recharge_player_medium=[winner_arr.append(str(air.phone_number)) for air in airtime_score_medium][:1]
+        # recharge_player_hard=[winner_arr.append(str(air.phone_number)) for air in airtime_score_hard][:1]
+        # recharge_player_xmas=[winner_arr.append(str(air.phone_number)) for air in airtime_score_xmas][:1]
+        # recharge_player_levfive=[winner_arr.append(str(air.phone_number)) for air in airtime_score_levfive][:1]
+
+        # recharge_play_easynum=[str(air.phone_number) for air in airtime_score_easy][:1]
+        # recharge_play_mednum=[str(air.phone_number) for air in airtime_score_medium][:1]
+        # recharge_play_hardnum=[str(air.phone_number) for air in airtime_score_hard][:1]
+        # recharge_play_xmasnum=[str(air.phone_number) for air in airtime_score_xmas][:1]
+        # recharge_play_levfivenum=[str(air.phone_number) for air in airtime_score_levfive][:1]
 
 
-    easy_score_guage=[bool(air.winner) for air in airtime_score_easy][:1]
-    med_score_guage=[bool(air.winner)  for air in airtime_score_medium][:1]
-    hard_score_guage=[ bool(air.winner) for air in airtime_score_hard][:1]
-    xmas_score_guage=[ bool(air.winner) for air in airtime_score_xmas][:1]
+        # easy_score_guage=[bool(air.winner) for air in airtime_score_easy][:1]
+        # med_score_guage=[bool(air.winner)  for air in airtime_score_medium][:1]
+        # hard_score_guage=[ bool(air.winner) for air in airtime_score_hard][:1]
+        # xmas_score_guage=[ bool(air.winner) for air in airtime_score_xmas][:1]
 
 
-    recharge_easy_user=[str(air.user) for air in airtime_score_easy][:1]
-    recharge_med_user=[str(air.user) for air in airtime_score_medium][:1]
-    recharge_hard_user=[str(air.user) for air in airtime_score_hard][:1]
-    recharge_xmas_user=[str(air.user) for air in airtime_score_xmas][:1]
-    recharge_levfive_user=[str(air.user) for air in airtime_score_levfive][:1]
+        # recharge_easy_user=[str(air.user) for air in airtime_score_easy][:1]
+        # recharge_med_user=[str(air.user) for air in airtime_score_medium][:1]
+        # recharge_hard_user=[str(air.user) for air in airtime_score_hard][:1]
+        # recharge_xmas_user=[str(air.user) for air in airtime_score_xmas][:1]
+        # recharge_levfive_user=[str(air.user) for air in airtime_score_levfive][:1]
 
     # print(str(recharge_play_easynum[0]),recharge_play_mednum,recharge_play_hardnum)
     # print(winner_arr)
-    if winner_arr:
+    # if winner_arr:
         # user_num=MyUser.objects.get(username=recharge_player_easy[0])
         
         now=datetime.now()
         now_time=now.time()
-        if time(5,59) <= now.time() <= time(21,5) and weekday in current_day and easy_score_guage == True:
+        if time(5,59) <= now.time() <= time(21,5) and weekday in current_day:
 
 
-            if recharge_play_xmasnum and str(recharge_play_xmasnum[0]) in winner_arr and level_credit_xmas and time(18,00) <= now.time() <= time(19,00) and level_credit_xmas[0] == 'xmas':
-                            user_num=MyUser.objects.get(username=recharge_xmas_user[0])
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_xmasnum[0]).count()
+            if airtime_score_akwa.count() > 1:
+                user_num=MyUser.objects.get(username=airtime_score_akwa[0].user)
+                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                if high_score == 0:
+                        test_recharge(user_num.username,'akwa',user_num.phone_number,100)
+
+                else:
+                    print("Akwa Ibom winner can only win once  in 5 days")
+
+            else:
+                print('No winner for akwa')
+
+            if airtime_score_nanniv.count() > 1:
+                user_num=MyUser.objects.get(username=airtime_score_nanniv[0].user)
+                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                if high_score == 0:
+                        test_recharge('nanniv',user_num.username,user_num.phone_number,100)
+
+                else:
+                    print("Anniversary winner can only win once  in 5 days")
+
+            else:
+                print('No winner for anniversary')
+            if airtime_score_xmas.count() > 1:
+                            user_num=MyUser.objects.get(username=airtime_score_xmas[0].user)
+                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
                             if high_score == 0:
-                                        test_recharge(user_num.username,'xmas',recharge_play_levonenum[0],1000)
+                                        test_recharge(user_num.username,'xmas',user_num.phone_number,1000)
 
                             elif high_score > 0:
                                     print("Xmas winner can only win once in 5 days")
@@ -313,11 +342,11 @@ def airtime():
                             
             if time(9,00) <= now.time() <= time(9,2) or time(12,00) <= now.time() <= time(12,2) or time(15,00) <= now.time() <= time(15,9) or time(18,00) <= now.time() <= time(18,2) or time(21,00) <= now.time() <= time(21,2):
                    
-                        if recharge_play_levfivenum and str(recharge_play_levfivenum[0]) in winner_arr and level_credit_levfive and level_credit_levfive[0] == 'levelfive':
-                            user_num=MyUser.objects.get(username=recharge_levfive_user[0])
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_levfivenum[0]).count()
+                        if airtime_score_levfive.count() > 1:
+                            user_num=MyUser.objects.get(username=airtime_score_levfive[0].user)
+                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
                             if high_score == 0:
-                                test_recharge(user_num.username,'level_five',recharge_play_levonenum[0],1000)
+                                test_recharge(user_num.username,'level_five',user_num.phone_number,1000)
 
                             elif high_score > 0:
                                     print("Levelfive winner can only win once in 5 days")
@@ -328,11 +357,11 @@ def airtime():
                             print('No winner for levelfive')
 
                         
-                        if  recharge_play_easynum and easy_score_guage[0] == True and  str(recharge_play_easynum[0]) in winner_arr and level_credit_easy and level_credit_easy[0] == 'easy':
-                                user_num=MyUser.objects.get(username=recharge_easy_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_easynum[0]).count()
+                        if  airtime_score_easy.count() > 1:
+                                user_num=MyUser.objects.get(username=airtime_score_easy[0].user)
+                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
-                                    test_recharge(user_num.username,'easy',recharge_play_levonenum[0],200)
+                                    test_recharge(user_num.username,'easy',user_num.phone_number,200)
 
                                 elif high_score > 0:
                                     print("Easy Winner can only win once in 5 days")
@@ -342,12 +371,12 @@ def airtime():
                         else:
                             print('easy is not yet ready')
 
-                        if recharge_play_mednum and med_score_guage == True and str(recharge_play_mednum[0]) in winner_arr and level_credit_medium and level_credit_medium[0] == 'medium':
-                                user_num=MyUser.objects.get(username=recharge_med_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_mednum[0]).count()
+                        if airtime_score_medium.count() > 1:
+                                user_num=MyUser.objects.get(username=airtime_score_medium[0].user)
+                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
                                 print("medium%s"%high_score)
                                 if high_score == 0:
-                                    test_recharge(user_num.username,'medium',recharge_play_levonenum[0],10)
+                                    test_recharge(user_num.username,'medium',user_num.phone_number,10)
 
                                 elif high_score > 0:
                                     print("Medium winner can only win once in 5 days")
@@ -359,11 +388,11 @@ def airtime():
 
 
 
-                        if recharge_play_hardnum and hard_score_guage[0] == True and str(recharge_play_hardnum[0]) in winner_arr and level_credit_hard and level_credit_hard[0] == 'hard':
-                                user_num=MyUser.objects.get(username=recharge_hard_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=recharge_play_hardnum[0]).count()
+                        if airtime_score_hard.count() > 1:
+                                user_num=MyUser.objects.get(username=airtime_score_hard.user)
+                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
-                                    test_recharge(user_num.username,'hard',recharge_play_levonenum[0],1000)
+                                    test_recharge(user_num.username,'hard',user_num.phone_number,1000)
 
                                 elif high_score > 0:
                                     print("Hard winner can only win once in 5 days")

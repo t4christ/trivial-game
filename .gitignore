@@ -4,6 +4,7 @@ include/
 lib/
 pip-selfcheck.json
 *.pem
+request.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
