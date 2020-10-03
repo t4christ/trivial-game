@@ -169,9 +169,9 @@ def airtime_level():
         now_time=now.time()
         if time(5,59) <= now.time() <= time(21,5)  and weekday in current_day:
 
-                        if airtime_score_levone.count() < 1:
+                        if airtime_score_levone.count() > 1:
                             user_num=MyUser.objects.get(username=airtime_score_levone[0].player)
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                            high_score=ERCTransaction.objects.filter(time__date=date.today(),target=user_num.username,phone_number=user_num.phone_number).count()
                             if high_score == 0:
                                test_recharge(user_num.username,'levelone',user_num.phone_number,100)
                                HighestLevelScore.objects.get(player=user_num).delete()
@@ -183,9 +183,9 @@ def airtime_level():
 
 
                         
-                        if  airtime_score_levtwo.count() < 1:
+                        if  airtime_score_levtwo.count() > 1:
                                 user_num=MyUser.objects.get(username=airtime_score_levtwo[0].player)
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                                high_score=ERCTransaction.objects.filter(time__date=date.today(),target=user_num.username,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
                                     test_recharge(user_num.username,'leveltwo',user_num.phone_number,200)
 
@@ -195,9 +195,9 @@ def airtime_level():
                         else:
                             print('level two is not yet ready')
 
-                        if airtime_score_levthree.count() < 1:
+                        if airtime_score_levthree.count() > 1:
                                 user_num=MyUser.objects.get(username=airtime_score_levone.player)
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                                high_score=ERCTransaction.objects.filter(time__date=date.today(),target=user_num.username,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
                                     test_recharge(user_num.username,'level_three',user_num.phone_number,300)
 
@@ -209,9 +209,9 @@ def airtime_level():
 
 
 
-                        if airtime_score_levfour.count() < 1:
+                        if airtime_score_levfour.count() > 1:
                                 user_num=MyUser.objects.get(username=recharge_levfour_user[0])
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                                high_score=ERCTransaction.objects.filter(time__date=date.today(),target=user_num.username,phone_number=user_num.phone_number).count()
                                 if high_score == 0:
                                     test_recharge(user_num.username,'level_four',user_num.phone_number,500)
 
@@ -303,9 +303,9 @@ def airtime():
         if time(5,59) <= now.time() <= time(21,5) and weekday in current_day:
 
 
-            if airtime_score_akwa.count() < 1:
+            if airtime_score_akwa.count() > 1:
                 user_num=MyUser.objects.get(username=airtime_score_akwa[0].user)
-                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                high_score=ERCTransaction.objects.filter(time__date=date.today(),target=user_num.username,phone_number=user_num.phone_number).count()
                 if high_score == 0:
                         test_recharge(user_num.username,'akwa',user_num.phone_number,100)
 
@@ -315,9 +315,9 @@ def airtime():
             else:
                 print('No winner for akwa')
 
-            if airtime_score_nanniv.count() < 1:
+            if airtime_score_nanniv.count() > 1:
                 user_num=MyUser.objects.get(username=airtime_score_nanniv[0].user)
-                high_score=ERCTransaction.objects.filter(time__gte=time_diff,target=user_num.username,phone_number=user_num.phone_number).count()
+                high_score=ERCTransaction.objects.filter(time__date=date.today(),target=user_num.username,phone_number=user_num.phone_number).count()
                 if high_score == 0:
                         test_recharge('nanniv',user_num.username,user_num.phone_number,100)
 
@@ -326,9 +326,9 @@ def airtime():
 
             else:
                 print('No winner for anniversary')
-            if airtime_score_xmas.count() < 1:
+            if airtime_score_xmas.count() > 1:
                             user_num=MyUser.objects.get(username=airtime_score_xmas[0].user)
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
+                            high_score=ERCTransaction.objects.filter(time__date=date.today(),phone_number=user_num.phone_number).count()
                             if high_score == 0:
                                         test_recharge(user_num.username,'xmas',user_num.phone_number,1000)
 
@@ -342,9 +342,9 @@ def airtime():
                             
             if time(9,00) <= now.time() <= time(9,2) or time(12,00) <= now.time() <= time(12,2) or time(15,00) <= now.time() <= time(15,9) or time(18,00) <= now.time() <= time(18,2) or time(21,00) <= now.time() <= time(21,2):
                    
-                        if airtime_score_levfive.count() < 1:
+                        if airtime_score_levfive.count() > 1:
                             user_num=MyUser.objects.get(username=airtime_score_levfive[0].user)
-                            high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
+                            high_score=ERCTransaction.objects.filter(time__date=date.today(),phone_number=user_num.phone_number).count()
                             if high_score == 0:
                                 test_recharge(user_num.username,'level_five',user_num.phone_number,1000)
 
@@ -357,9 +357,9 @@ def airtime():
                             print('No winner for levelfive')
 
                         
-                        if  airtime_score_easy.count() < 1:
+                        if  airtime_score_easy.count() > 1:
                                 user_num=MyUser.objects.get(username=airtime_score_easy[0].user)
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
+                                high_score=ERCTransaction.objects.filter(time__date=date.today(),phone_number=user_num.phone_number).count()
                                 if high_score == 0:
                                     test_recharge(user_num.username,'easy',user_num.phone_number,200)
 
@@ -371,9 +371,9 @@ def airtime():
                         else:
                             print('easy is not yet ready')
 
-                        if airtime_score_medium.count() < 1:
+                        if airtime_score_medium.count() > 1:
                                 user_num=MyUser.objects.get(username=airtime_score_medium[0].user)
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
+                                high_score=ERCTransaction.objects.filter(time__date=date.today(),phone_number=user_num.phone_number).count()
                                 print("medium%s"%high_score)
                                 if high_score == 0:
                                     test_recharge(user_num.username,'medium',user_num.phone_number,10)
@@ -388,9 +388,9 @@ def airtime():
 
 
 
-                        if airtime_score_hard.count() < 1:
+                        if airtime_score_hard.count() > 1:
                                 user_num=MyUser.objects.get(username=airtime_score_hard.user)
-                                high_score=ERCTransaction.objects.filter(time__gte=time_diff,phone_number=user_num.phone_number).count()
+                                high_score=ERCTransaction.objects.filter(time__date=date.today(),phone_number=user_num.phone_number).count()
                                 if high_score == 0:
                                     test_recharge(user_num.username,'hard',user_num.phone_number,1000)
 
