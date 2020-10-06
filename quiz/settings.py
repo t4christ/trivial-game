@@ -245,14 +245,11 @@ CELERY_BEAT_SCHEDULE = {
         # 'args': (16, 16)
     },
 
-    'remove_airtime': {
+'remove_airtime': {
         'task': 'delete_airtime',
         'schedule': 240.0,
         # 'args': (16, 16)
     },
-
-
-
 
 'airtime_level': {
         'task': 'recharge_airtime_level',
@@ -261,31 +258,20 @@ CELERY_BEAT_SCHEDULE = {
     },
 
 
-    # 'remove_airtime_level': {
-    #     'task': 'delete_airtime_level',
-    #     'schedule': 110.0,
-    #     # 'args': (16, 16)
-    # },   
-    
-    # 'send_post_mail': {
-    #     'task': 'Schedule Mail',
-    #     'schedule': 240.0,
-    #     # 'args': (16, 16)
-    # },
 
-    'remove': {
+'remove': {
         'task': 'delete_game',
         'schedule': 240.0,
         # 'args': (16, 16)
     },
-    'recharge': {
+'recharge': {
         'task': 'recharge_taptap',
         'schedule': 120.0,
         # 'args': (16, 16)
     },
 
 
-      'tap_sms': {
+'tap_sms': {
         'task': 'taptap_sms',
         'schedule': 60.0,
         # 'args': (16, 16)
@@ -349,3 +335,29 @@ else:
     EMAIL_TIMEOUT = 30
     EMAIL_USE_TLS = False
 
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,
+#     'formatters': {
+#         'verbose': {
+#             'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s'
+#         }
+#     },
+#     'handlers': {
+#         'gunicorn': {
+#             'level': 'DEBUG',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'formatter': 'verbose',
+#             'filename': '/opt/djangoprojects/reports/bin/gunicorn.errors',
+#             'maxBytes': 1024 * 1024 * 100,  # 100 mb
+#         }
+#     },
+#     'loggers': {
+#         'gunicorn.errors': {
+#             'level': 'DEBUG',
+#             'handlers': ['gunicorn'],
+#             'propagate': True,
+#         },
+#     }
+# }
