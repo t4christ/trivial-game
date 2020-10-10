@@ -40,7 +40,7 @@ urlpatterns = [
     path('recharge/medium/<str:username>/', quiz, name='medium'),
     path('recharge/hard/<str:username>/', quiz, name='hard'),
     path('recharge/akwa/<str:username>/', quiz, name='akwa'),
-    path('recharge/nanniv/<str:username>/', quiz, name='nanniv'),
+    # path('recharge/nanniv/<str:username>/', quiz, name='nanniv'),
    
     path('qloads/',load_question, name='load_question'),
     # path('dload/', del_question, name='del_question'),
