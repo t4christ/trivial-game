@@ -11,17 +11,23 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URL/free-airtime  .
-      - docker build -t $REPOSITORY_URL/trivial-celery  .
-      - docker build -t $REPOSITORY_URL/trivia-nginx  ./nginx
+      - docker build -t trivial-game:free-airtime  .
+      - docker tag trivial-game:free-airtime $REPOSITORY_URL/trivial-game:free-airtime 
+
+      - docker build -t trivial-game:trivial-celery  .
+      - docker tag trivial-game:trivial-celery $REPOSITORY_URL/trivial-game:trivial-celery 
+
+      - docker build -t trivial-game:trivial-nginx  ./nginx
+      - docker tag trivial-game:trivial-nginx  $REPOSITORY_URL/trivial-game:trivial-nginx
+
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URL/free-airtime
-      - docker push $REPOSITORY_URL/trivial-celery
-      - docker push $REPOSITORY_URL/trivia-nginx
+      - docker push $REPOSITORY_URL/trivial-game:free-airtime
+      - docker push $REPOSITORY_URL/trivial-game:trivial-celery
+      - docker push $REPOSITORY_URL/trivial-game:trivia-nginx
 #       - echo Writing image definitions file...
 #       - printf '[{"name":"e-learning-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 #       - cat imagedefinitions.json
