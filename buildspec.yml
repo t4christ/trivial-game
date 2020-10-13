@@ -29,7 +29,9 @@ phases:
       - docker push $REPOSITORY_URL:trivial-celery
       - docker push $REPOSITORY_URL:trivial-nginx
 #       - echo Writing image definitions file...
-#       - printf '[{"name":"e-learning-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      # - printf '[{"name":"e-learning-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 #       - cat imagedefinitions.json
-# artifacts:
-#     files: imagedefinitions.json
+artifacts:
+  files:
+    - '**/*'
+  base-directory: '/'
