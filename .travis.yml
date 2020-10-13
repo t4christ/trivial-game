@@ -27,14 +27,14 @@ after_success:
 
 
 
-deploy:
-  provider: elasticbeanstalk
-  region: us-east-2
-  app: free-airtime
-  env: Trivia
-  bucket_name: free-airtime
-  bucket_path: free-airtime
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+# deploy:
+#   provider: elasticbeanstalk
+#   region: us-east-2
+#   app: free-airtime
+#   env: Trivia
+#   bucket_name: free-airtime
+#   bucket_path: free-airtime
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY

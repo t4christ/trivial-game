@@ -36,7 +36,7 @@
     {
       "name":"nginx",
       "essential": true,
-      "image": "texplode/trivia-nginx",
+      "image": "texplode/trivial-nginx",
       "memory": 128,
       "links": ["web"],
       "hostname": "nginx",
