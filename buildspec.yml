@@ -27,7 +27,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URL:free-airtime
       - docker push $REPOSITORY_URL:trivial-celery
-      - docker push $REPOSITORY_URL:trivia-nginx
+      - docker push $REPOSITORY_URL:trivial-nginx
 #       - echo Writing image definitions file...
 #       - printf '[{"name":"e-learning-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 #       - cat imagedefinitions.json
