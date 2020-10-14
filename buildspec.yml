@@ -35,7 +35,7 @@ phases:
 artifacts:
   files:
     - 'TrivialArtifact'
-  base_directory_path: "TrivialArtifact"
+  base-directory: "TrivialArtifact"
   name: TrivialArtifact
   
 
