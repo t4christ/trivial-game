@@ -35,8 +35,9 @@ phases:
 artifacts:
   files:
     - 'TrivialArtifact'
+  base_directory_path: "TrivialArtifact"
   name: TrivialArtifact
-  # discard-paths: "yes"
+  
 
  
 
