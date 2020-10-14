@@ -34,7 +34,7 @@ phases:
 #       - cat imagedefinitions.json
 artifacts:
   files:
-    - 'TrivialArtifact.zip'
+    - '**/*'
   name: TrivialArtifact
   # discard-paths: "yes"
 
