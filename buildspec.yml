@@ -29,12 +29,13 @@ phases:
       - docker push $REPOSITORY_URL:trivial-celery
       - docker push $REPOSITORY_URL:trivial-nginx
       - echo Writing image definitions file...
-      - zip -r TrivialProject.zip .
+     
       # - printf '[{"name":"e-learning-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 #       - cat imagedefinitions.json
 artifacts:
   files:
-    - 'TrivialArtifact'
+    - 'TrivialArtifact.zip'
+  name: TrivialArtifact
   # discard-paths: "yes"
 
  
