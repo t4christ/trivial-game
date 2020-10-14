@@ -33,6 +33,6 @@ phases:
 #       - cat imagedefinitions.json
 artifacts:
   files:
-    - 'TrivialProject.zip'
+    - './TrivialProject.zip'
   base-directory: .
 
