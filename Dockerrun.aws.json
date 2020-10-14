@@ -8,7 +8,7 @@
       "name":"web",
       "essential": true,
       "memory": 256,
-      "image": "texplode/free-airtime",
+      "image": "807790523856.dkr.ecr.us-east-2.amazonaws.com/trivial-game:free-airtime",
       "hostname": "web"
     },
 
@@ -19,7 +19,7 @@
       "name":"celery-worker",
       "essential": false,
       "memory": 128,
-      "image": "texplode/trivial-celery",
+      "image": "807790523856.dkr.ecr.us-east-2.amazonaws.com/trivial-game:trivial-celery",
       "hostname": "celery-worker"
     },
     {
@@ -29,14 +29,14 @@
       "name":"celery-beat",
       "essential": false,
       "memory": 128,
-      "image": "texplode/trivial-celery",
+      "image": "807790523856.dkr.ecr.us-east-2.amazonaws.com/trivial-game:trivial-celery",
       "hostname": "celery-beat"
     },
     
     {
       "name":"nginx",
       "essential": true,
-      "image": "texplode/trivial-nginx",
+      "image": "807790523856.dkr.ecr.us-east-2.amazonaws.com/trivial-game:trivial-nginx",
       "memory": 128,
       "links": ["web"],
       "hostname": "nginx",
