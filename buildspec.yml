@@ -19,7 +19,7 @@ phases:
 
       - docker build -t trivial-game:trivial-nginx  ./nginx
       - docker tag trivial-game:trivial-nginx  $REPOSITORY_URL:trivial-nginx
-
+      - docker rmi -f $(docker images | grep "^<untagged>" | awk "{print $3}") & 
 
   post_build:
     commands:
@@ -30,8 +30,7 @@ phases:
       - docker push $REPOSITORY_URL:trivial-nginx
       - echo Writing image definitions file...
      
-      # - printf '[{"name":"e-learning-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-#       - cat imagedefinitions.json
+
 artifacts:
   files:
     - Dockerrun.aws.json
