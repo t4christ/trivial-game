@@ -11,7 +11,7 @@ class SmsClient(object):
                        api_url='https://api.infobip.com/sms',
                        sender_id='WStreams'):
         api_key = api_key or os.getenv('SMS_API_KEY')
-        self._headers = {'authorization': "Basic U2VjdXJlTWVkaWE6VU9aTzhOeTYkNDE3"}
+        self._headers = {'authorization': "Basic "}
         # self._headers = {'Authorization': 'App %s' % api_key}
         self._api_url = api_url
         self._sender_id = sender_id
